@@ -206,6 +206,72 @@ const MANUAL_SOURCES = {
   // 18828121: [{title:"Spoutnik 1 (Wikipédia)", url:"https://fr.wikipedia.org/wiki/Spoutnik_1"}],
 };
 
+
+// --- Supabase (collaboration live) ---
+// ⚠️ Ces deux valeurs sont "public/anon" (OK côté navigateur).
+// Si tu changes de projet Supabase, remplace-les ici.
+const SUPABASE_URL = "https://vubkojqzlmamuuxdjhjv.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1YmtvanF6bG1hbXV1eGRqaGp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3NjI5NDQsImV4cCI6MjA4NDMzODk0NH0.IFeKS8MKQhdax0FDtcU1SSuaIDDTzy0zCwld7MsZfng";
+const TIMELINE_ID = 1771887;
+
+async function sbLoadOverrides(){
+  const url = `${SUPABASE_URL}/rest/v1/timeline_overrides?timeline_id=eq.${TIMELINE_ID}&select=data`;
+  const r = await fetch(url, {
+    headers: {
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+    }
+  });
+  if (!r.ok) throw new Error(await r.text());
+  const rows = await r.json();
+  return rows?.[0]?.data ?? null;
+}
+
+async function sbSaveOverrides(obj){
+  const url = `${SUPABASE_URL}/rest/v1/timeline_overrides`;
+  const payload = { timeline_id: TIMELINE_ID, data: obj };
+  const r = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      Prefer: "resolution=merge-duplicates"
+    },
+    body: JSON.stringify(payload)
+  });
+  if (!r.ok) throw new Error(await r.text());
+}
+
+// Evite de spammer Supabase : on sauvegarde avec un petit debounce
+let _sbSaveTimer = null;
+function sbQueueSave(obj){
+  try{
+    if (_sbSaveTimer) clearTimeout(_sbSaveTimer);
+    _sbSaveTimer = setTimeout(() => {
+      sbSaveOverrides(obj).catch(e => console.warn("Supabase save failed:", e));
+    }, 500);
+  }catch(e){
+    console.warn("Supabase queue failed:", e);
+  }
+}
+
+async function sbInitOverrides(){
+  try{
+    const remote = await sbLoadOverrides();
+    if (remote && typeof remote === "object"){
+      OVERRIDES = remote;
+      // on copie aussi en local pour fallback/offline
+      localStorage.setItem(LS_KEY, JSON.stringify(OVERRIDES));
+      rebuildStoriesFromBase();
+    } else {
+      console.log("Supabase: aucun overrides distant (on garde le local)");
+    }
+  } catch(e){
+    console.warn("Supabase load failed (fallback local):", e);
+  }
+}
+
 // --- Overrides compatibles avec l'éditeur add_events ---
 const LS_KEY = "tikitoki_overrides_1771887_v2";
 
@@ -281,6 +347,8 @@ rebuildStoriesFromBase();
 // --- Hybrid edit mode (inline) ---
 function saveOverrides(obj){
   localStorage.setItem(LS_KEY, JSON.stringify(obj));
+  // push vers Supabase (si configuré)
+  if (typeof sbQueueSave === "function") sbQueueSave(obj);
 }
 
 let CURRENT_STORY_ID = null;
@@ -731,8 +799,11 @@ document.getElementById("backdrop").addEventListener("click", closeModal);
 document.getElementById("closeBtn").addEventListener("click", closeModal);
 window.addEventListener("keydown", (e)=>{ if (e.key === "Escape") closeModal(); });
 
-buildCategorySelect();
-resetFilters();
+(async () => {
+  await sbInitOverrides();
+  buildCategorySelect();
+  resetFilters();
+})();
 </script>
 </body>
 </html>
