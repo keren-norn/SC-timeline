@@ -350,7 +350,7 @@
     return true;
   }
 
-  function applySave(){
+  async function applySave(){
     if (!ensureCanEditOrWarn()) return;
     const id = String(window.CURRENT_STORY_ID);
     if (!id) return;
