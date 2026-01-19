@@ -832,10 +832,31 @@
       const s = getStoryById(window.CURRENT_STORY_ID);
       if (s) openEditForStory(s);
     });
-    $("saveBtn").addEventListener("click", (e)=>{ e.preventDefault(); applySave(); });
-    $("cancelBtn").addEventListener("click", ()=> setEditMode(false));
-    $("deleteBtn").addEventListener("click", ()=> applyDelete());
-    $("newBtn").addEventListener("click", ()=> createNewStory());
+    $("saveBtn")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      applySave().catch(err => {
+        console.error(err);
+        setStatus("Erreur sauvegarde : " + err.message, true);
+      });
+    });
+
+    $("cancelBtn")?.addEventListener("click", () => {
+      setEditMode(false);
+    });
+
+    $("deleteBtn")?.addEventListener("click", () => {
+      applyDelete().catch(err => {
+        console.error(err);
+        setStatus("Erreur suppression : " + err.message, true);
+      });
+    });
+
+    $("newBtn")?.addEventListener("click", () => {
+      createNewStory().catch(err => {
+        console.error(err);
+        setStatus("Erreur création : " + err.message, true);
+      });
+    });
 
     // supabase UI (editor only)
     if ($("loginBtn")){
