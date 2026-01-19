@@ -6,7 +6,6 @@
   const TIMELINE_ID = Number(document.body.dataset.timelineId || "1771887");
 
   const BASE_URL = "./data/timeline_base.json";
-  const SEED_OVERRIDES_URL = "./data/timeline_overrides.json"; // ./data/timeline_overrides.json
   const OVERRIDE_TABLE = "timeline_overrides";
   const EDITORS_TABLE = "timeline_editors"; // email allowlist
 
@@ -39,6 +38,18 @@
   }
   function saveOverridesLocal(obj){
     localStorage.setItem(LS_KEY, JSON.stringify(obj));
+  }
+
+  // Seed overrides (static JSON) are optional. If missing, we simply use {}.
+  async function loadSeedOverrides(){
+    try{
+      const r = await fetch(SEED_OVERRIDES_URL, { cache: "no-store" });
+      if(!r.ok) return {};
+      const j = await r.json();
+      return isObj(j) ? j : {};
+    }catch{
+      return {};
+    }
   }
 
   function getThumbUrl(story){
@@ -365,19 +376,6 @@
 
     OVERRIDES = loadOverridesLocal();
 
-    // Optional: seed overrides from a file committed in the repo (useful for first install / migration)
-    async function loadSeedOverrides(){
-      try{
-        const r = await fetch(SEED_OVERRIDES_URL, { cache: 'no-store' });
-        if (!r.ok) return {};
-        const j = await r.json();
-        // We only accept the overrides-object shape: { [id]: { ... } }
-        if (!j || typeof j !== 'object' || Array.isArray(j)) return {};
-        if ('stories' in j || 'categories' in j || 'meta' in j) return {};
-        return j;
-      } catch(_){ return {}; }
-    }
-
     const seed = await loadSeedOverrides();
     // Merge: local overrides win over seed
     OVERRIDES = Object.assign({}, seed, OVERRIDES);
@@ -422,19 +420,6 @@
 
     OVERRIDES = loadOverridesLocal();
 
-    // Optional: seed overrides from a file committed in the repo (useful for first install / migration)
-    async function loadSeedOverrides(){
-      try{
-        const r = await fetch(SEED_OVERRIDES_URL, { cache: 'no-store' });
-        if (!r.ok) return {};
-        const j = await r.json();
-        // We only accept the overrides-object shape: { [id]: { ... } }
-        if (!j || typeof j !== 'object' || Array.isArray(j)) return {};
-        if ('stories' in j || 'categories' in j || 'meta' in j) return {};
-        return j;
-      } catch(_){ return {}; }
-    }
-
     const seed = await loadSeedOverrides();
     // Merge: local overrides win over seed
     OVERRIDES = Object.assign({}, seed, OVERRIDES);
@@ -457,19 +442,6 @@
     if (!ensureCanEditOrWarn()) return;
     const id = String(nextStoryId());
     OVERRIDES = loadOverridesLocal();
-
-    // Optional: seed overrides from a file committed in the repo (useful for first install / migration)
-    async function loadSeedOverrides(){
-      try{
-        const r = await fetch(SEED_OVERRIDES_URL, { cache: 'no-store' });
-        if (!r.ok) return {};
-        const j = await r.json();
-        // We only accept the overrides-object shape: { [id]: { ... } }
-        if (!j || typeof j !== 'object' || Array.isArray(j)) return {};
-        if ('stories' in j || 'categories' in j || 'meta' in j) return {};
-        return j;
-      } catch(_){ return {}; }
-    }
 
     const seed = await loadSeedOverrides();
     // Merge: local overrides win over seed
@@ -534,7 +506,7 @@
   // ---- Supabase I/O ----
   async function sbInit(){
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
-    sb = window.__sb || (window.__sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)); //sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const { data } = await sb.auth.getSession();
     SESSION = data.session || null;
     sb.auth.onAuthStateChange(async () => {
@@ -809,70 +781,6 @@
 
     applyEditPermissions();
   }
-  // ----Dans app.js, centraliser “qui peut éditer” + verrouiller l’UI
-  function setDisabled(id, disabled){
-    const el = $(id);
-    if (!el) return;
-    el.disabled = !!disabled;
-    el.style.opacity = disabled ? "0.5" : "";
-    el.style.pointerEvents = disabled ? "none" : "";
-  }
-
-  function applyAuthUi(){
-    // 1) En mode lecture : on cache TOUT ce qui sert à l’édition
-    if (MODE === "view"){
-      if ($("authBox")) $("authBox").style.display = "none";
-      if ($("sbEditModeLine")) $("sbEditModeLine").style.display = "none";
-      return;
-    }
-    
-    // 2) En mode édition : on montre la box de connexion
-    if ($("authBox")) $("authBox").style.display = "block";
-
-    // 3) Si pas autorisé : on désactive les actions sensibles
-    const locked = !CAN_EDIT;
-
-    // Ces boutons existent dans ton UI (tu les as dans le HTML)
-    setDisabled("exportSnapshotBtn", locked);
-    setDisabled("reloadSupabaseBtn", locked);
-
-    // Zone d’info en bas (tu l’as déjà)
-    if ($("sbEditModeLine")){
-      $("sbEditModeLine").style.display = "block";
-      $("sbEditModeLine").textContent = locked
-        ? "⚠️ Lecture seule : pour éditer, ton email doit être dans timeline_editors (Supabase)."
-        : "✅ Édition autorisée (connecté).";
-    }
-  }
-  // ----Vérifier l’autorisation éditeur (allowlist Supabase)
-   async function refreshCanEdit(){
-    CAN_EDIT = false;
-
-    if (!sb || !SESSION?.user?.email) {
-      applyAuthUi();
-      return;
-    }
-
-    try{
-      const email = SESSION.user.email.toLowerCase();
-
-      const { data, error } = await sb
-        .from(EDITORS_TABLE)
-        .select("email")
-        .eq("email", email)
-        .limit(1);
-
-      if (!error && Array.isArray(data) && data.length > 0){
-        CAN_EDIT = true;
-      } else {
-        CAN_EDIT = false;
-      }
-    }catch(e){
-      CAN_EDIT = false;
-    }
-
-    applyAuthUi();
-  }
 
   // ---- Wire UI ----
   document.addEventListener("DOMContentLoaded", () => {
@@ -896,31 +804,10 @@
       const s = getStoryById(window.CURRENT_STORY_ID);
       if (s) openEditForStory(s);
     });
-    $("saveBtn")?.addEventListener("click", (e) => {
-      e.preventDefault();
-      applySave().catch(err => {
-        console.error(err);
-        setStatus("Erreur sauvegarde : " + err.message, true);
-      });
-    });
-
-    $("cancelBtn")?.addEventListener("click", () => {
-      setEditMode(false);
-    });
-
-    $("deleteBtn")?.addEventListener("click", () => {
-      applyDelete().catch(err => {
-        console.error(err);
-        setStatus("Erreur suppression : " + err.message, true);
-      });
-    });
-
-    $("newBtn")?.addEventListener("click", () => {
-      createNewStory().catch(err => {
-        console.error(err);
-        setStatus("Erreur création : " + err.message, true);
-      });
-    });
+    $("saveBtn").addEventListener("click", async (e)=>{ e.preventDefault(); await applySave(); });
+    $("cancelBtn").addEventListener("click", ()=> setEditMode(false));
+    $("deleteBtn").addEventListener("click", async ()=> { await applyDelete(); });
+    $("newBtn").addEventListener("click", async ()=> { await createNewStory(); });
 
     // supabase UI (editor only)
     if ($("loginBtn")){
