@@ -66,7 +66,27 @@
         <button id="exportSnapshotBtn" type="button">Export snapshot (GitHub)</button>
         <button id="reloadSupabaseBtn" type="button">Recharger (Supabase)</button>
       </div>
+      <div class="sep"></div>
 
+      <div class="panelTitle">Édition</div>
+
+      <div class="row" style="margin-top:10px">
+        <button id="newBtn" type="button">➕ Nouvel évènement</button>
+      </div>
+
+      <div id="editActions" style="display:none">
+        <div class="row" style="margin-top:10px; gap:10px">
+          <button id="saveBtn" type="button">💾 Enregistrer</button>
+          <button id="cancelBtn" type="button">✖ Fermer</button>
+        </div>
+
+        <div class="row" style="margin-top:10px">
+          <button id="deleteBtn" type="button">🗑️ Supprimer</button>
+        </div>
+      </div>
+
+      <div id="uiStatus" class="muted" style="margin-top:10px;font-size:12px"></div>
+     
       <div id="stats" style="margin-top:12px"></div>
       <div id="sbStatus" class="muted" style="margin-top:10px;font-size:12px"></div>
       <div id="status" class="muted" style="margin-top:4px;font-size:12px"></div>
