@@ -6,6 +6,7 @@
   const TIMELINE_ID = Number(document.body.dataset.timelineId || "1771887");
 
   const BASE_URL = "./data/timeline_base.json";
+  const SEED_OVERRIDES_URL = "./data/timeline_overrides.json";
   const OVERRIDE_TABLE = "timeline_overrides";
   const EDITORS_TABLE = "timeline_editors"; // email allowlist
 
