@@ -663,8 +663,49 @@
     if (!r.ok) throw new Error("Base JSON introuvable: " + BASE_URL);
     DATA = await r.json();
 
-    cats = Array.isArray(DATA.categories) ? DATA.categories : [];
-    BASE_STORIES = Array.isArray(DATA.stories) ? DATA.stories : [];
+    // --- Normalisation du format de base ---
+    // Format attendu: { meta, categories:[], stories:[] }
+    // Mais certains exports peuvent être un objet {id: story, ...}
+    function normalizeBase(input){
+      // standard Tiki-Toki-like export
+      if (input && typeof input === 'object' && Array.isArray(input.stories)) {
+        return {
+          meta: (input.meta && typeof input.meta === 'object') ? input.meta : {},
+          categories: Array.isArray(input.categories) ? input.categories : [],
+          stories: input.stories
+        };
+      }
+
+      // dict-like export: {"123": {title, startDate, ...}, ...}
+      if (input && typeof input === 'object' && !Array.isArray(input)) {
+        const stories = Object.entries(input)
+          .filter(([, v]) => v && typeof v === 'object')
+          .map(([k, v]) => ({ id: (v.id ?? k), ...v }));
+        // build minimal categories list from story.category / story.categoryId
+        const catIds = new Map();
+        for (const s of stories) {
+          const cid = (s.categoryId ?? s.category ?? s.category_id ?? null);
+          if (cid == null) continue;
+          const key = String(cid);
+          if (!catIds.has(key)) catIds.set(key, { id: key, title: key });
+        }
+        return {
+          meta: { title: input.title || input.name || 'Timeline' },
+          categories: Array.from(catIds.values()),
+          stories
+        };
+      }
+
+      // fallback
+      return { meta: {}, categories: [], stories: [] };
+    }
+
+    const normalized = normalizeBase(DATA);
+    // Keep a copy for status/debug
+    DATA = normalized;
+
+    cats = Array.isArray(normalized.categories) ? normalized.categories : [];
+    BASE_STORIES = Array.isArray(normalized.stories) ? normalized.stories : [];
     catMap.clear();
     for (const c of cats) catMap.set(String(c.id), c);
 
