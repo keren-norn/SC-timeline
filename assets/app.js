@@ -534,7 +534,7 @@
   // ---- Supabase I/O ----
   async function sbInit(){
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
-    sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    sb = window.__sb || (window.__sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)); //sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const { data } = await sb.auth.getSession();
     SESSION = data.session || null;
     sb.auth.onAuthStateChange(async () => {
