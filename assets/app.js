@@ -5,7 +5,7 @@
   const SUPABASE_ANON_KEY = document.body.dataset.supabaseAnonKey || "";
   const TIMELINE_ID = Number(document.body.dataset.timelineId || "1771887");
 
-  const BASE_URL = "./data/tiki_toki_1771887_base.json";
+  const BASE_URL = "./data/timeline_base.json";
   const OVERRIDE_TABLE = "timeline_overrides";
   const EDITORS_TABLE = "timeline_editors"; // email allowlist
 
