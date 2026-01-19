@@ -8,7 +8,7 @@
   const BASE_URL = "./data/timeline_base.json";
   const OVERRIDE_TABLE = "timeline_overrides";
   const EDITORS_TABLE = "timeline_editors"; // email allowlist
-
+  const SEED_OVERRIDES_URL = "./data/timeline_overrides.json";
   const LS_KEY = `tikitoki_overrides_${TIMELINE_ID}_v3`;
 
   let sb = null;
