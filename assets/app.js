@@ -414,7 +414,7 @@
     debouncedRemoteSave();
   }
 
-  function applyDelete(){
+  async function applyDelete(){
     if (!ensureCanEditOrWarn()) return;
     const id = String(window.CURRENT_STORY_ID);
     if (!id) return;
@@ -453,7 +453,7 @@
     debouncedRemoteSave();
   }
 
-  function createNewStory(){
+  async function createNewStory(){
     if (!ensureCanEditOrWarn()) return;
     const id = String(nextStoryId());
     OVERRIDES = loadOverridesLocal();
