@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SC Timeline — Éditeur</title>
+  <link rel="stylesheet" href="./assets/app.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body data-mode="edit"
+      data-timeline-id="1771887"
+      data-supabase-url="https://vubkojqzlmamuuxdjhjv.supabase.co"
+      data-supabase-anon-key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1YmtvanF6bG1hbXV1eGRqaGp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3NjI5NDQsImV4cCI6MjA4NDMzODk0NH0.IFeKS8MKQhdax0FDtcU1SSuaIDDTzy0zCwld7MsZfng">
+<header>
+  <div class="headerWrap">
+    <div>
+      <h1 class="hTitle" id="pageTitle">Timeline</h1>
+      <div class="hMeta" id="pageMeta"></div>
+    </div>
+    <div class="hRight">
+      <div class="pill" id="modePill">Mode: édition</div>
+      <a class="pill" href="./index.html">Retour lecture</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <div class="hd">Filtres</div>
+    <div class="bd">
+      <label class="muted" for="q">Recherche</label>
+      <input id="q" placeholder="titre, texte, tags…" />
+
+      <div class="sep"></div>
+
+      <label class="muted" for="cat">Catégorie</label>
+      <select id="cat"></select>
+
+      <div class="sep"></div>
+
+      <div class="row">
+        <div>
+          <label class="muted" for="y1">Année min</label>
+          <input id="y1" type="number" />
+        </div>
+        <div>
+          <label class="muted" for="y2">Année max</label>
+          <input id="y2" type="number" />
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <div class="row">
+        <button id="resetBtn" type="button">Réinitialiser</button>
+        <button id="copyBtn" type="button">Copier JSON filtré</button>
+      </div>
+
+      <div class="sep"></div>
+
+      <div class="row" style="margin-top:10px">
+        <button id="exportSnapshotBtn" type="button">Export snapshot (GitHub)</button>
+        <button id="reloadSupabaseBtn" type="button">Recharger (Supabase)</button>
+      </div>
+
+      <div id="stats" style="margin-top:12px"></div>
+      <div id="sbStatus" class="muted" style="margin-top:10px;font-size:12px"></div>
+
+      <div id="authBox" style="margin-top:14px">
+        <div class="sep"></div>
+        <div class="muted" style="font-size:12px;margin-bottom:8px">Connexion (Email OTP / Magic link)</div>
+        <input id="authEmail" type="email" placeholder="email" />
+        <div style="height:8px"></div>
+        <input id="authCode" type="text" placeholder="code (si OTP)" />
+        <div style="height:8px"></div>
+        <div class="row">
+          <button id="loginBtn" type="button" class="primary">Se connecter</button>
+          <button id="logoutBtn" type="button" disabled>Se déconnecter</button>
+        </div>
+        <div id="authStatus" class="muted" style="margin-top:8px;font-size:12px">Mode: lecture</div>
+        <div class="muted" style="margin-top:6px;font-size:12px">
+          ⚠️ Pour éditer, ton email doit être dans <span class="kbd">timeline_editors</span> (Supabase).
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div id="timeline"></div>
+  </section>
+</main>
+
+<div id="backdrop" aria-hidden="true"></div>
+<div id="modal" aria-hidden="true">
+  <div class="mLeft">
+    <div class="mTop">
+      <div>
+        <div class="muted" id="mdate"></div>
+        <h2 class="mTitle" id="mtitle"></h2>
+        <div class="mCat mcat"><span class="dot" id="mdot"></span><span id="mcat"></span></div>
+      </div>
+      <div class="mActions">
+        <button id="editBtn" type="button">Modifier</button>
+        <button id="saveBtn" type="button" style="display:none">Enregistrer</button>
+        <button id="cancelBtn" type="button" style="display:none">Annuler</button>
+        <button id="deleteBtn" type="button">Supprimer</button>
+        <button id="closeBtn" type="button">Fermer</button>
+      </div>
+    </div>
+
+    <div id="mlinks"></div>
+    <div id="mtext"></div>
+    <div id="mgallery"></div>
+
+    <div id="editWrap">
+      <div class="sep"></div>
+      <div class="row">
+        <div>
+          <label class="muted" for="e_title">Titre</label>
+          <input id="e_title" />
+        </div>
+        <div>
+          <label class="muted" for="e_cat">Catégorie</label>
+          <select id="e_cat"></select>
+        </div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label class="muted" for="e_start">Début</label>
+          <input id="e_start" placeholder="YYYY-MM-DD" />
+        </div>
+        <div>
+          <label class="muted" for="e_end">Fin</label>
+          <input id="e_end" placeholder="YYYY-MM-DD" />
+        </div>
+      </div>
+      <div style="margin-top:10px">
+        <label class="muted" for="e_link">Lien externe</label>
+        <input id="e_link" />
+      </div>
+      <div style="margin-top:10px">
+        <label class="muted" for="e_img">Image (URL)</label>
+        <input id="e_img" />
+      </div>
+      <div style="margin-top:10px">
+        <label class="muted" for="e_text">Texte</label>
+        <textarea id="e_text"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="mRight">
+    <div class="card" style="border-radius:16px">
+      <div class="hd">Overrides (local)</div>
+      <div class="bd">
+        <div class="row">
+          <button id="exportEditsBtn" type="button">Exporter (JSON)</button>
+          <button id="importEditsBtn" type="button">Importer (JSON)</button>
+          <input id="importFile" type="file" accept="application/json" style="display:none" />
+        </div>
+        <div class="sep"></div>
+        <button id="newBtn" type="button" class="primary">+ Nouvel événement</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="./assets/app.js"></script>
+</body>
+</html>
