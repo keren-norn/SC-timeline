@@ -40,18 +40,6 @@
     localStorage.setItem(LS_KEY, JSON.stringify(obj));
   }
 
-  // Seed overrides (static JSON) are optional. If missing, we simply use {}.
-  async function loadSeedOverrides(){
-    try{
-      const r = await fetch(SEED_OVERRIDES_URL, { cache: "no-store" });
-      if(!r.ok) return {};
-      const j = await r.json();
-      return isObj(j) ? j : {};
-    }catch{
-      return {};
-    }
-  }
-
   function getThumbUrl(story){
     const media = Array.isArray(story.media)? story.media: [];
     for (const m of media){
@@ -376,6 +364,19 @@
 
     OVERRIDES = loadOverridesLocal();
 
+    // Optional: seed overrides from a file committed in the repo (useful for first install / migration)
+    async function loadSeedOverrides(){
+      try{
+        const r = await fetch(SEED_OVERRIDES_URL, { cache: 'no-store' });
+        if (!r.ok) return {};
+        const j = await r.json();
+        // We only accept the overrides-object shape: { [id]: { ... } }
+        if (!j || typeof j !== 'object' || Array.isArray(j)) return {};
+        if ('stories' in j || 'categories' in j || 'meta' in j) return {};
+        return j;
+      } catch(_){ return {}; }
+    }
+
     const seed = await loadSeedOverrides();
     // Merge: local overrides win over seed
     OVERRIDES = Object.assign({}, seed, OVERRIDES);
@@ -420,6 +421,19 @@
 
     OVERRIDES = loadOverridesLocal();
 
+    // Optional: seed overrides from a file committed in the repo (useful for first install / migration)
+    async function loadSeedOverrides(){
+      try{
+        const r = await fetch(SEED_OVERRIDES_URL, { cache: 'no-store' });
+        if (!r.ok) return {};
+        const j = await r.json();
+        // We only accept the overrides-object shape: { [id]: { ... } }
+        if (!j || typeof j !== 'object' || Array.isArray(j)) return {};
+        if ('stories' in j || 'categories' in j || 'meta' in j) return {};
+        return j;
+      } catch(_){ return {}; }
+    }
+
     const seed = await loadSeedOverrides();
     // Merge: local overrides win over seed
     OVERRIDES = Object.assign({}, seed, OVERRIDES);
@@ -439,22 +453,34 @@
   }
 
   async function createNewStory(){
-    if (!ensureCanEditOrWarn()) return;
+    // Visible even without being connected: we open the form.
+    // Saving will still require an allowed account (timeline_editors).
     const id = String(nextStoryId());
-    OVERRIDES = loadOverridesLocal();
 
-    const seed = await loadSeedOverrides();
-    // Merge: local overrides win over seed
-    OVERRIDES = Object.assign({}, seed, OVERRIDES);
-    saveOverridesLocal(OVERRIDES);
-    OVERRIDES[id] = { __new: true, title:"(sans titre)", startDate:"", endDate:"", category:(cats[0]?String(cats[0].id):""), fullTextResolved:"", textResolved:"", externalLink:"", tags:"", media:[] };
-    saveOverridesLocal(OVERRIDES);
-    rebuildStoriesFromBase();
-    render();
-    const s = getStoryById(id);
-    if (s){ openModal(s); openEditForStory(s); }
+    // Draft story (not persisted until "Enregistrer").
+    const draft = {
+      id,
+      title: "(sans titre)",
+      startDate: "",
+      endDate: "",
+      category: (cats[0] ? String(cats[0].id) : ""),
+      externalLink: "",
+      fullTextResolved: "",
+      textResolved: "",
+      tags: "",
+      media: []
+    };
 
-    debouncedRemoteSave();
+    openModal(draft);
+    openEditForStory(draft);
+
+    // The draft does not exist server-side yet, so deleting makes no sense.
+    if ($('deleteBtn')) $('deleteBtn').style.display = 'none';
+
+    if (!CAN_EDIT){
+      const st = $('status');
+      if (st) st.textContent = "Lecture seule: connecte-toi pour enregistrer.";
+    }
   }
 
   // ---- Export / import (edits) ----
@@ -564,11 +590,17 @@
 
   function applyEditPermissions(){
     // Do NOT hide reset/copy as requested.
-    const editIds = ["newBtn","editBtn","saveBtn","deleteBtn"];
-    for (const id of editIds){
+    // "Nouvel évènement" must be visible even without being logged in.
+    const isEdit = MODE === "edit";
+
+    const newBtn = $("newBtn");
+    if (newBtn) newBtn.style.display = isEdit ? "" : "none";
+
+    const gated = ["editBtn","saveBtn","deleteBtn"];
+    for (const id of gated){
       const el = $(id);
       if (!el) continue;
-      el.style.display = (MODE === "edit" && CAN_EDIT) ? "" : "none";
+      el.style.display = (isEdit && CAN_EDIT) ? "" : "none";
     }
   }
 
@@ -804,10 +836,10 @@
       const s = getStoryById(window.CURRENT_STORY_ID);
       if (s) openEditForStory(s);
     });
-    $("saveBtn").addEventListener("click", async (e)=>{ e.preventDefault(); await applySave(); });
+    $("saveBtn").addEventListener("click", (e)=>{ e.preventDefault(); applySave().catch((err)=>{ console.error(err); setStatus("Erreur: "+(err&&err.message?err.message:String(err)), true); }); });
     $("cancelBtn").addEventListener("click", ()=> setEditMode(false));
-    $("deleteBtn").addEventListener("click", async ()=> { await applyDelete(); });
-    $("newBtn").addEventListener("click", async ()=> { await createNewStory(); });
+    $("deleteBtn").addEventListener("click", ()=> applyDelete().catch((err)=>{ console.error(err); setStatus("Erreur: "+(err&&err.message?err.message:String(err)), true); }));
+    $("newBtn").addEventListener("click", ()=> createNewStory().catch((err)=>{ console.error(err); setStatus("Erreur: "+(err&&err.message?err.message:String(err)), true); }));
 
     // supabase UI (editor only)
     if ($("loginBtn")){
