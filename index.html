@@ -58,8 +58,29 @@
 
       <div class="sep"></div>
 
+      <div class="sep"></div>
+
+      <div class="row" style="margin-top:10px">
+        <button id="exportSnapshotBtn" type="button">Export snapshot (GitHub)</button>
+        <button id="reloadSupabaseBtn" type="button">Recharger (Supabase)</button>
+      </div>
+
       <div id="stats"></div>
-      <div id="sbStatus" class="muted" style="margin-top:10px;font-size:12px"></div>
+      <div id="sbStatusLine" class="muted" style="margin-top:10px;font-size:12px"></div>
+      <div id="sbEditModeLine" class="muted" style="margin-top:4px;font-size:12px;display:none"></div>
+
+      <div id="authBox" style="display:none">
+        <div class="sep"></div>
+        <div class="muted" style="font-size:12px;margin-bottom:6px">Connexion (Email OTP / Magic link)</div>
+        <input id="authEmail" placeholder="email" />
+        <input id="authCode" placeholder="code (si OTP)" />
+        <div class="row" style="margin-top:8px">
+          <button id="loginBtn" type="button">Se connecter</button>
+          <button id="logoutBtn" type="button">Se déconnecter</button>
+        </div>
+        <div id="authStatus" class="muted" style="margin-top:6px;font-size:12px"></div>
+      </div>
+
       <div class="muted" style="margin-top:10px;font-size:12px">
         Lecture publique. Les modifications se font via <a href="./editor.html">editor.html</a>.
       </div>
@@ -144,12 +165,7 @@
       </div>
     </div>
 
-    <div id="authBox" class="card" style="margin-top:12px;display:none;border-radius:16px">
-      <div class="hd">Accès édition</div>
-      <div class="bd">
-        <div class="muted" style="font-size:12px;margin-bottom:8px">Disponible dans l’éditeur seulement.</div>
-      </div>
-    </div>
+    
   </div>
 </div>
 
