@@ -5,7 +5,7 @@
   const SUPABASE_ANON_KEY = document.body.dataset.supabaseAnonKey || "";
   const TIMELINE_ID = Number(document.body.dataset.timelineId || "1771887");
 
-  const BASE_URL = "./data/tiki_toki_1771887.json";
+  const BASE_URL = "./data/tiki_toki_1771887_base.json";
   const OVERRIDE_TABLE = "timeline_overrides";
   const EDITORS_TABLE = "timeline_editors"; // email allowlist
 
@@ -58,6 +58,11 @@
       if (!isObj(o)) continue;
 
       if (o.__new){
+        // If the id already exists in base, treat it as an update to avoid duplicates
+        const existing = byId.get(String(id));
+        if (existing){
+          // fall through to update logic below by pretending __new is not set
+        } else {
         const ns = {
           id: parseInt(id, 10) || id,
           title: o.title || "(sans titre)",
@@ -72,7 +77,9 @@
         };
         if (Array.isArray(o.manualLinks)) ns.__manualLinks = o.manualLinks;
         stories.push(ns);
+        byId.set(String(id), ns);
         continue;
+      }
       }
 
       const s = byId.get(String(id));
@@ -356,6 +363,24 @@
     const text = $("e_text").value;
 
     OVERRIDES = loadOverridesLocal();
+
+    // Optional: seed overrides from a file committed in the repo (useful for first install / migration)
+    async function loadSeedOverrides(){
+      try{
+        const r = await fetch(SEED_OVERRIDES_URL, { cache: 'no-store' });
+        if (!r.ok) return {};
+        const j = await r.json();
+        // We only accept the overrides-object shape: { [id]: { ... } }
+        if (!j || typeof j !== 'object' || Array.isArray(j)) return {};
+        if ('stories' in j || 'categories' in j || 'meta' in j) return {};
+        return j;
+      } catch(_){ return {}; }
+    }
+
+    const seed = await loadSeedOverrides();
+    // Merge: local overrides win over seed
+    OVERRIDES = Object.assign({}, seed, OVERRIDES);
+    saveOverridesLocal(OVERRIDES);
     const prev = isObj(OVERRIDES[id]) ? OVERRIDES[id] : {};
     const o = Object.assign({}, prev);
 
@@ -395,6 +420,24 @@
     if (!confirm("Supprimer cet événement ?")) return;
 
     OVERRIDES = loadOverridesLocal();
+
+    // Optional: seed overrides from a file committed in the repo (useful for first install / migration)
+    async function loadSeedOverrides(){
+      try{
+        const r = await fetch(SEED_OVERRIDES_URL, { cache: 'no-store' });
+        if (!r.ok) return {};
+        const j = await r.json();
+        // We only accept the overrides-object shape: { [id]: { ... } }
+        if (!j || typeof j !== 'object' || Array.isArray(j)) return {};
+        if ('stories' in j || 'categories' in j || 'meta' in j) return {};
+        return j;
+      } catch(_){ return {}; }
+    }
+
+    const seed = await loadSeedOverrides();
+    // Merge: local overrides win over seed
+    OVERRIDES = Object.assign({}, seed, OVERRIDES);
+    saveOverridesLocal(OVERRIDES);
     const existsInBase = BASE_STORIES.some(s => String(s.id) === String(id));
     if (existsInBase){
       OVERRIDES[id] = Object.assign({}, (OVERRIDES[id]||{}), { __deleted: true });
@@ -413,6 +456,24 @@
     if (!ensureCanEditOrWarn()) return;
     const id = String(nextStoryId());
     OVERRIDES = loadOverridesLocal();
+
+    // Optional: seed overrides from a file committed in the repo (useful for first install / migration)
+    async function loadSeedOverrides(){
+      try{
+        const r = await fetch(SEED_OVERRIDES_URL, { cache: 'no-store' });
+        if (!r.ok) return {};
+        const j = await r.json();
+        // We only accept the overrides-object shape: { [id]: { ... } }
+        if (!j || typeof j !== 'object' || Array.isArray(j)) return {};
+        if ('stories' in j || 'categories' in j || 'meta' in j) return {};
+        return j;
+      } catch(_){ return {}; }
+    }
+
+    const seed = await loadSeedOverrides();
+    // Merge: local overrides win over seed
+    OVERRIDES = Object.assign({}, seed, OVERRIDES);
+    saveOverridesLocal(OVERRIDES);
     OVERRIDES[id] = { __new: true, title:"(sans titre)", startDate:"", endDate:"", category:(cats[0]?String(cats[0].id):""), fullTextResolved:"", textResolved:"", externalLink:"", tags:"", media:[] };
     saveOverridesLocal(OVERRIDES);
     rebuildStoriesFromBase();
@@ -710,6 +771,24 @@
     for (const c of cats) catMap.set(String(c.id), c);
 
     OVERRIDES = loadOverridesLocal();
+
+    // Optional: seed overrides from a file committed in the repo (useful for first install / migration)
+    async function loadSeedOverrides(){
+      try{
+        const r = await fetch(SEED_OVERRIDES_URL, { cache: 'no-store' });
+        if (!r.ok) return {};
+        const j = await r.json();
+        // We only accept the overrides-object shape: { [id]: { ... } }
+        if (!j || typeof j !== 'object' || Array.isArray(j)) return {};
+        if ('stories' in j || 'categories' in j || 'meta' in j) return {};
+        return j;
+      } catch(_){ return {}; }
+    }
+
+    const seed = await loadSeedOverrides();
+    // Merge: local overrides win over seed
+    OVERRIDES = Object.assign({}, seed, OVERRIDES);
+    saveOverridesLocal(OVERRIDES);
     rebuildStoriesFromBase();
     buildCategorySelect();
     resetFilters(); // calls render
