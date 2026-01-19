@@ -825,7 +825,7 @@
       if ($("sbEditModeLine")) $("sbEditModeLine").style.display = "none";
       return;
     }
-
+    
     // 2) En mode édition : on montre la box de connexion
     if ($("authBox")) $("authBox").style.display = "block";
 
@@ -844,6 +844,36 @@
         : "✅ Édition autorisée (connecté).";
     }
   }
+  // ----Vérifier l’autorisation éditeur (allowlist Supabase)
+   async function refreshCanEdit(){
+    CAN_EDIT = false;
+
+    if (!sb || !SESSION?.user?.email) {
+      applyAuthUi();
+      return;
+    }
+
+    try{
+      const email = SESSION.user.email.toLowerCase();
+
+      const { data, error } = await sb
+        .from(EDITORS_TABLE)
+        .select("email")
+        .eq("email", email)
+        .limit(1);
+
+      if (!error && Array.isArray(data) && data.length > 0){
+        CAN_EDIT = true;
+      } else {
+        CAN_EDIT = false;
+      }
+    }catch(e){
+      CAN_EDIT = false;
+    }
+
+    applyAuthUi();
+  }
+
   // ---- Wire UI ----
   document.addEventListener("DOMContentLoaded", () => {
     $("q").addEventListener("input", render);
