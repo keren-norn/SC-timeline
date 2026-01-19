@@ -809,7 +809,41 @@
 
     applyEditPermissions();
   }
+  // ----Dans app.js, centraliser “qui peut éditer” + verrouiller l’UI
+  function setDisabled(id, disabled){
+    const el = $(id);
+    if (!el) return;
+    el.disabled = !!disabled;
+    el.style.opacity = disabled ? "0.5" : "";
+    el.style.pointerEvents = disabled ? "none" : "";
+  }
 
+  function applyAuthUi(){
+    // 1) En mode lecture : on cache TOUT ce qui sert à l’édition
+    if (MODE === "view"){
+      if ($("authBox")) $("authBox").style.display = "none";
+      if ($("sbEditModeLine")) $("sbEditModeLine").style.display = "none";
+      return;
+    }
+
+    // 2) En mode édition : on montre la box de connexion
+    if ($("authBox")) $("authBox").style.display = "block";
+
+    // 3) Si pas autorisé : on désactive les actions sensibles
+    const locked = !CAN_EDIT;
+
+    // Ces boutons existent dans ton UI (tu les as dans le HTML)
+    setDisabled("exportSnapshotBtn", locked);
+    setDisabled("reloadSupabaseBtn", locked);
+
+    // Zone d’info en bas (tu l’as déjà)
+    if ($("sbEditModeLine")){
+      $("sbEditModeLine").style.display = "block";
+      $("sbEditModeLine").textContent = locked
+        ? "⚠️ Lecture seule : pour éditer, ton email doit être dans timeline_editors (Supabase)."
+        : "✅ Édition autorisée (connecté).";
+    }
+  }
   // ---- Wire UI ----
   document.addEventListener("DOMContentLoaded", () => {
     $("q").addEventListener("input", render);
