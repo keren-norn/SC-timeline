@@ -589,45 +589,52 @@
   }
 
   function applyEditPermissions(){
-    // Do NOT hide reset/copy as requested.
     const isEdit = MODE === "edit";
+    const can = isEdit && CAN_EDIT;
 
-    // "Nouvel évènement" visible en mode édition, même sans autorisation
+    // ➕ Nouvel évènement : visible en mode édition, même sans droits
     const newBtn = $("newBtn");
-    if (newBtn) newBtn.style.display = isEdit ? "" : "none";
+    if (newBtn){
+      newBtn.style.display = isEdit ? "" : "none";
+      newBtn.disabled = false;
+    }
 
-    // Bouton "Modifier" dans la modale (ouvre le formulaire)
+    // Bouton Modifier
     const editBtn = $("editBtn");
-    if (editBtn) {
+    if (editBtn){
       editBtn.style.display = isEdit ? "" : "none";
-      editBtn.disabled = !CAN_EDIT;
-      editBtn.title = CAN_EDIT ? "" : "Lecture seule : non autorisé";
+      editBtn.disabled = !can;
+      editBtn.title = can ? "" : "Lecture seule : non autorisé";
     }
 
-    // Boutons dans la modale/form
+    // Bouton Enregistrer
     const saveBtn = $("saveBtn");
-    if (saveBtn) {
+    if (saveBtn){
       saveBtn.style.display = isEdit ? "" : "none";
-      saveBtn.disabled = !CAN_EDIT;
-      saveBtn.title = CAN_EDIT ? "" : "Lecture seule : non autorisé";
+      saveBtn.disabled = !can;
+      saveBtn.title = can ? "" : "Lecture seule : non autorisé";
     }
 
+    // 🗑 Bouton Supprimer (toujours visible mais grisé si non autorisé)
     const deleteBtn = $("deleteBtn");
-    if (deleteBtn) {
-    // on laisse la logique existante dans createNewStory() qui peut cacher delete si brouillon
-      if (deleteBtn.style.display !== "none") deleteBtn.style.display = isEdit ? "" : "none";
-      deleteBtn.disabled = !CAN_EDIT;
-      deleteBtn.title = CAN_EDIT ? "" : "Lecture seule : non autorisé";
+    if (deleteBtn){
+      deleteBtn.style.display = isEdit ? "" : "none";
+      deleteBtn.disabled = !can;
+      deleteBtn.title = can ? "" : "Lecture seule : non autorisé";
     }
 
-    // Petit message de statut dans l’UI (si l’élément existe)
+    // Message d’état
     const sbLine = $("sbEditModeLine") || $("sbStatus");
-    if (sbLine && isEdit) {
-      if (!SESSION) sbLine.textContent = "🔒 Lecture seule : non connecté (connecte-toi pour enregistrer).";
-      else if (!CAN_EDIT) sbLine.textContent = "🔒 Lecture seule : connecté mais non autorisé (timeline_editors).";
-      else sbLine.textContent = "✅ Édition autorisée.";
+    if (sbLine && isEdit){
+      if (!SESSION){
+        sbLine.textContent = "🔒 Lecture seule : non connecté (connecte-toi pour enregistrer).";
+      } else if (!CAN_EDIT){
+        sbLine.textContent = "🔒 Lecture seule : connecté mais non autorisé (timeline_editors).";
+      } else {
+        sbLine.textContent = "✅ Édition autorisée.";
+      }
     }
-  }
+  }  
 
   async function sbLoadOverrides(){
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY){
