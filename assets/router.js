@@ -11,7 +11,6 @@
       return; // le hashchange relancera applyRoute
     }
   const isEdit = isEditHash(location.hash);
-    const isEdit = isEditHash(location.hash);
     
 
     document.body.dataset.mode = isEdit ? "edit" : "view";
