@@ -92,6 +92,63 @@ Repères :
   
   function fmtDate(dateStr){ return (dateStr||"").split(" ")[0]; }
 
+  /**
+   * safeUrl — Validation d'URL pour éviter les schémas malveillants (javascript:, data:, file:, etc.)
+   * N'autorise que http: et https: pour les liens cliquables.
+   * Retourne l'URL normalisée si valide, sinon null.
+   * Usage : protège contre XSS via URL et open-redirect vers des schémas dangereux.
+   */
+  function safeUrl(u){
+    if (!u || typeof u !== "string") return null;
+    const trimmed = u.trim();
+    if (!trimmed) return null;
+    try {
+      const url = new URL(trimmed, window.location.href);
+      // N'autorise que http et https pour les liens
+      if (url.protocol === "http:" || url.protocol === "https:") {
+        return url.href;
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * safeImageUrl — Validation d'URL pour les images.
+   * Autorise http:, https: et data:image/* (pour les images encodées en base64).
+   * Retourne l'URL normalisée si valide, sinon null.
+   * Usage : protège contre le chargement d'images depuis des sources non fiables.
+   */
+  function safeImageUrl(u){
+    if (!u || typeof u !== "string") return null;
+    const trimmed = u.trim();
+    if (!trimmed) return null;
+    
+    // Validation des data URLs pour images base64
+    // Format attendu: data:image/[type];base64,[données]
+    // Supporte: png, jpeg, gif, svg+xml, x-icon, webp, etc.
+    if (trimmed.toLowerCase().startsWith("data:image/")) {
+      // Vérification stricte du format data URL pour éviter les URLs malformées
+      // Accepte les types MIME standards: lettres, chiffres, +, -, .
+      if (/^data:image\/[a-z0-9+.-]+;base64,/i.test(trimmed)) {
+        return trimmed;
+      }
+      return null;
+    }
+    
+    // Validation des URLs http/https
+    try {
+      const url = new URL(trimmed, window.location.href);
+      if (url.protocol === "http:" || url.protocol === "https:") {
+        return url.href;
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
   function loadOverridesLocal(){
     try{ const raw = localStorage.getItem(LS_KEY); return raw? JSON.parse(raw): {}; }
     catch{ return {}; }
@@ -376,6 +433,7 @@ Repères :
       }
     }
 
+    const modal = $("modal");
     $("backdrop").style.display="block";
     
     // Accessibilité : définir le rôle dialog et aria-modal
@@ -393,6 +451,7 @@ Repères :
   }
 
   function closeModal(){
+    const modal = $("modal");
     $("backdrop").style.display="none";
     const modal = $("modal");
     modal.style.display="none";
