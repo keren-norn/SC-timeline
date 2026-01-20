@@ -19,49 +19,7 @@ SC Timeline — index.html (page unique + hash routing “propre”)
   <script src="./assets/app.js" defer></script>
 
   <!-- Routeur hash (propre, sans duplication d'IDs) -->
-  <script>
-  window.addEventListener("DOMContentLoaded", () => {
-    function isEditHash(h){
-      h = (h || "#timeline").toLowerCase();
-      return (h === "#edit" || h.startsWith("#edit"));
-    }
-
-    function applyRoute(){
-      const isEdit = isEditHash(location.hash);
-
-      document.body.dataset.mode = isEdit ? "edit" : "view";
-
-      const modePill = document.getElementById("modePill");
-      if (modePill) modePill.textContent = "Mode: " + (isEdit ? "édition" : "lecture");
-
-      const navEdit = document.getElementById("navEdit");
-      const navView = document.getElementById("navView");
-      if (navEdit) navEdit.style.display = isEdit ? "none" : "inline-flex";
-      if (navView) navView.style.display = isEdit ? "inline-flex" : "none";
-
-      const editPanel = document.getElementById("editPanel");
-      if (editPanel) editPanel.style.display = isEdit ? "block" : "none";
-    }
-
-    // état initial
-    let lastIsEdit = isEditHash(location.hash);
-    applyRoute();
-
-    window.addEventListener("hashchange", () => {
-      const nowIsEdit = isEditHash(location.hash);
-
-      // reload uniquement si on change de mode
-      if (nowIsEdit !== lastIsEdit){
-        lastIsEdit = nowIsEdit;
-        location.reload();
-        return;
-      }
-
-      // sinon on met juste à jour l'UI
-      applyRoute();
-    });
-  });
-</script>
+  
 </head>
 
 <body data-mode="view"
