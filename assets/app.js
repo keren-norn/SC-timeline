@@ -1,15 +1,35 @@
+/*
+SC Timeline — app.js (commenté)
+
+Objectif : rendre le fichier plus lisible sans changer le comportement.
+
+Lecture rapide :
+- Charge le JSON de base (timeline_base.json)
+- Applique les overrides (localStorage + éventuellement Supabase)
+- Affiche la liste + filtres + modale
+- En mode editor.html : permet d'éditer (si autorisé dans timeline_editors)
+*/
+
 /* global supabase */
 (() => {
+  // ==============================
+  // 1) Configuration (mode, supabase, fichiers)
+  // ==============================
+
   const MODE = document.body.dataset.mode || "view"; // 'view' | 'edit'
   const SUPABASE_URL = document.body.dataset.supabaseUrl || "";
   const SUPABASE_ANON_KEY = document.body.dataset.supabaseAnonKey || "";
   const TIMELINE_ID = Number(document.body.dataset.timelineId || "1771887");
 
-  const BASE_URL = "./data/timeline_base.json";
+  const BASE_URL = "./data/tiki_toki_1771887_base.json";
   const OVERRIDE_TABLE = "timeline_overrides";
   const EDITORS_TABLE = "timeline_editors"; // email allowlist
-  const SEED_OVERRIDES_URL = "./data/timeline_overrides.json";
+
   const LS_KEY = `tikitoki_overrides_${TIMELINE_ID}_v3`;
+
+  // ==============================
+  // 2) Etat global (session, data, caches)
+  // ==============================
 
   let sb = null;
   let CAN_EDIT = false;
@@ -23,6 +43,10 @@
   let LAST_REMOTE_UPDATED_AT = null;
   let LAST_REMOTE_UPDATED_BY = null;
   const catMap = new Map();
+
+  // ==============================
+  // 3) Helpers (DOM, parsing, formatage)
+  // ==============================
 
   function $(id){ return document.getElementById(id); }
   function isObj(x){ return x && typeof x === "object" && !Array.isArray(x); }
@@ -141,6 +165,10 @@
       });
   }
 
+  // ==============================
+  // 4) Rendu UI (liste + filtres)
+  // ==============================
+
   function render(){
     $("pageTitle").textContent = DATA?.meta?.title || "Timeline";
     $("pageMeta").textContent = ((DATA?.meta?.authorName||"") + " • " + (DATA?.meta?.startDate||"").split(" ")[0] + " → " + (DATA?.meta?.endDate||"").split(" ")[0]).trim();
@@ -223,6 +251,10 @@
     }
   }
 
+  // ==============================
+  // 5) Modale (lecture + edition)
+  // ==============================
+
   function openModal(story){
     window.CURRENT_STORY_ID = String(story.id);
     setEditMode(false);
@@ -282,6 +314,10 @@
     $("modal").style.display="none";
     $("modal").setAttribute("aria-hidden","true");
   }
+
+  // ==============================
+  // 6) Edition (formulaire + sauvegarde locale/Supabase)
+  // ==============================
 
   // --- Edit mode (inline) ---
   function setEditMode(on){
@@ -349,7 +385,7 @@
     return true;
   }
 
-  async function applySave(){
+  function applySave(){
     if (!ensureCanEditOrWarn()) return;
     const id = String(window.CURRENT_STORY_ID);
     if (!id) return;
@@ -413,7 +449,7 @@
     debouncedRemoteSave();
   }
 
-  async function applyDelete(){
+  function applyDelete(){
     if (!ensureCanEditOrWarn()) return;
     const id = String(window.CURRENT_STORY_ID);
     if (!id) return;
@@ -452,35 +488,36 @@
     debouncedRemoteSave();
   }
 
-  async function createNewStory(){
-    // Visible even without being connected: we open the form.
-    // Saving will still require an allowed account (timeline_editors).
+  function createNewStory(){
+    if (!ensureCanEditOrWarn()) return;
     const id = String(nextStoryId());
+    OVERRIDES = loadOverridesLocal();
 
-    // Draft story (not persisted until "Enregistrer").
-    const draft = {
-      id,
-      title: "(sans titre)",
-      startDate: "",
-      endDate: "",
-      category: (cats[0] ? String(cats[0].id) : ""),
-      externalLink: "",
-      fullTextResolved: "",
-      textResolved: "",
-      tags: "",
-      media: []
-    };
-
-    openModal(draft);
-    openEditForStory(draft);
-
-    // The draft does not exist server-side yet, so deleting makes no sense.
-    if ($('deleteBtn')) $('deleteBtn').style.display = 'none';
-
-    if (!CAN_EDIT){
-      const st = $('status');
-      if (st) st.textContent = "Lecture seule: connecte-toi pour enregistrer.";
+    // Optional: seed overrides from a file committed in the repo (useful for first install / migration)
+    async function loadSeedOverrides(){
+      try{
+        const r = await fetch(SEED_OVERRIDES_URL, { cache: 'no-store' });
+        if (!r.ok) return {};
+        const j = await r.json();
+        // We only accept the overrides-object shape: { [id]: { ... } }
+        if (!j || typeof j !== 'object' || Array.isArray(j)) return {};
+        if ('stories' in j || 'categories' in j || 'meta' in j) return {};
+        return j;
+      } catch(_){ return {}; }
     }
+
+    const seed = await loadSeedOverrides();
+    // Merge: local overrides win over seed
+    OVERRIDES = Object.assign({}, seed, OVERRIDES);
+    saveOverridesLocal(OVERRIDES);
+    OVERRIDES[id] = { __new: true, title:"(sans titre)", startDate:"", endDate:"", category:(cats[0]?String(cats[0].id):""), fullTextResolved:"", textResolved:"", externalLink:"", tags:"", media:[] };
+    saveOverridesLocal(OVERRIDES);
+    rebuildStoriesFromBase();
+    render();
+    const s = getStoryById(id);
+    if (s){ openModal(s); openEditForStory(s); }
+
+    debouncedRemoteSave();
   }
 
   // ---- Export / import (edits) ----
@@ -528,6 +565,10 @@
     $("y2").value = years.length ? Math.max(...years) : 0;
     render();
   }
+
+  // ==============================
+  // 7) Supabase (auth + sync overrides)
+  // ==============================
 
   // ---- Supabase I/O ----
   async function sbInit(){
@@ -589,52 +630,14 @@
   }
 
   function applyEditPermissions(){
-    const isEdit = MODE === "edit";
-    const can = isEdit && CAN_EDIT;
-
-    // ➕ Nouvel évènement : visible en mode édition, même sans droits
-    const newBtn = $("newBtn");
-    if (newBtn){
-      newBtn.style.display = isEdit ? "" : "none";
-      newBtn.disabled = false;
+    // Do NOT hide reset/copy as requested.
+    const editIds = ["newBtn","editBtn","saveBtn","deleteBtn"];
+    for (const id of editIds){
+      const el = $(id);
+      if (!el) continue;
+      el.style.display = (MODE === "edit" && CAN_EDIT) ? "" : "none";
     }
-
-    // Bouton Modifier
-    const editBtn = $("editBtn");
-    if (editBtn){
-      editBtn.style.display = isEdit ? "" : "none";
-      editBtn.disabled = !can;
-      editBtn.title = can ? "" : "Lecture seule : non autorisé";
-    }
-
-    // Bouton Enregistrer
-    const saveBtn = $("saveBtn");
-    if (saveBtn){
-      saveBtn.style.display = isEdit ? "" : "none";
-      saveBtn.disabled = !can;
-      saveBtn.title = can ? "" : "Lecture seule : non autorisé";
-    }
-
-    // 🗑 Bouton Supprimer (toujours visible mais grisé si non autorisé)
-    const deleteBtn = $("deleteBtn");
-    if (deleteBtn){
-      deleteBtn.style.display = isEdit ? "" : "none";
-      deleteBtn.disabled = !can;
-      deleteBtn.title = can ? "" : "Lecture seule : non autorisé";
-    }
-
-    // Message d’état
-    const sbLine = $("sbEditModeLine") || $("sbStatus");
-    if (sbLine && isEdit){
-      if (!SESSION){
-        sbLine.textContent = "🔒 Lecture seule : non connecté (connecte-toi pour enregistrer).";
-      } else if (!CAN_EDIT){
-        sbLine.textContent = "🔒 Lecture seule : connecté mais non autorisé (timeline_editors).";
-      } else {
-        sbLine.textContent = "✅ Édition autorisée.";
-      }
-    }
-  }  
+  }
 
   async function sbLoadOverrides(){
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY){
@@ -754,6 +757,10 @@
     URL.revokeObjectURL(oUrl);
   }
 
+  // ==============================
+  // 8) Boot (charge les fichiers JSON + démarre l'app)
+  // ==============================
+
   // ---- Boot ----
   async function boot(){
     // load base
@@ -846,6 +853,10 @@
     applyEditPermissions();
   }
 
+  // ==============================
+  // 9) Wiring (events DOM)
+  // ==============================
+
   // ---- Wire UI ----
   document.addEventListener("DOMContentLoaded", () => {
     $("q").addEventListener("input", render);
@@ -855,16 +866,10 @@
     $("resetBtn").addEventListener("click", resetFilters);
     $("copyBtn").addEventListener("click", copyFiltered);
 
-    const exportBtn = $("exportEditsBtn");
-    if (exportBtn) exportBtn.addEventListener("click", exportEdits);
-    const importBtn = $("importEditsBtn");
+    $("exportEditsBtn").addEventListener("click", exportEdits);
     const importFile = $("importFile");
-    if (importBtn && importFile) {
-      importBtn.addEventListener("click", ()=> importFile.click());
-      importFile.addEventListener("change", ()=> {
-        if (importFile.files?.[0]) importEdits(importFile.files[0]);
-      });
-    }
+    $("importEditsBtn").addEventListener("click", ()=> importFile.click());
+    importFile.addEventListener("change", ()=> { if (importFile.files?.[0]) importEdits(importFile.files[0]); });
 
     $("backdrop").addEventListener("click", closeModal);
     $("closeBtn").addEventListener("click", closeModal);
@@ -874,16 +879,11 @@
       const s = getStoryById(window.CURRENT_STORY_ID);
       if (s) openEditForStory(s);
     });
-    $("saveBtn").addEventListener("click", (e)=>{ e.preventDefault(); applySave().catch((err)=>{ console.error(err); setStatus("Erreur: "+(err&&err.message?err.message:String(err)), true); }); });
+    $("saveBtn").addEventListener("click", (e)=>{ e.preventDefault(); applySave(); });
     $("cancelBtn").addEventListener("click", ()=> setEditMode(false));
-    $("deleteBtn").addEventListener("click", ()=> applyDelete().catch((err)=>{ console.error(err); setStatus("Erreur: "+(err&&err.message?err.message:String(err)), true); }));
-    const newBtn = $("newBtn");
-    if (newBtn) {
-      newBtn.addEventListener("click", ()=> createNewStory().catch((err)=>{
-        console.error(err);
-        setStatus("Erreur: "+(err&&err.message?err.message:String(err)), true);
-      }));
-    }
+    $("deleteBtn").addEventListener("click", ()=> applyDelete());
+    $("newBtn").addEventListener("click", ()=> createNewStory());
+
     // supabase UI (editor only)
     if ($("loginBtn")){
       $("loginBtn").addEventListener("click", async ()=>{

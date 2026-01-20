@@ -1,3 +1,10 @@
+<!--
+SC Timeline — editor.html (commenté)
+
+Objectif : repérer rapidement où sont les zones (header, filtres, timeline, modale).
+Aucune logique JS ici : tout est piloté par assets/app.js.
+-->
+
 <!doctype html>
 <html lang="fr">
 <head>
@@ -5,16 +12,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SC Timeline — Éditeur</title>
   <link rel="stylesheet" href="./assets/app.css" />
-  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <!-- App principale (OBLIGATOIRE) -->
-  <script src="./assets/app.js" defer></script>
 </head>
 <body data-mode="edit"
       data-timeline-id="1771887"
       data-supabase-url="https://vubkojqzlmamuuxdjhjv.supabase.co"
       data-supabase-anon-key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1YmtvanF6bG1hbXV1eGRqaGp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3NjI5NDQsImV4cCI6MjA4NDMzODk0NH0.IFeKS8MKQhdax0FDtcU1SSuaIDDTzy0zCwld7MsZfng">
+<!-- HEADER: titre + boutons mode/éditeur -->
 <header>
   <div class="headerWrap">
     <div>
@@ -28,6 +32,8 @@
   </div>
 </header>
 
+
+<!-- MAIN: filtres (gauche) + timeline (droite) -->
 <main>
   <section class="card">
     <div class="hd">Filtres</div>
@@ -66,27 +72,7 @@
         <button id="exportSnapshotBtn" type="button">Export snapshot (GitHub)</button>
         <button id="reloadSupabaseBtn" type="button">Recharger (Supabase)</button>
       </div>
-      <div class="sep"></div>
 
-      <div class="panelTitle">Édition</div>
-
-      <div class="row" style="margin-top:10px">
-        <button id="newBtn" type="button">➕ Nouvel évènement</button>
-      </div>
-
-      <div id="editActions" style="display:none">
-        <div class="row" style="margin-top:10px; gap:10px">
-          <button id="saveBtn" type="button">💾 Enregistrer</button>
-          <button id="cancelBtn" type="button">✖ Fermer</button>
-        </div>
-
-        <div class="row" style="margin-top:10px">
-          <button id="deleteBtn" type="button">🗑️ Supprimer</button>
-        </div>
-      </div>
-
-      <div id="uiStatus" class="muted" style="margin-top:10px;font-size:12px"></div>
-     
       <div id="stats" style="margin-top:12px"></div>
       <div id="sbStatus" class="muted" style="margin-top:10px;font-size:12px"></div>
       <div id="status" class="muted" style="margin-top:4px;font-size:12px"></div>
@@ -116,6 +102,8 @@
   </section>
 </main>
 
+
+<!-- MODAL: détail d'un événement + actions (modifier/supprimer) -->
 <div id="backdrop" aria-hidden="true"></div>
 <div id="modal" aria-hidden="true">
   <div class="mLeft">
@@ -174,6 +162,23 @@
       </div>
     </div>
   </div>
+
+  <div class="mRight">
+    <div class="card" style="border-radius:16px">
+      <div class="hd">Overrides (local)</div>
+      <div class="bd">
+        <div class="row">
+          <button id="exportEditsBtn" type="button">Exporter (JSON)</button>
+          <button id="importEditsBtn" type="button">Importer (JSON)</button>
+          <input id="importFile" type="file" accept="application/json" style="display:none" />
+        </div>
+        <div class="sep"></div>
+        <button id="newBtn" type="button" class="primary">+ Nouvel événement</button>
+      </div>
+    </div>
+  </div>
 </div>
+
+<script src="./assets/app.js"></script>
 </body>
 </html>
