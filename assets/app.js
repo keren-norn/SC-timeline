@@ -437,7 +437,6 @@ Repères :
     $("backdrop").style.display="block";
     
     // Accessibilité : définir le rôle dialog et aria-modal
-    const modal = $("modal");
     modal.style.display="grid";
     modal.setAttribute("aria-hidden","false");
     modal.setAttribute("role", "dialog");
@@ -453,7 +452,6 @@ Repères :
   function closeModal(){
     const modal = $("modal");
     $("backdrop").style.display="none";
-    const modal = $("modal");
     modal.style.display="none";
     modal.setAttribute("aria-hidden","true");
     
