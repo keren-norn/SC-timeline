@@ -428,7 +428,7 @@ Repères :
     applyEditPermissions();
     setEditMode(false);
     }
-  }
+  
 
   function closeModal(){
     const modal = $("modal");
