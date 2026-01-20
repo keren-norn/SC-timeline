@@ -1098,7 +1098,13 @@ Repères :
             setAuthUi();
             alert("Connecté ✅");
           } else {
-            const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: window.location.href } });
+            // IMPORTANT: ne pas inclure de hash (#edit) dans le redirect,
+            // sinon on obtient .../#edit#access_token=... et la session n'est pas stockée.
+            const redirectTo = `${window.location.origin}${window.location.pathname}`; // ex: https://keren-norn.github.io/SC-timeline/
+            const { error } = await sb.auth.signInWithOtp({
+              email,
+              options: { emailRedirectTo: redirectTo }
+            });
             if (error) throw error;
             alert("Email envoyé ✅ (lien magique).");
           }
