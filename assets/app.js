@@ -51,8 +51,81 @@ Repères :
 
   function stripHtml(s){ return (s||"").toString().replace(/<[^>]+>/g, ""); }
   function truncate(s,n){ s=stripHtml(s).trim(); return s.length<=n? s : s.slice(0,n-1)+"…"; }
-  function parseYear(dateStr){ const m=/^(\d{4})-\d{2}-\d{2}/.exec(dateStr||""); return m?parseInt(m[1],10):null; }
+  
+  /**
+   * parseYear — Extraction permissive de l'année d'une date.
+   * Accepte les formats : "YYYY", "YYYY-MM", "YYYY-MM-DD"
+   * Exemples : parseYear("2024") => 2024
+   *            parseYear("2024-03") => 2024
+   *            parseYear("2024-03-15") => 2024
+   * Retourne null si le format est invalide.
+   */
+  function parseYear(dateStr){
+    const str = (dateStr||"").trim();
+    if (!str) return null;
+    // Accepte YYYY seul, YYYY-MM, ou YYYY-MM-DD
+    const m = /^(\d{4})(?:-\d{2}(?:-\d{2})?)?/.exec(str);
+    return m ? parseInt(m[1], 10) : null;
+  }
+  
   function fmtDate(dateStr){ return (dateStr||"").split(" ")[0]; }
+
+  /**
+   * safeUrl — Validation d'URL pour éviter les schémas malveillants (javascript:, data:, file:, etc.)
+   * N'autorise que http: et https: pour les liens cliquables.
+   * Retourne l'URL normalisée si valide, sinon null.
+   * Usage : protège contre XSS via URL et open-redirect vers des schémas dangereux.
+   */
+  function safeUrl(u){
+    if (!u || typeof u !== "string") return null;
+    const trimmed = u.trim();
+    if (!trimmed) return null;
+    try {
+      const url = new URL(trimmed, window.location.href);
+      // N'autorise que http et https pour les liens
+      if (url.protocol === "http:" || url.protocol === "https:") {
+        return url.href;
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * safeImageUrl — Validation d'URL pour les images.
+   * Autorise http:, https: et data:image/* (pour les images encodées en base64).
+   * Retourne l'URL normalisée si valide, sinon null.
+   * Usage : protège contre le chargement d'images depuis des sources non fiables.
+   */
+  function safeImageUrl(u){
+    if (!u || typeof u !== "string") return null;
+    const trimmed = u.trim();
+    if (!trimmed) return null;
+    
+    // Validation des data URLs pour images base64
+    // Format attendu: data:image/[type];base64,[données]
+    // Supporte: png, jpeg, gif, svg+xml, x-icon, webp, etc.
+    if (trimmed.toLowerCase().startsWith("data:image/")) {
+      // Vérification stricte du format data URL pour éviter les URLs malformées
+      // Accepte les types MIME standards: lettres, chiffres, +, -, .
+      if (/^data:image\/[a-z0-9+.-]+;base64,/i.test(trimmed)) {
+        return trimmed;
+      }
+      return null;
+    }
+    
+    // Validation des URLs http/https
+    try {
+      const url = new URL(trimmed, window.location.href);
+      if (url.protocol === "http:" || url.protocol === "https:") {
+        return url.href;
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }
 
   function loadOverridesLocal(){
     try{ const raw = localStorage.getItem(LS_KEY); return raw? JSON.parse(raw): {}; }
@@ -185,6 +258,15 @@ Repères :
 
     const tl = $("timeline");
     tl.innerHTML = "";
+    
+    /**
+     * Utilisation d'un DocumentFragment pour construire la liste.
+     * Avantage : réduit les reflows/repaints du navigateur en n'attachant
+     * au DOM qu'une seule fois tous les éléments, au lieu de le faire
+     * à chaque itération de la boucle.
+     */
+    const fragment = document.createDocumentFragment();
+    
     for (const s of items){
       const c = catMap.get(String(s.category||""));
       const color = c && c.colour ? ("#" + c.colour) : "var(--accent)";
@@ -229,10 +311,16 @@ Repères :
       thumbWrap.className = "evtThumb";
       const thumbUrl = getThumbUrl(s);
       if (thumbUrl){
-        const img = document.createElement("img");
-        img.loading="lazy"; img.decoding="async"; img.referrerPolicy="no-referrer";
-        img.src = thumbUrl;
-        thumbWrap.appendChild(img);
+        // Validation de l'URL de l'image pour éviter les sources non fiables
+        const safeThumbUrl = safeImageUrl(thumbUrl);
+        if (safeThumbUrl) {
+          const img = document.createElement("img");
+          img.loading="lazy"; img.decoding="async"; img.referrerPolicy="no-referrer";
+          img.src = safeThumbUrl;
+          thumbWrap.appendChild(img);
+        } else {
+          thumbWrap.classList.add("empty");
+        }
       } else {
         thumbWrap.classList.add("empty");
       }
@@ -240,8 +328,11 @@ Repères :
       card.appendChild(main);
       card.appendChild(thumbWrap);
       wrap.appendChild(card);
-      tl.appendChild(wrap);
+      fragment.appendChild(wrap);
     }
+    
+    // Attacher tous les événements au DOM en une seule opération
+    tl.appendChild(fragment);
 
     // mode badges
     if ($("modePill")){
@@ -253,7 +344,19 @@ Repères :
   // 5) Modale (lecture + edition)
   // ==============================
 
+  /**
+   * _previousActive — Sauvegarde de l'élément actif avant l'ouverture du modal
+   * pour le restaurer lors de la fermeture (amélioration de l'accessibilité).
+   */
+  let _previousActive = null;
+
   function openModal(story){
+    /**
+     * Accessibilité : sauvegarder l'élément qui avait le focus avant d'ouvrir le modal,
+     * pour pouvoir le restaurer à la fermeture.
+     */
+    _previousActive = document.activeElement;
+    
     window.CURRENT_STORY_ID = String(story.id);
     setEditMode(false);
 
@@ -272,14 +375,30 @@ Repères :
     links.innerHTML = "";
     const ext = (story.externalLink||"").trim();
     if (ext){
-      const a=document.createElement("a"); a.href=ext; a.target="_blank"; a.rel="noopener"; a.textContent="Lien externe";
-      links.appendChild(a);
+      // Validation de l'URL externe pour éviter les schémas malveillants (javascript:, etc.)
+      const safeExt = safeUrl(ext);
+      if (safeExt) {
+        const a=document.createElement("a"); 
+        a.href=safeExt; 
+        a.target="_blank"; 
+        a.rel="noopener"; 
+        a.textContent="Lien externe";
+        links.appendChild(a);
+      }
     }
     if (Array.isArray(story.__manualLinks)){
       for (const l of story.__manualLinks){
         if (!l?.url) continue;
-        const a=document.createElement("a"); a.href=l.url; a.target="_blank"; a.rel="noopener"; a.textContent=l.title||l.url;
-        links.appendChild(a);
+        // Validation de chaque URL manuelle pour éviter les schémas malveillants
+        const safeLinkUrl = safeUrl(l.url);
+        if (safeLinkUrl) {
+          const a=document.createElement("a"); 
+          a.href=safeLinkUrl; 
+          a.target="_blank"; 
+          a.rel="noopener"; 
+          a.textContent=l.title||l.url;
+          links.appendChild(a);
+        }
       }
     }
 
@@ -291,26 +410,66 @@ Repères :
     if (Array.isArray(story.media) && story.media.length){
       for (const m of story.media){
         if (m?.type === "Image" && m?.src){
-          const box=document.createElement("div"); box.className="thumb";
-          const img=document.createElement("img"); img.src=m.src; img.loading="lazy";
-          const cap=document.createElement("div"); cap.className="cap"; cap.textContent=(m.caption||"").trim();
-          box.appendChild(img); box.appendChild(cap);
-          gal.appendChild(box);
+          // Validation de l'URL de l'image pour éviter les sources non fiables
+          const safeImgUrl = safeImageUrl(m.src);
+          if (safeImgUrl) {
+            const box=document.createElement("div"); box.className="thumb";
+            const img=document.createElement("img"); 
+            img.src=safeImgUrl; 
+            img.loading="lazy";
+            const cap=document.createElement("div"); cap.className="cap"; cap.textContent=(m.caption||"").trim();
+            box.appendChild(img); box.appendChild(cap);
+            gal.appendChild(box);
+          }
         }
       }
     }
 
+    const modal = $("modal");
     $("backdrop").style.display="block";
-    $("modal").style.display="grid";
-    $("modal").setAttribute("aria-hidden","false");
+    modal.style.display="grid";
+    modal.setAttribute("aria-hidden","false");
+    
+    /**
+     * Accessibilité : définir les attributs ARIA pour le modal
+     * - role="dialog" : indique qu'il s'agit d'une boîte de dialogue
+     * - aria-modal="true" : indique que le reste de la page est inerte
+     * - tabindex="-1" : permet de donner le focus au modal
+     */
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.setAttribute("tabindex", "-1");
+    
+    /**
+     * Accessibilité : donner le focus au modal après l'affichage
+     * pour que les utilisateurs de clavier puissent naviguer directement.
+     */
+    modal.focus();
 
     applyEditPermissions();
   }
 
   function closeModal(){
+    const modal = $("modal");
     $("backdrop").style.display="none";
-    $("modal").style.display="none";
-    $("modal").setAttribute("aria-hidden","true");
+    modal.style.display="none";
+    modal.setAttribute("aria-hidden","true");
+    
+    /**
+     * Accessibilité : restaurer le focus sur l'élément qui était actif
+     * avant l'ouverture du modal.
+     * Protection : try-catch au cas où l'élément a été supprimé du DOM
+     * ou n'est plus focusable. En cas d'erreur, le navigateur gérera
+     * le focus selon son comportement par défaut.
+     */
+    if (_previousActive && document.contains(_previousActive)) {
+      try {
+        _previousActive.focus();
+      } catch (e) {
+        // L'élément n'est plus focusable, laisser le navigateur gérer le focus
+      }
+    }
+    _previousActive = null;
   }
 
   // --- Edit mode (inline) ---
