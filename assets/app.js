@@ -877,8 +877,13 @@
     $("saveBtn").addEventListener("click", (e)=>{ e.preventDefault(); applySave().catch((err)=>{ console.error(err); setStatus("Erreur: "+(err&&err.message?err.message:String(err)), true); }); });
     $("cancelBtn").addEventListener("click", ()=> setEditMode(false));
     $("deleteBtn").addEventListener("click", ()=> applyDelete().catch((err)=>{ console.error(err); setStatus("Erreur: "+(err&&err.message?err.message:String(err)), true); }));
-    $("newBtn").addEventListener("click", ()=> createNewStory().catch((err)=>{ console.error(err); setStatus("Erreur: "+(err&&err.message?err.message:String(err)), true); }));
-
+    const newBtn = $("newBtn");
+    if (newBtn) {
+      newBtn.addEventListener("click", ()=> createNewStory().catch((err)=>{
+        console.error(err);
+        setStatus("Erreur: "+(err&&err.message?err.message:String(err)), true);
+      }));
+    }
     // supabase UI (editor only)
     if ($("loginBtn")){
       $("loginBtn").addEventListener("click", async ()=>{
