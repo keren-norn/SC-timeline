@@ -499,3 +499,25 @@ main{
 
 /* Éditeur inline (formulaire dans la modale) */
 #editWrap{ display:none; }
+
+/* ===== Fix scroll modale ===== */
+#modal{
+  /* on évite le clipping sur une zone scrollable */
+  clip-path:none !important;
+}
+
+#modal::after{
+  /* si .card::after (liseré) est hérité/présent, on le neutralise sur la modale */
+  content:none !important;
+}
+
+/* le scroll doit être dans le contenu */
+.mLeft{
+  max-height:94vh;              /* même valeur que #modal */
+  overflow:auto !important;
+}
+
+/* optionnel : empêcher la page derrière de scroller quand la modale est ouverte */
+body.modal-open{
+  overflow:hidden;
+}
