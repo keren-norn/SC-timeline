@@ -105,9 +105,11 @@ Repères :
     
     // Validation des data URLs pour images base64
     // Format attendu: data:image/[type];base64,[données]
+    // Supporte: png, jpeg, gif, svg+xml, x-icon, webp, etc.
     if (trimmed.toLowerCase().startsWith("data:image/")) {
-      // Vérification plus stricte du format data URL pour éviter les URLs malformées
-      if (/^data:image\/[a-z+]+;base64,/i.test(trimmed)) {
+      // Vérification stricte du format data URL pour éviter les URLs malformées
+      // Accepte les types MIME standards: lettres, chiffres, +, -, .
+      if (/^data:image\/[a-z0-9+.-]+;base64,/i.test(trimmed)) {
         return trimmed;
       }
       return null;
@@ -456,14 +458,15 @@ Repères :
     /**
      * Accessibilité : restaurer le focus sur l'élément qui était actif
      * avant l'ouverture du modal.
-     * Protection : try-catch au cas où l'élément a été supprimé du DOM.
+     * Protection : try-catch au cas où l'élément a été supprimé du DOM
+     * ou n'est plus focusable. En cas d'erreur, le navigateur gérera
+     * le focus selon son comportement par défaut.
      */
-    if (_previousActive && typeof _previousActive.focus === "function") {
+    if (_previousActive && document.contains(_previousActive)) {
       try {
         _previousActive.focus();
       } catch (e) {
-        // L'élément n'est plus focusable (supprimé du DOM ou masqué)
-        // Ne rien faire, le focus sera sur le body par défaut
+        // L'élément n'est plus focusable, laisser le navigateur gérer le focus
       }
     }
     _previousActive = null;
