@@ -59,7 +59,9 @@ Repères :
       if (normalized.protocol === "http:" || normalized.protocol === "https:") {
         return normalized.href;
       }
-    } catch {}
+    } catch {
+      // URL invalide ou malformée, retourner null
+    }
     return null;
   }
 
