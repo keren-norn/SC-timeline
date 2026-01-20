@@ -351,7 +351,8 @@ main{
   transform:translate(-50%,-50%);
 
   width:min(980px,94vw);
-  max-height:86vh;
+  max-height:94vh;
+  height:auto;
 
   display:none;
   /* 1 seule colonne = l'article prend tout le bloc */
@@ -370,7 +371,11 @@ main{
 .mLeft{
   padding:14px;
   border-right:none; /* pas de trait vertical */
+    /* Scroll interne */
   overflow:auto;
+  max-height:94vh; /* fallback si jamais */
+  overscroll-behavior:contain; /* évite de scroller la page derrière */
+  -webkit-overflow-scrolling:touch; /* inertie iOS */
 }
 
 /* Zone droite (ancienne carte Overrides) désactivée
