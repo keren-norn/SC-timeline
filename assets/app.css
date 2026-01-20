@@ -73,7 +73,3 @@ button[disabled],
   pointer-events: none;
   filter: grayscale(0.7);
 }
-button:disabled:hover {
-  box-shadow: none !important;
-  transform: none !important;
-}
