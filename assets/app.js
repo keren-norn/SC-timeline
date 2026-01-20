@@ -102,23 +102,25 @@ Repères :
     if (!u || typeof u !== "string") return null;
     const trimmed = u.trim();
     if (!trimmed) return null;
-    try {
-      const url = new URL(trimmed, window.location.href);
-      // Autorise http, https
-      if (url.protocol === "http:" || url.protocol === "https:") {
-        return url.href;
-      }
-      // Autorise data:image/* pour les images base64
-      if (url.protocol === "data:" && trimmed.toLowerCase().startsWith("data:image/")) {
+    
+    // Validation des data URLs pour images base64
+    // Format attendu: data:image/[type];base64,[données]
+    if (trimmed.toLowerCase().startsWith("data:image/")) {
+      // Vérification plus stricte du format data URL pour éviter les URLs malformées
+      if (/^data:image\/[a-z+]+;base64,/i.test(trimmed)) {
         return trimmed;
       }
       return null;
-    } catch {
-      // Pour les data: URLs, new URL peut échouer dans certains navigateurs
-      // Vérification manuelle pour data:image/*
-      if (trimmed.toLowerCase().startsWith("data:image/")) {
-        return trimmed;
+    }
+    
+    // Validation des URLs http/https
+    try {
+      const url = new URL(trimmed, window.location.href);
+      if (url.protocol === "http:" || url.protocol === "https:") {
+        return url.href;
       }
+      return null;
+    } catch {
       return null;
     }
   }
@@ -454,9 +456,15 @@ Repères :
     /**
      * Accessibilité : restaurer le focus sur l'élément qui était actif
      * avant l'ouverture du modal.
+     * Protection : try-catch au cas où l'élément a été supprimé du DOM.
      */
     if (_previousActive && typeof _previousActive.focus === "function") {
-      _previousActive.focus();
+      try {
+        _previousActive.focus();
+      } catch (e) {
+        // L'élément n'est plus focusable (supprimé du DOM ou masqué)
+        // Ne rien faire, le focus sera sur le body par défaut
+      }
     }
     _previousActive = null;
   }
