@@ -50,7 +50,12 @@ Repères :
 
   function $(id){ return document.getElementById(id); }
   function isObj(x){ return x && typeof x === "object" && !Array.isArray(x); }
-
+  
+  function setStatus(msg){
+  const el = $("status");
+  if (!el) return;
+  el.textContent = msg || "";
+  }
 
   function stripHtml(s){ return (s||"").toString().replace(/<[^>]+>/g, ""); }
   function truncate(s,n){ s=stripHtml(s).trim(); return s.length<=n? s : s.slice(0,n-1)+"…"; }
