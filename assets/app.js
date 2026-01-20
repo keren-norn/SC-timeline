@@ -49,35 +49,6 @@ Repères :
   function $(id){ return document.getElementById(id); }
   function isObj(x){ return x && typeof x === "object" && !Array.isArray(x); }
 
-  // Validation d'URL : empêche javascript:, file:, etc. (prévention XSS)
-  // Accepte uniquement http: et https:
-  // Retourne l'URL normalisée (string) ou null si invalide
-  function safeUrl(u){
-    if (!u || typeof u !== "string") return null;
-    try {
-      const normalized = new URL(u, location.href);
-      if (normalized.protocol === "http:" || normalized.protocol === "https:") {
-        return normalized.href;
-      }
-    } catch {
-      // URL invalide ou malformée, retourner null
-    }
-    return null;
-  }
-
-  // Validation d'URL pour images : accepte http:, https: et data:image/...
-  // Retourne l'URL ou null si invalide
-  function safeImageUrl(u){
-    if (!u || typeof u !== "string") return null;
-    // D'abord essayer safeUrl pour http/https
-    const normalized = safeUrl(u);
-    if (normalized) return normalized;
-    // Accepter data:image/... pour les images base64 (insensible à la casse)
-    if (u.toLowerCase().startsWith("data:image/")) {
-      return u;
-    }
-    return null;
-  }
 
   function stripHtml(s){ return (s||"").toString().replace(/<[^>]+>/g, ""); }
   function truncate(s,n){ s=stripHtml(s).trim(); return s.length<=n? s : s.slice(0,n-1)+"…"; }
