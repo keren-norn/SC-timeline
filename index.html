@@ -1,9 +1,7 @@
 <!--
-SC Timeline — index.html (page unique + hash routing)
-
-Vues :
-- #timeline  => lecture publique
-- #edit      => édition (si autorisé Supabase)
+SC Timeline — index.html (page unique + hash routing “propre”)
+- #timeline => lecture
+- #edit     => édition (si autorisé Supabase)
 -->
 
 <!doctype html>
@@ -15,57 +13,52 @@ Vues :
   <link rel="stylesheet" href="./assets/app.css" />
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <!-- App principale -->
   <script src="./assets/app.js" defer></script>
 
-  <!-- Petit routeur hash (inline, simple) -->
+  <!-- Routeur hash (propre, sans duplication d'IDs) -->
   <script>
     window.addEventListener("DOMContentLoaded", () => {
-      function route(){
+      function applyRoute(){
         const hash = (location.hash || "#timeline").toLowerCase();
-        const isEdit = hash === "#edit" || hash.startsWith("#edit");
+        const isEdit = (hash === "#edit" || hash.startsWith("#edit"));
 
-        // Change le mode attendu par app.js
+        // app.js lit data-mode au chargement.
+        // Ici on met à jour data-mode + UI. Si tu constates que app.js
+        // ne bascule pas correctement, on pourra forcer reload.
         document.body.dataset.mode = isEdit ? "edit" : "view";
 
-        // Toggle des vues
-        const vTimeline = document.getElementById("view-timeline");
-        const vEditor   = document.getElementById("view-editor");
-        if (vTimeline && vEditor){
-          vTimeline.hidden = isEdit;
-          vEditor.hidden   = !isEdit;
-        }
-
-        // Petits détails UI
+        // UI header
         const modePill = document.getElementById("modePill");
         if (modePill) modePill.textContent = "Mode: " + (isEdit ? "édition" : "lecture");
 
-        const editLink = document.getElementById("navEdit");
-        const viewLink = document.getElementById("navView");
-        if (editLink) editLink.style.display = isEdit ? "none" : "inline-flex";
-        if (viewLink) viewLink.style.display = isEdit ? "inline-flex" : "none";
+        const navEdit = document.getElementById("navEdit");
+        const navView = document.getElementById("navView");
+        if (navEdit) navEdit.style.display = isEdit ? "none" : "inline-flex";
+        if (navView) navView.style.display = isEdit ? "inline-flex" : "none";
+
+        // Bloc édition dans la colonne filtres
+        const editPanel = document.getElementById("editPanel");
+        if (editPanel) editPanel.style.display = isEdit ? "block" : "none";
       }
 
       window.addEventListener("hashchange", () => {
-        route();
-        // Important: app.js lit data-mode au chargement.
-        // Si ton app.js ne réagit pas au changement de mode, il faudra recharger la page.
-        // Version simple: on force un reload lors du switch.
-        // Si tu préfères éviter ça, on adaptera app.js.
-        location.reload();
+        // Si besoin (si app.js ne supporte pas le changement à chaud),
+        // décommente la ligne suivante pour recharger au switch:
+        // location.reload();
+        applyRoute();
       });
 
-      route();
+      applyRoute();
     });
   </script>
 </head>
 
-<body
-  data-mode="view"
-  data-timeline-id="1771887"
-  data-supabase-url="https://vubkojqzlmamuuxdjhjv.supabase.co"
-  data-supabase-anon-key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1YmtvanF6bG1hbXV1eGRqaGp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3NjI5NDQsImV4cCI6MjA4NDMzODk0NH0.IFeKS8MKQhdax0FDtcU1SSuaIDDTzy0zCwld7MsZfng"
->
+<body data-mode="view"
+      data-timeline-id="1771887"
+      data-supabase-url="https://vubkojqzlmamuuxdjhjv.supabase.co"
+      data-supabase-anon-key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1YmtvanF6bG1hbXV1eGRqaGp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3NjI5NDQsImV4cCI6MjA4NDMzODk0NH0.IFeKS8MKQhdax0FDtcU1SSuaIDDTzy0zCwld7MsZfng">
 
 <header>
   <div class="headerWrap">
@@ -75,18 +68,13 @@ Vues :
     </div>
     <div class="hRight">
       <div class="pill" id="modePill">Mode: lecture</div>
-
-      <!-- Navigation hash -->
       <a class="pill" id="navEdit" href="#edit">Ouvrir l’éditeur</a>
       <a class="pill" id="navView" href="#timeline" style="display:none">Retour lecture</a>
     </div>
   </div>
 </header>
 
-<!-- ===========================
-     VUE LECTURE (#timeline)
-     =========================== -->
-<main id="view-timeline">
+<main>
   <section class="card">
     <div class="hd">Filtres</div>
     <div class="bd">
@@ -120,122 +108,61 @@ Vues :
 
       <div class="sep"></div>
 
-      <div class="row" style="display:none">
+      <div class="row" style="margin-top:10px; display:none">
         <button id="exportSnapshotBtn" type="button">Export snapshot (GitHub)</button>
         <button id="reloadSupabaseBtn" type="button">Recharger (Supabase)</button>
       </div>
+
+      <!-- ====== BLOC ÉDITION (visible seulement en #edit) ====== -->
+      <div id="editPanel" style="display:none">
+        <div class="sep"></div>
+
+        <div class="panelTitle">Édition</div>
+
+        <div class="row" style="margin-top:10px">
+          <button id="newBtn" type="button">➕ Nouvel évènement</button>
+        </div>
+
+        <div id="editActions" style="display:none">
+          <div class="row" style="margin-top:10px; gap:10px">
+            <button id="saveBtn" type="button">💾 Enregistrer</button>
+            <button id="cancelBtn" type="button">✖ Fermer</button>
+          </div>
+
+          <div class="row" style="margin-top:10px">
+            <button id="deleteBtn" type="button">🗑️ Supprimer</button>
+          </div>
+        </div>
+
+        <div id="uiStatus" class="muted" style="margin-top:10px;font-size:12px"></div>
+
+        <div class="sep"></div>
+
+        <div id="authBox" style="margin-top:14px">
+          <div class="muted" style="font-size:12px;margin-bottom:8px">Connexion (Email OTP / Magic link)</div>
+          <input id="authEmail" type="email" placeholder="email" />
+          <div style="height:8px"></div>
+          <input id="authCode" type="text" placeholder="code (si OTP)" />
+          <div style="height:8px"></div>
+          <div class="row">
+            <button id="loginBtn" type="button" class="primary">Se connecter</button>
+            <button id="logoutBtn" type="button" disabled>Se déconnecter</button>
+          </div>
+          <div id="authStatus" class="muted" style="margin-top:8px;font-size:12px">Mode: lecture</div>
+          <div class="muted" style="margin-top:6px;font-size:12px">
+            ⚠️ Pour éditer, ton email doit être dans <span class="kbd">timeline_editors</span> (Supabase).
+          </div>
+        </div>
+      </div>
+      <!-- ====== /BLOC ÉDITION ====== -->
 
       <div id="stats"></div>
       <div id="sbStatus" class="muted" style="margin-top:10px;font-size:12px"></div>
       <div id="status" class="muted" style="margin-top:4px;font-size:12px"></div>
       <div id="sbEditModeLine" class="muted" style="margin-top:4px;font-size:12px;display:none"></div>
 
-      <div id="authBox" style="display:none">
-        <div class="sep"></div>
-        <div class="muted" style="font-size:12px;margin-bottom:6px">Connexion (Email OTP / Magic link)</div>
-        <input id="authEmail" placeholder="email" />
-        <input id="authCode" placeholder="code (si OTP)" />
-        <div class="row" style="margin-top:8px">
-          <button id="loginBtn" type="button">Se connecter</button>
-          <button id="logoutBtn" type="button">Se déconnecter</button>
-        </div>
-        <div id="authStatus" class="muted" style="margin-top:6px;font-size:12px"></div>
-      </div>
-
       <div class="muted" style="margin-top:10px;font-size:12px">
-        Lecture publique. Passe en mode édition via <a href="#edit">#edit</a>.
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div id="timeline"></div>
-  </section>
-</main>
-
-<!-- ===========================
-     VUE ÉDITION (#edit)
-     =========================== -->
-<main id="view-editor" hidden>
-  <section class="card">
-    <div class="hd">Filtres</div>
-    <div class="bd">
-      <label class="muted" for="q">Recherche</label>
-      <input id="q" placeholder="titre, texte, tags…" />
-
-      <div class="sep"></div>
-
-      <label class="muted" for="cat">Catégorie</label>
-      <select id="cat"></select>
-
-      <div class="sep"></div>
-
-      <div class="row">
-        <div>
-          <label class="muted" for="y1">Année min</label>
-          <input id="y1" type="number" />
-        </div>
-        <div>
-          <label class="muted" for="y2">Année max</label>
-          <input id="y2" type="number" />
-        </div>
-      </div>
-
-      <div class="sep"></div>
-
-      <div class="row">
-        <button id="resetBtn" type="button">Réinitialiser</button>
-        <button id="copyBtn" type="button">Copier JSON filtré</button>
-      </div>
-
-      <div class="sep"></div>
-
-      <div class="row" style="margin-top:10px">
-        <button id="exportSnapshotBtn" type="button">Export snapshot (GitHub)</button>
-        <button id="reloadSupabaseBtn" type="button">Recharger (Supabase)</button>
-      </div>
-
-      <div class="sep"></div>
-
-      <div class="panelTitle">Édition</div>
-
-      <div class="row" style="margin-top:10px">
-        <button id="newBtn" type="button">➕ Nouvel évènement</button>
-      </div>
-
-      <div id="editActions" style="display:none">
-        <div class="row" style="margin-top:10px; gap:10px">
-          <button id="saveBtn" type="button">💾 Enregistrer</button>
-          <button id="cancelBtn" type="button">✖ Fermer</button>
-        </div>
-
-        <div class="row" style="margin-top:10px">
-          <button id="deleteBtn" type="button">🗑️ Supprimer</button>
-        </div>
-      </div>
-
-      <div id="uiStatus" class="muted" style="margin-top:10px;font-size:12px"></div>
-
-      <div id="stats" style="margin-top:12px"></div>
-      <div id="sbStatus" class="muted" style="margin-top:10px;font-size:12px"></div>
-      <div id="status" class="muted" style="margin-top:4px;font-size:12px"></div>
-      <div id="sbEditModeLine" class="muted" style="margin-top:4px;font-size:12px"></div>
-
-      <div id="authBox" style="margin-top:14px">
-        <div class="sep"></div>
-        <div class="muted" style="font-size:12px;margin-bottom:8px">Connexion (Email OTP / Magic link)</div>
-        <input id="authEmail" type="email" placeholder="email" />
-        <div style="height:8px"></div>
-        <input id="authCode" type="text" placeholder="code (si OTP)" />
-        <div style="height:8px"></div>
-        <div class="row">
-          <button id="loginBtn" type="button" class="primary">Se connecter</button>
-          <button id="logoutBtn" type="button" disabled>Se déconnecter</button>
-        </div>
-        <div id="authStatus" class="muted" style="margin-top:8px;font-size:12px">Mode: lecture</div>
-        <div class="muted" style="margin-top:6px;font-size:12px">
-          ⚠️ Pour éditer, ton email doit être dans <span class="kbd">timeline_editors</span> (Supabase).
-        </div>
+        Astuce : <a href="#timeline">#timeline</a> (lecture) / <a href="#edit">#edit</a> (édition).
       </div>
     </div>
   </section>
@@ -256,10 +183,11 @@ Vues :
         <div class="mCat mcat"><span class="dot" id="mdot"></span><span id="mcat"></span></div>
       </div>
       <div class="mActions">
-        <button id="editBtn" type="button">Modifier</button>
+        <!-- En lecture, app.js peut les cacher -->
+        <button id="editBtn" type="button" style="display:none">Modifier</button>
         <button id="saveBtn" type="button" style="display:none">Enregistrer</button>
         <button id="cancelBtn" type="button" style="display:none">Annuler</button>
-        <button id="deleteBtn" type="button">Supprimer</button>
+        <button id="deleteBtn" type="button" style="display:none">Supprimer</button>
         <button id="closeBtn" type="button">Fermer</button>
       </div>
     </div>
