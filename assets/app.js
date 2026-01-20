@@ -426,6 +426,7 @@ Repères :
     modal.focus();
 
     applyEditPermissions();
+    if (getMode() !== "edit") setEditMode(false);
   }
 
   function closeModal(){
@@ -769,7 +770,13 @@ Repères :
   function applyEditPermissions(){
     const isEdit = getMode() === "edit";
     const can = isEdit && CAN_EDIT;
-
+    // En lecture: ne jamais montrer les boutons d'édition dans la modale
+    if (!isEdit){
+      if ($("editBtn")) $("editBtn").style.display = "none";
+      if ($("saveBtn")) $("saveBtn").style.display = "none";
+      if ($("cancelBtn")) $("cancelBtn").style.display = "none";
+      if ($("deleteBtn")) $("deleteBtn").style.display = "none";
+    }
     // ➕ Nouvel évènement : visible en mode édition, même sans droits
     const newBtn = $("newBtn");
     if (newBtn){
