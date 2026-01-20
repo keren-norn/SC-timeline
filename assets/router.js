@@ -33,7 +33,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-   ();
+    applyRoute();
     window.addEventListener("hashchange", applyRoute);
   });
 })();
