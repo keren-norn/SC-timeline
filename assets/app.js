@@ -49,9 +49,48 @@ Repères :
   function $(id){ return document.getElementById(id); }
   function isObj(x){ return x && typeof x === "object" && !Array.isArray(x); }
 
+  // Validation d'URL : empêche javascript:, file:, etc. (prévention XSS)
+  // Accepte uniquement http: et https:
+  // Retourne l'URL normalisée (string) ou null si invalide
+  function safeUrl(u){
+    if (!u || typeof u !== "string") return null;
+    try {
+      const normalized = new URL(u, location.href);
+      if (normalized.protocol === "http:" || normalized.protocol === "https:") {
+        return normalized.href;
+      }
+    } catch {}
+    return null;
+  }
+
+  // Validation d'URL pour images : accepte http:, https: et data:image/...
+  // Retourne l'URL ou null si invalide
+  function safeImageUrl(u){
+    if (!u || typeof u !== "string") return null;
+    try {
+      const normalized = new URL(u, location.href);
+      if (normalized.protocol === "http:" || normalized.protocol === "https:") {
+        return normalized.href;
+      }
+      // Accepter data:image/... pour les images base64
+      if (normalized.protocol === "data:" && u.toLowerCase().startsWith("data:image/")) {
+        return u;
+      }
+    } catch {}
+    return null;
+  }
+
   function stripHtml(s){ return (s||"").toString().replace(/<[^>]+>/g, ""); }
   function truncate(s,n){ s=stripHtml(s).trim(); return s.length<=n? s : s.slice(0,n-1)+"…"; }
-  function parseYear(dateStr){ const m=/^(\d{4})-\d{2}-\d{2}/.exec(dateStr||""); return m?parseInt(m[1],10):null; }
+  
+  // parseYear : accepte "YYYY", "YYYY-MM", "YYYY-MM-DD"
+  // Retourne l'année (nombre) ou null
+  // Exemples: "2024" → 2024, "2024-03" → 2024, "2024-03-15" → 2024
+  function parseYear(dateStr){
+    const m = /^(\d{4})(?:-\d{2}(?:-\d{2})?)?/.exec(dateStr||"");
+    return m ? parseInt(m[1], 10) : null;
+  }
+  
   function fmtDate(dateStr){ return (dateStr||"").split(" ")[0]; }
 
   function loadOverridesLocal(){
@@ -185,6 +224,11 @@ Repères :
 
     const tl = $("timeline");
     tl.innerHTML = "";
+    
+    // Utilise DocumentFragment pour construire la liste en mémoire
+    // puis l'attacher au DOM en une seule opération (réduit les reflows)
+    const fragment = document.createDocumentFragment();
+    
     for (const s of items){
       const c = catMap.get(String(s.category||""));
       const color = c && c.colour ? ("#" + c.colour) : "var(--accent)";
@@ -229,10 +273,15 @@ Repères :
       thumbWrap.className = "evtThumb";
       const thumbUrl = getThumbUrl(s);
       if (thumbUrl){
-        const img = document.createElement("img");
-        img.loading="lazy"; img.decoding="async"; img.referrerPolicy="no-referrer";
-        img.src = thumbUrl;
-        thumbWrap.appendChild(img);
+        const safeThumb = safeImageUrl(thumbUrl);
+        if (safeThumb){
+          const img = document.createElement("img");
+          img.loading="lazy"; img.decoding="async"; img.referrerPolicy="no-referrer";
+          img.src = safeThumb;
+          thumbWrap.appendChild(img);
+        } else {
+          thumbWrap.classList.add("empty");
+        }
       } else {
         thumbWrap.classList.add("empty");
       }
@@ -240,8 +289,11 @@ Repères :
       card.appendChild(main);
       card.appendChild(thumbWrap);
       wrap.appendChild(card);
-      tl.appendChild(wrap);
+      fragment.appendChild(wrap);
     }
+    
+    // Attacher le fragment au DOM en une seule opération
+    tl.appendChild(fragment);
 
     // mode badges
     if ($("modePill")){
@@ -253,7 +305,13 @@ Repères :
   // 5) Modale (lecture + edition)
   // ==============================
 
+  // Variable pour sauvegarder l'élément qui avait le focus avant l'ouverture de la modale
+  let _previousActive = null;
+
   function openModal(story){
+    // Sauvegarder l'élément actif pour restaurer le focus à la fermeture
+    _previousActive = document.activeElement;
+    
     window.CURRENT_STORY_ID = String(story.id);
     setEditMode(false);
 
@@ -272,14 +330,28 @@ Repères :
     links.innerHTML = "";
     const ext = (story.externalLink||"").trim();
     if (ext){
-      const a=document.createElement("a"); a.href=ext; a.target="_blank"; a.rel="noopener"; a.textContent="Lien externe";
-      links.appendChild(a);
+      const safeExt = safeUrl(ext);
+      if (safeExt){
+        const a=document.createElement("a"); 
+        a.href=safeExt; 
+        a.target="_blank"; 
+        a.rel="noopener"; 
+        a.textContent="Lien externe";
+        links.appendChild(a);
+      }
     }
     if (Array.isArray(story.__manualLinks)){
       for (const l of story.__manualLinks){
         if (!l?.url) continue;
-        const a=document.createElement("a"); a.href=l.url; a.target="_blank"; a.rel="noopener"; a.textContent=l.title||l.url;
-        links.appendChild(a);
+        const safeLink = safeUrl(l.url);
+        if (safeLink){
+          const a=document.createElement("a"); 
+          a.href=safeLink; 
+          a.target="_blank"; 
+          a.rel="noopener"; 
+          a.textContent=l.title||l.url;
+          links.appendChild(a);
+        }
       }
     }
 
@@ -291,26 +363,52 @@ Repères :
     if (Array.isArray(story.media) && story.media.length){
       for (const m of story.media){
         if (m?.type === "Image" && m?.src){
-          const box=document.createElement("div"); box.className="thumb";
-          const img=document.createElement("img"); img.src=m.src; img.loading="lazy";
-          const cap=document.createElement("div"); cap.className="cap"; cap.textContent=(m.caption||"").trim();
-          box.appendChild(img); box.appendChild(cap);
-          gal.appendChild(box);
+          const safeSrc = safeImageUrl(m.src);
+          if (safeSrc){
+            const box=document.createElement("div"); box.className="thumb";
+            const img=document.createElement("img"); 
+            img.src=safeSrc; 
+            img.loading="lazy";
+            const cap=document.createElement("div"); cap.className="cap"; cap.textContent=(m.caption||"").trim();
+            box.appendChild(img); box.appendChild(cap);
+            gal.appendChild(box);
+          }
         }
       }
     }
 
     $("backdrop").style.display="block";
-    $("modal").style.display="grid";
-    $("modal").setAttribute("aria-hidden","false");
+    
+    // Accessibilité : définir le rôle dialog et aria-modal
+    const modal = $("modal");
+    modal.style.display="grid";
+    modal.setAttribute("aria-hidden","false");
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.setAttribute("tabindex", "-1");
+    
+    // Déplacer le focus dans la modale pour améliorer l'accessibilité
+    modal.focus();
 
     applyEditPermissions();
   }
 
   function closeModal(){
     $("backdrop").style.display="none";
-    $("modal").style.display="none";
-    $("modal").setAttribute("aria-hidden","true");
+    const modal = $("modal");
+    modal.style.display="none";
+    modal.setAttribute("aria-hidden","true");
+    
+    // Retirer les attributs d'accessibilité ajoutés
+    modal.removeAttribute("role");
+    modal.removeAttribute("aria-modal");
+    modal.removeAttribute("tabindex");
+    
+    // Restaurer le focus sur l'élément qui était actif avant l'ouverture
+    if (_previousActive && document.body.contains(_previousActive)){
+      _previousActive.focus();
+    }
+    _previousActive = null;
   }
 
   // --- Edit mode (inline) ---
