@@ -1,5 +1,19 @@
+/*
+SC Timeline — app.js (commenté)
+Objectif : rendre le fichier plus lisible SANS changer le comportement.
+
+Repères :
+- Charge le JSON de base (data/timeline_base.json)
+- Applique les overrides (localStorage + Supabase)
+- Affiche la liste + filtres + modale
+- En mode editor.html : édition si autorisé (table timeline_editors)
+*/
+
 /* global supabase */
 (() => {
+  // ==============================
+  // 1) Configuration (mode, Supabase, fichiers)
+  // ==============================
   const MODE = document.body.dataset.mode || "view"; // 'view' | 'edit'
   const SUPABASE_URL = document.body.dataset.supabaseUrl || "";
   const SUPABASE_ANON_KEY = document.body.dataset.supabaseAnonKey || "";
@@ -10,6 +24,10 @@
   const EDITORS_TABLE = "timeline_editors"; // email allowlist
   const SEED_OVERRIDES_URL = "./data/timeline_overrides.json";
   const LS_KEY = `tikitoki_overrides_${TIMELINE_ID}_v3`;
+
+  // ==============================
+  // 2) Etat global (session, data, caches)
+  // ==============================
 
   let sb = null;
   let CAN_EDIT = false;
@@ -23,6 +41,10 @@
   let LAST_REMOTE_UPDATED_AT = null;
   let LAST_REMOTE_UPDATED_BY = null;
   const catMap = new Map();
+
+  // ==============================
+  // 3) Helpers (DOM, parsing, formatage)
+  // ==============================
 
   function $(id){ return document.getElementById(id); }
   function isObj(x){ return x && typeof x === "object" && !Array.isArray(x); }
@@ -141,6 +163,10 @@
       });
   }
 
+  // ==============================
+  // 4) Rendu UI (liste + filtres)
+  // ==============================
+
   function render(){
     $("pageTitle").textContent = DATA?.meta?.title || "Timeline";
     $("pageMeta").textContent = ((DATA?.meta?.authorName||"") + " • " + (DATA?.meta?.startDate||"").split(" ")[0] + " → " + (DATA?.meta?.endDate||"").split(" ")[0]).trim();
@@ -223,6 +249,10 @@
     }
   }
 
+  // ==============================
+  // 5) Modale (lecture + edition)
+  // ==============================
+
   function openModal(story){
     window.CURRENT_STORY_ID = String(story.id);
     setEditMode(false);
@@ -284,6 +314,11 @@
   }
 
   // --- Edit mode (inline) ---
+
+  // ==============================
+  // 6) Edition (formulaire + sauvegarde locale/Supabase)
+  // ==============================
+
   function setEditMode(on){
     const show = !!on;
     $("editWrap").style.display = show ? "block" : "none";
@@ -530,6 +565,11 @@
   }
 
   // ---- Supabase I/O ----
+
+  // ==============================
+  // 7) Supabase (auth + sync overrides)
+  // ==============================
+
   async function sbInit(){
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
     sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -755,6 +795,11 @@
   }
 
   // ---- Boot ----
+
+  // ==============================
+  // 8) Boot (charge les fichiers JSON + demarre l'app)
+  // ==============================
+
   async function boot(){
     // load base
     const r = await fetch(BASE_URL);
@@ -847,7 +892,12 @@
   }
 
   // ---- Wire UI ----
-  document.addEventListener("DOMContentLoaded", () => {
+
+  // ==============================
+  // 9) Wiring (events DOM)
+  // ==============================
+
+  document.addEventListener(\"DOMContentLoaded\", () => {
     $("q").addEventListener("input", render);
     $("cat").addEventListener("change", render);
     $("y1").addEventListener("input", render);

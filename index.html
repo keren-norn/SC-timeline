@@ -1,3 +1,14 @@
+<!--
+SC Timeline — index.html (commenté)
+Objectif : rendre le fichier plus lisible SANS changer le comportement.
+
+Repères :
+- data-mode="view" (index.html) : lecture publique
+- data-mode="edit" (editor.html) : edition (si autorisé)
+- Les données viennent de ./data/timeline_base.json
+- Les modifications (overrides) peuvent venir du localStorage et/ou Supabase
+-->
+
 <!doctype html>
 <html lang="fr">
 <head>
@@ -15,6 +26,8 @@
       data-timeline-id="1771887"
       data-supabase-url="https://vubkojqzlmamuuxdjhjv.supabase.co"
       data-supabase-anon-key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1YmtvanF6bG1hbXV1eGRqaGp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3NjI5NDQsImV4cCI6MjA4NDMzODk0NH0.IFeKS8MKQhdax0FDtcU1SSuaIDDTzy0zCwld7MsZfng">
+
+<!-- Header (titre + mode + lien éditeur) -->
 <header>
   <div class="headerWrap">
     <div>
@@ -28,6 +41,8 @@
   </div>
 </header>
 
+
+<!-- Contenu principal : filtres + timeline -->
 <main>
   <section class="card">
     <div class="hd">Filtres</div>
@@ -97,6 +112,8 @@
   </section>
 </main>
 
+
+<!-- Modale : fond (backdrop) + fenêtre (modal) -->
 <div id="backdrop" aria-hidden="true"></div>
 <div id="modal" aria-hidden="true">
   <div class="mLeft">
