@@ -19,40 +19,48 @@ SC Timeline — index.html (page unique + hash routing “propre”)
 
   <!-- Routeur hash (propre, sans duplication d'IDs) -->
   <script>
-    window.addEventListener("DOMContentLoaded", () => {
-      function applyRoute(){
-        const hash = (location.hash || "#timeline").toLowerCase();
-        const isEdit = (hash === "#edit" || hash.startsWith("#edit"));
+  window.addEventListener("DOMContentLoaded", () => {
+    function isEditHash(h){
+      h = (h || "#timeline").toLowerCase();
+      return (h === "#edit" || h.startsWith("#edit"));
+    }
 
-        // app.js lit data-mode au chargement.
-        // Ici on met à jour data-mode + UI. Si tu constates que app.js
-        // ne bascule pas correctement, on pourra forcer reload.
-        document.body.dataset.mode = isEdit ? "edit" : "view";
+    function applyRoute(){
+      const isEdit = isEditHash(location.hash);
 
-        // UI header
-        const modePill = document.getElementById("modePill");
-        if (modePill) modePill.textContent = "Mode: " + (isEdit ? "édition" : "lecture");
+      document.body.dataset.mode = isEdit ? "edit" : "view";
 
-        const navEdit = document.getElementById("navEdit");
-        const navView = document.getElementById("navView");
-        if (navEdit) navEdit.style.display = isEdit ? "none" : "inline-flex";
-        if (navView) navView.style.display = isEdit ? "inline-flex" : "none";
+      const modePill = document.getElementById("modePill");
+      if (modePill) modePill.textContent = "Mode: " + (isEdit ? "édition" : "lecture");
 
-        // Bloc édition dans la colonne filtres
-        const editPanel = document.getElementById("editPanel");
-        if (editPanel) editPanel.style.display = isEdit ? "block" : "none";
+      const navEdit = document.getElementById("navEdit");
+      const navView = document.getElementById("navView");
+      if (navEdit) navEdit.style.display = isEdit ? "none" : "inline-flex";
+      if (navView) navView.style.display = isEdit ? "inline-flex" : "none";
+
+      const editPanel = document.getElementById("editPanel");
+      if (editPanel) editPanel.style.display = isEdit ? "block" : "none";
+    }
+
+    // état initial
+    let lastIsEdit = isEditHash(location.hash);
+    applyRoute();
+
+    window.addEventListener("hashchange", () => {
+      const nowIsEdit = isEditHash(location.hash);
+
+      // reload uniquement si on change de mode
+      if (nowIsEdit !== lastIsEdit){
+        lastIsEdit = nowIsEdit;
+        location.reload();
+        return;
       }
 
-      window.addEventListener("hashchange", () => {
-        // Si besoin (si app.js ne supporte pas le changement à chaud),
-        // décommente la ligne suivante pour recharger au switch:
-        location.reload();
-        //applyRoute();
-      });
-
+      // sinon on met juste à jour l'UI
       applyRoute();
     });
-  </script>
+  });
+</script>
 </head>
 
 <body data-mode="view"
