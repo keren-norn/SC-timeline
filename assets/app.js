@@ -682,12 +682,6 @@ Repères :
   }
 
   // ---- Filter utilities ----
-  async function copyFiltered(){
-    const items = filteredStories();
-    const payload = { meta: DATA.meta, categories: DATA.categories, stories: items };
-    await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
-    alert("JSON copié ✅");
-  }
   function resetFilters(){
     $("q").value = "";
     $("cat").value = "";
@@ -1041,8 +1035,7 @@ Repères :
     $("y1").addEventListener("input", render);
     $("y2").addEventListener("input", render);
     $("resetBtn").addEventListener("click", resetFilters);
-    $("copyBtn").addEventListener("click", copyFiltered);
-
+    
     const exportBtn = $("exportEditsBtn");
     if (exportBtn) exportBtn.addEventListener("click", exportEdits);
     const importBtn = $("importEditsBtn");
