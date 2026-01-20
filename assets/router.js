@@ -6,7 +6,13 @@
   }
 
   function applyRoute(){
+    if (!location.hash || location.hash === "#") {
+      location.hash = "#timeline";
+      return; // le hashchange relancera applyRoute
+    }
+  const isEdit = isEditHash(location.hash);
     const isEdit = isEditHash(location.hash);
+    
 
     document.body.dataset.mode = isEdit ? "edit" : "view";
 
@@ -28,7 +34,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    applyRoute();
+   ();
     window.addEventListener("hashchange", applyRoute);
   });
 })();
