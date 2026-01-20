@@ -409,6 +409,7 @@ Repères :
     
     // Accessibilité : définir le rôle dialog et aria-modal
     modal.style.display="grid";
+    document.body.classList.add("modal-open");
     modal.setAttribute("aria-hidden","false");
     modal.setAttribute("role", "dialog");
     modal.setAttribute("aria-modal", "true");
@@ -424,6 +425,7 @@ Repères :
     const modal = $("modal");
     $("backdrop").style.display="none";
     modal.style.display="none";
+    document.body.classList.remove("modal-open");
     modal.setAttribute("aria-hidden","true");
     
     // Retirer les attributs d'accessibilité ajoutés
