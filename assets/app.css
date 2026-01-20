@@ -68,12 +68,5 @@ main{max-width:1200px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 /* Editor inline */
 #editWrap{display:none}
 .sep{height:1px;background:var(--border);margin:12px 0}
-/* Uniformiser le rendu des boutons désactivés dans la modale */
-#editBtn:disabled,
-#deleteBtn:disabled,
-#saveBtn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-  filter: grayscale(0.2);
-}
+
 
