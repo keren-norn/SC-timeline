@@ -67,16 +67,13 @@ Repères :
   // Retourne l'URL ou null si invalide
   function safeImageUrl(u){
     if (!u || typeof u !== "string") return null;
-    try {
-      const normalized = new URL(u, location.href);
-      if (normalized.protocol === "http:" || normalized.protocol === "https:") {
-        return normalized.href;
-      }
-      // Accepter data:image/... pour les images base64
-      if (normalized.protocol === "data:" && u.toLowerCase().startsWith("data:image/")) {
-        return u;
-      }
-    } catch {}
+    // D'abord essayer safeUrl pour http/https
+    const normalized = safeUrl(u);
+    if (normalized) return normalized;
+    // Accepter data:image/... pour les images base64 (insensible à la casse)
+    if (u.toLowerCase().startsWith("data:image/")) {
+      return u;
+    }
     return null;
   }
 
@@ -406,7 +403,11 @@ Repères :
     
     // Restaurer le focus sur l'élément qui était actif avant l'ouverture
     if (_previousActive && document.body.contains(_previousActive)){
-      _previousActive.focus();
+      try {
+        _previousActive.focus();
+      } catch (e) {
+        // L'élément n'est plus focusable, ignorer l'erreur
+      }
     }
     _previousActive = null;
   }
@@ -670,6 +671,11 @@ Repères :
 
   async function sbInit(){
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
+    // Vérifier si la bibliothèque Supabase est disponible
+    if (typeof supabase === "undefined") {
+      console.warn("Supabase library not loaded - skipping Supabase init");
+      return;
+    }
     sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const { data } = await sb.auth.getSession();
     SESSION = data.session || null;
