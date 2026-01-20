@@ -855,10 +855,16 @@
     $("resetBtn").addEventListener("click", resetFilters);
     $("copyBtn").addEventListener("click", copyFiltered);
 
-    $("exportEditsBtn").addEventListener("click", exportEdits);
+    const exportBtn = $("exportEditsBtn");
+    if (exportBtn) exportBtn.addEventListener("click", exportEdits);
+    const importBtn = $("importEditsBtn");
     const importFile = $("importFile");
-    $("importEditsBtn").addEventListener("click", ()=> importFile.click());
-    importFile.addEventListener("change", ()=> { if (importFile.files?.[0]) importEdits(importFile.files[0]); });
+    if (importBtn && importFile) {
+      importBtn.addEventListener("click", ()=> importFile.click());
+      importFile.addEventListener("change", ()=> {
+        if (importFile.files?.[0]) importEdits(importFile.files[0]);
+      });
+    }
 
     $("backdrop").addEventListener("click", closeModal);
     $("closeBtn").addEventListener("click", closeModal);
