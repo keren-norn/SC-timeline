@@ -49,22 +49,44 @@ Repères :
   function $(id){ return document.getElementById(id); }
   function isObj(x){ return x && typeof x === "object" && !Array.isArray(x); }
 
+  // Validation d'URL : empêche javascript:, file:, etc. (prévention XSS)
+  // Accepte uniquement http: et https:
+  // Retourne l'URL normalisée (string) ou null si invalide
+  function safeUrl(u){
+    if (!u || typeof u !== "string") return null;
+    try {
+      const normalized = new URL(u, location.href);
+      if (normalized.protocol === "http:" || normalized.protocol === "https:") {
+        return normalized.href;
+      }
+    } catch {
+      // URL invalide ou malformée, retourner null
+    }
+    return null;
+  }
+
+  // Validation d'URL pour images : accepte http:, https: et data:image/...
+  // Retourne l'URL ou null si invalide
+  function safeImageUrl(u){
+    if (!u || typeof u !== "string") return null;
+    // D'abord essayer safeUrl pour http/https
+    const normalized = safeUrl(u);
+    if (normalized) return normalized;
+    // Accepter data:image/... pour les images base64 (insensible à la casse)
+    if (u.toLowerCase().startsWith("data:image/")) {
+      return u;
+    }
+    return null;
+  }
+
   function stripHtml(s){ return (s||"").toString().replace(/<[^>]+>/g, ""); }
   function truncate(s,n){ s=stripHtml(s).trim(); return s.length<=n? s : s.slice(0,n-1)+"…"; }
   
-  /**
-   * parseYear — Extraction permissive de l'année d'une date.
-   * Accepte les formats : "YYYY", "YYYY-MM", "YYYY-MM-DD"
-   * Exemples : parseYear("2024") => 2024
-   *            parseYear("2024-03") => 2024
-   *            parseYear("2024-03-15") => 2024
-   * Retourne null si le format est invalide.
-   */
+  // parseYear : accepte "YYYY", "YYYY-MM", "YYYY-MM-DD"
+  // Retourne l'année (nombre) ou null
+  // Exemples: "2024" → 2024, "2024-03" → 2024, "2024-03-15" → 2024
   function parseYear(dateStr){
-    const str = (dateStr||"").trim();
-    if (!str) return null;
-    // Accepte YYYY seul, YYYY-MM, ou YYYY-MM-DD
-    const m = /^(\d{4})(?:-\d{2}(?:-\d{2})?)?/.exec(str);
+    const m = /^(\d{4})(?:-\d{2}(?:-\d{2})?)?/.exec(dateStr||"");
     return m ? parseInt(m[1], 10) : null;
   }
   
@@ -259,12 +281,8 @@ Repères :
     const tl = $("timeline");
     tl.innerHTML = "";
     
-    /**
-     * Utilisation d'un DocumentFragment pour construire la liste.
-     * Avantage : réduit les reflows/repaints du navigateur en n'attachant
-     * au DOM qu'une seule fois tous les éléments, au lieu de le faire
-     * à chaque itération de la boucle.
-     */
+    // Utilise DocumentFragment pour construire la liste en mémoire
+    // puis l'attacher au DOM en une seule opération (réduit les reflows)
     const fragment = document.createDocumentFragment();
     
     for (const s of items){
@@ -311,12 +329,11 @@ Repères :
       thumbWrap.className = "evtThumb";
       const thumbUrl = getThumbUrl(s);
       if (thumbUrl){
-        // Validation de l'URL de l'image pour éviter les sources non fiables
-        const safeThumbUrl = safeImageUrl(thumbUrl);
-        if (safeThumbUrl) {
+        const safeThumb = safeImageUrl(thumbUrl);
+        if (safeThumb){
           const img = document.createElement("img");
           img.loading="lazy"; img.decoding="async"; img.referrerPolicy="no-referrer";
-          img.src = safeThumbUrl;
+          img.src = safeThumb;
           thumbWrap.appendChild(img);
         } else {
           thumbWrap.classList.add("empty");
@@ -331,7 +348,7 @@ Repères :
       fragment.appendChild(wrap);
     }
     
-    // Attacher tous les événements au DOM en une seule opération
+    // Attacher le fragment au DOM en une seule opération
     tl.appendChild(fragment);
 
     // mode badges
@@ -344,17 +361,11 @@ Repères :
   // 5) Modale (lecture + edition)
   // ==============================
 
-  /**
-   * _previousActive — Sauvegarde de l'élément actif avant l'ouverture du modal
-   * pour le restaurer lors de la fermeture (amélioration de l'accessibilité).
-   */
+  // Variable pour sauvegarder l'élément qui avait le focus avant l'ouverture de la modale
   let _previousActive = null;
 
   function openModal(story){
-    /**
-     * Accessibilité : sauvegarder l'élément qui avait le focus avant d'ouvrir le modal,
-     * pour pouvoir le restaurer à la fermeture.
-     */
+    // Sauvegarder l'élément actif pour restaurer le focus à la fermeture
     _previousActive = document.activeElement;
     
     window.CURRENT_STORY_ID = String(story.id);
@@ -375,9 +386,8 @@ Repères :
     links.innerHTML = "";
     const ext = (story.externalLink||"").trim();
     if (ext){
-      // Validation de l'URL externe pour éviter les schémas malveillants (javascript:, etc.)
       const safeExt = safeUrl(ext);
-      if (safeExt) {
+      if (safeExt){
         const a=document.createElement("a"); 
         a.href=safeExt; 
         a.target="_blank"; 
@@ -389,11 +399,10 @@ Repères :
     if (Array.isArray(story.__manualLinks)){
       for (const l of story.__manualLinks){
         if (!l?.url) continue;
-        // Validation de chaque URL manuelle pour éviter les schémas malveillants
-        const safeLinkUrl = safeUrl(l.url);
-        if (safeLinkUrl) {
+        const safeLink = safeUrl(l.url);
+        if (safeLink){
           const a=document.createElement("a"); 
-          a.href=safeLinkUrl; 
+          a.href=safeLink; 
           a.target="_blank"; 
           a.rel="noopener"; 
           a.textContent=l.title||l.url;
@@ -410,12 +419,11 @@ Repères :
     if (Array.isArray(story.media) && story.media.length){
       for (const m of story.media){
         if (m?.type === "Image" && m?.src){
-          // Validation de l'URL de l'image pour éviter les sources non fiables
-          const safeImgUrl = safeImageUrl(m.src);
-          if (safeImgUrl) {
+          const safeSrc = safeImageUrl(m.src);
+          if (safeSrc){
             const box=document.createElement("div"); box.className="thumb";
             const img=document.createElement("img"); 
-            img.src=safeImgUrl; 
+            img.src=safeSrc; 
             img.loading="lazy";
             const cap=document.createElement("div"); cap.className="cap"; cap.textContent=(m.caption||"").trim();
             box.appendChild(img); box.appendChild(cap);
@@ -427,23 +435,16 @@ Repères :
 
     const modal = $("modal");
     $("backdrop").style.display="block";
+    
+    // Accessibilité : définir le rôle dialog et aria-modal
+    const modal = $("modal");
     modal.style.display="grid";
     modal.setAttribute("aria-hidden","false");
-    
-    /**
-     * Accessibilité : définir les attributs ARIA pour le modal
-     * - role="dialog" : indique qu'il s'agit d'une boîte de dialogue
-     * - aria-modal="true" : indique que le reste de la page est inerte
-     * - tabindex="-1" : permet de donner le focus au modal
-     */
     modal.setAttribute("role", "dialog");
     modal.setAttribute("aria-modal", "true");
     modal.setAttribute("tabindex", "-1");
     
-    /**
-     * Accessibilité : donner le focus au modal après l'affichage
-     * pour que les utilisateurs de clavier puissent naviguer directement.
-     */
+    // Déplacer le focus dans la modale pour améliorer l'accessibilité
     modal.focus();
 
     applyEditPermissions();
@@ -452,21 +453,21 @@ Repères :
   function closeModal(){
     const modal = $("modal");
     $("backdrop").style.display="none";
+    const modal = $("modal");
     modal.style.display="none";
     modal.setAttribute("aria-hidden","true");
     
-    /**
-     * Accessibilité : restaurer le focus sur l'élément qui était actif
-     * avant l'ouverture du modal.
-     * Protection : try-catch au cas où l'élément a été supprimé du DOM
-     * ou n'est plus focusable. En cas d'erreur, le navigateur gérera
-     * le focus selon son comportement par défaut.
-     */
-    if (_previousActive && document.contains(_previousActive)) {
+    // Retirer les attributs d'accessibilité ajoutés
+    modal.removeAttribute("role");
+    modal.removeAttribute("aria-modal");
+    modal.removeAttribute("tabindex");
+    
+    // Restaurer le focus sur l'élément qui était actif avant l'ouverture
+    if (_previousActive && document.body.contains(_previousActive)){
       try {
         _previousActive.focus();
       } catch (e) {
-        // L'élément n'est plus focusable, laisser le navigateur gérer le focus
+        // L'élément n'est plus focusable, ignorer l'erreur
       }
     }
     _previousActive = null;
@@ -731,6 +732,11 @@ Repères :
 
   async function sbInit(){
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
+    // Vérifier si la bibliothèque Supabase est disponible
+    if (typeof supabase === "undefined") {
+      console.warn("Supabase library not loaded - skipping Supabase init");
+      return;
+    }
     sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const { data } = await sb.auth.getSession();
     SESSION = data.session || null;
