@@ -1,13 +1,10 @@
 /*
-SC Timeline — app.css (commenté)
-Objectif : rendre le fichier plus lisible SANS changer le rendu.
-
-Convention de lecture :
-- Variables (theme)
-- Base / reset
-- Layout page
-- Cartes, timeline
-- Modale + editeur
+SC Timeline — app.css (version corrigée + thème “Star Citizen / HUD”)
+- Palette teal/cyan
+- Effet “glass”
+- Trait lumineux sous le header
+- Coins biseautés sur les cartes
+- Modale plus haute + scroll interne
 */
 
 /* ==============================
@@ -15,60 +12,76 @@ Convention de lecture :
    ============================== */
 
 :root{
-  --bg:#0b0e14;                 /* fond global */
-  --panel:#0f1522;              /* cartes / panneaux */
-  --panel2:#0b1222;             /* inputs / boutons (fond) */
-  --border:rgba(255,255,255,.08); /* bordures discrètes */
+  /* Palette “plus SC” (bleu pétrole + teal/cyan HUD) */
+  --bg:#050c10;                 /* fond global (très sombre) */
+  --panel:#071b24;              /* cartes / panneaux */
+  --panel2:#06141d;             /* inputs / boutons (fond) */
 
-  --text:#eaeaea;               /* texte principal */
-  --muted:#9aa4b2;              /* texte secondaire */
-  --accent:#00b4ff;             /* accent (liens / focus) */
+  --text:#d9f4ff;               /* texte principal */
+  --muted:#7fa5b7;              /* texte secondaire */
+  --accent:#6fe4ff;             /* accent teal/cyan SC */
 
-  --radius:16px;                /* arrondi standard */
+  --border:rgba(111, 228, 255, .20); /* liseré teal/cyan */
+  --border2:rgba(255,255,255,.06);   /* liseré neutre */
+
+  --glow:rgba(111, 228, 255, .22);
+  --glow2:rgba(111, 228, 255, .12);
+
+  --shadow: 0 18px 60px rgba(0,0,0,.55);
+  --shadow2: 0 10px 30px rgba(0,0,0,.35);
+
+  --radius:16px;
 }
-
-/* ---------------------------------------------------------
-   2) Reset / base
-   - Normalise les comportements des éléments
-   --------------------------------------------------------- */
 
 /* ==============================
    2) Reset / base
    ============================== */
 
 *{ box-sizing:border-box; }
-html,
-/* === Base (page) ========================================== */
-body{ height:100%; }
+html, body{ height:100%; }
+
 body{
   margin:0;
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  background:var(--bg);
   color:var(--text);
+  background:
+    radial-gradient(1200px 700px at 20% -10%, rgba(111,228,255,.10), transparent 60%),
+    radial-gradient(900px 600px at 110% 10%, rgba(111,228,255,.06), transparent 55%),
+    linear-gradient(180deg, #041018 0%, var(--bg) 55%, #04080b 100%);
 }
 
 /* Liens */
 a{ color:var(--accent); text-decoration:none; }
 a:hover{ text-decoration:underline; }
 
-/* ---------------------------------------------------------
-   3) Header (barre du haut)
-   - Sticky + flou + bordure
-   --------------------------------------------------------- */
-
 /* ==============================
    3) Header
    ============================== */
 
-
-/* === Header =============================================== */
 header{
   position:sticky;
   top:0;
   z-index:50;
-  background:rgba(11,14,20,.92);
-  backdrop-filter:blur(10px);
+  background:linear-gradient(180deg, rgba(6,14,20,.88), rgba(6,14,20,.72));
+  backdrop-filter:blur(12px);
   border-bottom:1px solid var(--border);
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
+}
+
+/* Trait lumineux HUD sous le header */
+header::after{
+  content:"";
+  display:block;
+  height:1px;
+  background:linear-gradient(90deg,
+    transparent 0%,
+    rgba(111,228,255,.15) 15%,
+    rgba(111,228,255,.55) 50%,
+    rgba(111,228,255,.15) 85%,
+    transparent 100%);
+  box-shadow:
+    0 0 12px rgba(111,228,255,.22),
+    0 0 26px rgba(111,228,255,.10);
 }
 
 .headerWrap{
@@ -86,6 +99,8 @@ header{
   margin:0;
   font-size:18px;
   font-weight:900;
+  letter-spacing:.10em;
+  text-transform:uppercase;
 }
 
 .hMeta{
@@ -103,12 +118,10 @@ header{
   justify-content:flex-end;
 }
 
-/* ---------------------------------------------------------
-   4) Petits composants réutilisables
-   - pill, boutons, champs, utilitaires
-   --------------------------------------------------------- */
+/* ==============================
+   4) Petits composants
+   ============================== */
 
-/* Badge "pill" (Mode: lecture, etc.) */
 .pill{
   display:inline-flex;
   gap:8px;
@@ -117,30 +130,37 @@ header{
   border:1px solid var(--border);
   padding:6px 10px;
   border-radius:999px;
-  background:rgba(255,255,255,.03);
+  background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);
 
   color:var(--muted);
   font-size:12px;
+  letter-spacing:.04em;
+  text-transform:uppercase;
 }
 
 /* Boutons */
 button{
   padding:10px 12px;
   border-radius:12px;
-  border:1px solid var(--border);
-  background:var(--panel2);
+  border:1px solid var(--border2);
+  background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015));
   color:var(--text);
   cursor:pointer;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.02);
 }
-button:hover{ filter:brightness(1.06); }
-
-/* Bouton "primaire" (accentué) */
+button:hover{
+  border-color:var(--border);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.03),
+    0 0 0 3px var(--glow2);
+}
 button.primary{
-  border-color:rgba(0,180,255,.55);
-  box-shadow:0 0 0 3px rgba(0,180,255,.15);
+  border-color:rgba(111,228,255,.55);
+  box-shadow:
+    0 0 0 3px rgba(111,228,255,.14),
+    inset 0 0 0 1px rgba(255,255,255,.03);
 }
-
-/* Bouton désactivé (grisé) */
 button:disabled{
   opacity:.5;
   cursor:not-allowed;
@@ -151,10 +171,17 @@ input,select,textarea{
   width:100%;
   padding:10px;
   border-radius:12px;
-  border:1px solid var(--border);
-  background:var(--panel2);
+  border:1px solid var(--border2);
+  background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
   color:var(--text);
   outline:none;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.02);
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--border);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.03),
+    0 0 0 3px var(--glow2);
 }
 textarea{
   min-height:140px;
@@ -178,21 +205,14 @@ textarea{
 /* Séparateur horizontal */
 .sep{
   height:1px;
-  background:var(--border);
+  background:var(--border2);
   margin:12px 0;
 }
 
-/* ---------------------------------------------------------
-   5) Layout principal (page)
-   - Colonne filtres + colonne timeline
-   --------------------------------------------------------- */
-
 /* ==============================
-   4) Layout principal
+   5) Layout principal
    ============================== */
 
-
-/* === Layout principal ===================================== */
 main{
   max-width:1200px;
   margin:0 auto;
@@ -203,47 +223,77 @@ main{
   gap:14px;
 }
 
-/* En mobile: tout en 1 colonne */
 @media (max-width: 980px){
   main{ grid-template-columns:1fr; }
 }
 
-/* ---------------------------------------------------------
-   6) Cartes (panneaux)
-   --------------------------------------------------------- */
-
 /* ==============================
-   5) Cartes
+   6) Cartes
    ============================== */
 
 .card{
   background:var(--panel);
-  border:1px solid var(--border);
+  border:1px solid rgba(111,228,255,.14);
   border-radius:var(--radius);
   overflow:hidden;
-  box-shadow:0 10px 30px rgba(0,0,0,.25);
+  box-shadow:var(--shadow2);
+  position:relative;
+
+  /* Coins biseautés (panneau futuriste) */
+  clip-path:polygon(
+    10px 0%,
+    100% 0%,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    0% 100%,
+    0% 10px
+  );
+}
+
+/* Reflet “glass” */
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(135deg, rgba(111,228,255,.10), transparent 40%, rgba(255,255,255,.03));
+  opacity:.55;
+}
+
+/* Liseré interne */
+.card::after{
+  content:"";
+  position:absolute;
+  inset:1px;
+  pointer-events:none;
+  clip-path:inherit;
+  border:1px solid rgba(111,228,255,.14);
+  opacity:.9;
+}
+
+.card:hover{
+  border-color:rgba(111,228,255,.28);
+  box-shadow:
+    0 0 0 3px rgba(111,228,255,.10),
+    var(--shadow2);
 }
 
 .card .hd{
   padding:12px 14px;
-  border-bottom:1px solid var(--border);
+  border-bottom:1px solid rgba(255,255,255,.06);
   font-weight:900;
+  letter-spacing:.10em;
+  text-transform:uppercase;
 }
 
 .card .bd{
   padding:12px 14px;
 }
 
-/* ---------------------------------------------------------
-   7) Timeline (liste d'événements)
-   --------------------------------------------------------- */
-
 /* ==============================
-   6) Timeline (liste)
+   7) Timeline
    ============================== */
 
-
-/* === Timeline (liste) ===================================== */
 #timeline{
   display:grid;
   gap:10px;
@@ -258,9 +308,12 @@ main{
   gap:10px;
   align-items:stretch;
   cursor:pointer;
+  transition:transform .14s ease, box-shadow .14s ease, border-color .14s ease;
 }
 
-/* En petit écran, la miniature passe dessous */
+.evt:hover{ transform:translateY(-1px); }
+.evt:hover .title{ color:var(--accent); }
+
 @media (max-width: 600px){
   .evt{ grid-template-columns:1fr; }
 }
@@ -297,15 +350,15 @@ main{
   margin-top:8px;
   font-size:13px;
   line-height:1.4;
-  color:#d8d8d8;
+  color:rgba(215,240,255,.90);
 }
 
 /* Miniature */
 .evtThumb{
   border-radius:14px;
   overflow:hidden;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.02);
+  border:1px solid rgba(111,228,255,.18);
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
 
   display:flex;
   align-items:center;
@@ -321,16 +374,13 @@ main{
   display:block;
 }
 
-/* ---------------------------------------------------------
-   8) Modale (détails événement)
-   - IMPORTANT: ici on a bien 1 seule colonne
-   - Donc pas de séparation verticale au milieu
-   --------------------------------------------------------- */
-
-/* Fond sombre derrière la modale */
+.evt:hover .evtThumb{
+  border-color:rgba(111,228,255,.30);
+  box-shadow:0 0 0 3px rgba(111,228,255,.10);
+}
 
 /* ==============================
-   7) Modale
+   8) Modale
    ============================== */
 
 #backdrop{
@@ -341,9 +391,6 @@ main{
   z-index:100;
 }
 
-/* Conteneur modale */
-
-/* === Modale =============================================== */
 #modal{
   position:fixed;
   left:50%;
@@ -352,39 +399,35 @@ main{
 
   width:min(980px,94vw);
   max-height:94vh;
-  height:auto;
 
   display:none;
-  /* 1 seule colonne = l'article prend tout le bloc */
   grid-template-columns:1fr;
   gap:0;
 
   z-index:101;
   background:var(--panel);
-  border:1px solid var(--border);
+  border:1px solid rgba(111,228,255,.22);
   border-radius:20px;
   overflow:hidden;
-  box-shadow:0 20px 60px rgba(0,0,0,.5);
+  box-shadow:var(--shadow);
 }
 
-/* Contenu gauche (article) */
+#modal::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(180deg, rgba(111,228,255,.10), transparent 25%, rgba(0,0,0,0));
+}
+
+/* Contenu principal scrollable */
 .mLeft{
   padding:14px;
-  border-right:none; /* pas de trait vertical */
-    /* Scroll interne */
+  border-right:none;
   overflow:auto;
-  max-height:94vh; /* fallback si jamais */
-  overscroll-behavior:contain; /* évite de scroller la page derrière */
-  -webkit-overflow-scrolling:touch; /* inertie iOS */
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
 }
-
-/* Zone droite (ancienne carte Overrides) désactivée
-   -> on la laisse commentée pour mémoire */
- /* .mRight{
-    padding:14px;
-    overflow:auto;
-    background:rgba(255,255,255,.02);
- } */
 
 .mTop{
   display:flex;
@@ -435,10 +478,10 @@ main{
 }
 
 .thumb{
-  border:1px solid var(--border);
+  border:1px solid rgba(111,228,255,.14);
   border-radius:14px;
   overflow:hidden;
-  background:rgba(255,255,255,.02);
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
 }
 
 .thumb img{
@@ -454,9 +497,5 @@ main{
   font-size:12px;
 }
 
-/* ---------------------------------------------------------
-   9) Éditeur inline (formulaire dans la modale)
-   --------------------------------------------------------- */
-#editWrap{
-  display:none; /* affiché seulement quand on passe en mode édition */
-}
+/* Éditeur inline (formulaire dans la modale) */
+#editWrap{ display:none; }
