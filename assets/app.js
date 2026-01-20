@@ -426,7 +426,8 @@ Repères :
     modal.focus();
 
     applyEditPermissions();
-    if (getMode() !== "edit") setEditMode(false);
+    setEditMode(false);
+    }
   }
 
   function closeModal(){
@@ -459,13 +460,16 @@ Repères :
   // ==============================
 
   function setEditMode(on){
-    const show = !!on;
+    const isEdit = getMode() === "edit";
+    const show = isEdit && !!on; // show réel : jamais true en lecture
+
     $("editWrap").style.display = show ? "block" : "none";
-    $("editBtn").style.display = show ? "none" : "";
-    $("saveBtn").style.display = show ? "" : "none";
+
+    $("editBtn").style.display   = (!show && isEdit) ? "" : "none";
+    $("saveBtn").style.display   = show ? "" : "none";
     $("cancelBtn").style.display = show ? "" : "none";
     $("deleteBtn").style.display = show ? "" : "none";
-    
+
     $("mdate").style.display = show ? "none" : "block";
     $("mtitle").style.display = show ? "none" : "block";
     document.querySelector(".mcat").style.display = show ? "none" : "flex";
