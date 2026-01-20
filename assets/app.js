@@ -14,7 +14,9 @@ Repères :
   // ==============================
   // 1) Configuration (mode, Supabase, fichiers)
   // ==============================
-  const MODE = document.body.dataset.mode || "view"; // 'view' | 'edit'
+  function getMode(){   
+    return document.body.dataset.mode || "view"; 
+  } // 'view' | 'edit'
   const SUPABASE_URL = document.body.dataset.supabaseUrl || "";
   const SUPABASE_ANON_KEY = document.body.dataset.supabaseAnonKey || "";
   const TIMELINE_ID = Number(document.body.dataset.timelineId || "1771887");
@@ -324,7 +326,7 @@ Repères :
 
     // mode badges
     if ($("modePill")){
-      $("modePill").textContent = MODE === "edit" ? "Mode: édition" : "Mode: lecture";
+      $("modePill").textContent = getMode() === "edit" ? "Mode: édition" : "Mode: lecture";
     }
   }
 
@@ -504,7 +506,7 @@ Repères :
   }
 
   function ensureCanEditOrWarn(){
-    if (MODE !== "edit"){
+    if (getMode() !== "edit"){
       alert("Lecture seule : ouvre editor.html pour modifier.");
       return false;
     }
@@ -743,7 +745,7 @@ Repères :
   function setAuthUi(){
     const authBox = $("authBox");
     if (!authBox) return;
-    authBox.style.display = (MODE === "edit") ? "block" : "none";
+    authBox.style.display = (getMode() === "edit") ? "block" : "none";
 
     const status = $("authStatus");
     if (!sb){
@@ -765,7 +767,7 @@ Repères :
   }
 
   function applyEditPermissions(){
-    const isEdit = MODE === "edit";
+    const isEdit = getMode() === "edit";
     const can = isEdit && CAN_EDIT;
 
     // ➕ Nouvel évènement : visible en mode édition, même sans droits
@@ -854,7 +856,7 @@ Repères :
     clearTimeout(_saveTimer);
     _saveTimer = setTimeout(async ()=>{
       try{
-        if (!(MODE === "edit" && CAN_EDIT)) return;
+        if (!(getMode() === "edit" && CAN_EDIT)) return;
         await sbSaveOverrides(OVERRIDES);
         const meta = await sbLoadOverrides();
         LAST_REMOTE_UPDATED_AT = meta.updated_at;
@@ -1111,6 +1113,13 @@ Repères :
     }
     if ($("reloadSupabaseBtn")) $("reloadSupabaseBtn").addEventListener("click", pullRemoteAndApply);
     if ($("exportSnapshotBtn")) $("exportSnapshotBtn").addEventListener("click", exportSnapshotGithub);
+   
+    // Quand le mode change (#timeline <-> #edit), on rafraîchit l'UI
+    window.addEventListener("sc:modechange", () => {
+      setAuthUi();
+      applyEditPermissions();
+      render();
+    });
 
     // start
     boot().catch(err => {
