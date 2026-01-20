@@ -780,6 +780,7 @@ Repères :
     // Bouton Modifier
     const editBtn = $("editBtn");
     if (editBtn){
+      
       editBtn.disabled = !can;
       editBtn.title = can ? "" : "Lecture seule : non autorisé";
     }
@@ -787,13 +788,15 @@ Repères :
     // Bouton Enregistrer
     const saveBtn = $("saveBtn");
     if (saveBtn){
+      
       saveBtn.disabled = !can;
       saveBtn.title = can ? "" : "Lecture seule : non autorisé";
     }
 
     // 🗑 Bouton Supprimer (toujours visible mais grisé si non autorisé)
     const deleteBtn = $("deleteBtn");
-    if (deleteBtn){       
+    if (deleteBtn){ 
+      
       deleteBtn.disabled = !can;
       deleteBtn.title = can ? "" : "Lecture seule : non autorisé";
     }
