@@ -65,11 +65,4 @@ main{max-width:1200px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 /* Editor inline */
 #editWrap{display:none}
 .sep{height:1px;background:var(--border);margin:12px 0}
-button:disabled,
-button[disabled],
-#deleteBtn:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-  pointer-events: none;
-  filter: grayscale(0.7);
-}
+
