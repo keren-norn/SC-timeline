@@ -463,7 +463,8 @@ Repères :
     $("editBtn").style.display = show ? "none" : "";
     $("saveBtn").style.display = show ? "" : "none";
     $("cancelBtn").style.display = show ? "" : "none";
-
+    $("deleteBtn").style.display = show ? "" : "none";
+    
     $("mdate").style.display = show ? "none" : "block";
     $("mtitle").style.display = show ? "none" : "block";
     document.querySelector(".mcat").style.display = show ? "none" : "flex";
@@ -779,7 +780,6 @@ Repères :
     // Bouton Modifier
     const editBtn = $("editBtn");
     if (editBtn){
-      editBtn.style.display = isEdit ? "" : "none";
       editBtn.disabled = !can;
       editBtn.title = can ? "" : "Lecture seule : non autorisé";
     }
@@ -787,15 +787,13 @@ Repères :
     // Bouton Enregistrer
     const saveBtn = $("saveBtn");
     if (saveBtn){
-      saveBtn.style.display = isEdit ? "" : "none";
       saveBtn.disabled = !can;
       saveBtn.title = can ? "" : "Lecture seule : non autorisé";
     }
 
     // 🗑 Bouton Supprimer (toujours visible mais grisé si non autorisé)
     const deleteBtn = $("deleteBtn");
-    if (deleteBtn){
-      deleteBtn.style.display = isEdit ? "" : "none";
+    if (deleteBtn){       
       deleteBtn.disabled = !can;
       deleteBtn.title = can ? "" : "Lecture seule : non autorisé";
     }
