@@ -897,7 +897,7 @@ Repères :
   // 9) Wiring (events DOM)
   // ==============================
 
-  document.addEventListener(\"DOMContentLoaded\", () => {
+  document.addEventListener("DOMContentLoaded", () => {
     $("q").addEventListener("input", render);
     $("cat").addEventListener("change", render);
     $("y1").addEventListener("input", render);
