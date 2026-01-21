@@ -1,0 +1,72 @@
+name: Cache Bust Assets
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '.github/workflows/**'
+
+jobs:
+  update-asset-versions:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    # Skip if commit message contains [skip cache-bust]
+    if: "!contains(github.event.head_commit.message, '[skip cache-bust]')"
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      
+      - name: Check if only version strings changed
+        id: check_changes
+        run: |
+          # Get the list of changed files
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD || echo "")
+          echo "Changed files: $CHANGED_FILES"
+          
+          # Check if only index.html changed
+          if echo "$CHANGED_FILES" | grep -v "index.html" | grep -q .; then
+            echo "has_content_changes=true" >> $GITHUB_OUTPUT
+          else
+            # If only index.html changed, check if it's just version strings
+            if git diff HEAD~1 HEAD index.html | grep -E "^\+" | grep -v "^\+\+\+" | grep -v "\?v=" | grep -q .; then
+              echo "has_content_changes=true" >> $GITHUB_OUTPUT
+            else
+              echo "has_content_changes=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+      
+      - name: Update asset versions
+        if: steps.check_changes.outputs.has_content_changes == 'true'
+        run: |
+          # Get short commit SHA for version
+          VERSION=$(git rev-parse --short HEAD)
+          echo "Using version: $VERSION"
+          
+          # Update index.html with new version strings
+          sed -i "s|./assets/app\.css[?]v=[^\"]*|./assets/app.css?v=$VERSION|g" index.html
+          sed -i "s|./assets/router\.js[?]v=[^\"]*|./assets/router.js?v=$VERSION|g" index.html
+          sed -i "s|./assets/app\.js[?]v=[^\"]*|./assets/app.js?v=$VERSION|g" index.html
+          
+          echo "Updated asset URLs with version $VERSION"
+      
+      - name: Commit and push if changed
+        if: steps.check_changes.outputs.has_content_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Check if there are changes to commit
+          if git diff --quiet index.html; then
+            echo "No changes to commit"
+          else
+            git add index.html
+            git commit -m "Update asset versions to $(git rev-parse --short HEAD) [skip cache-bust]"
+            git push
+          fi
