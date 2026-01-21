@@ -770,22 +770,37 @@ function hideTopStatus(){
     authBox.style.display = (getMode() === "edit") ? "block" : "none";
 
     const status = $("authStatus");
+    const hint = $("editHint"); // <-- le div du warning dans index.html
+
     if (!sb){
       status.textContent = "Supabase: non configuré";
+      if (hint && getMode() === "edit") hint.style.display = "block";
       return;
     }
+
     if (!SESSION){
       status.textContent = "Mode: lecture (non connecté)";
       $("logoutBtn").disabled = true;
       $("loginBtn").disabled = false;
       CAN_EDIT = false;
       applyEditPermissions();
+      if (hint && getMode() === "edit") hint.style.display = "block";
       return;
     }
-    status.textContent = CAN_EDIT ? `Mode: édition ✅ (${SESSION.user.email})` : `Connecté (${SESSION.user.email}) — lecture seule`;
+
+    status.textContent = CAN_EDIT
+      ? `Mode: édition ✅ (${SESSION.user.email})`
+      : `Connecté (${SESSION.user.email}) — lecture seule`;
+
     $("logoutBtn").disabled = false;
     $("loginBtn").disabled = true;
+
     applyEditPermissions();
+
+    // Cache l'avertissement quand tu as les droits
+    if (hint && getMode() === "edit") {
+      hint.style.display = CAN_EDIT ? "none" : "block";
+    }
   }
 
   function applyEditPermissions(){
