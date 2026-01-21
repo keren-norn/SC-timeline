@@ -1198,10 +1198,13 @@ function hideTopStatus(){
     window.addEventListener("sc:modechange", () => {
       setAuthUi();
       applyEditPermissions();
+     
       if (DATA && Array.isArray(stories) && stories.length) {
         render();
-    }
-      if (getMode() !== "edit") hideTopStatus();
+      }
+      if (getMode() !== "edit") {
+        hideTopStatus();
+      }
     });
 
     // start
