@@ -5,6 +5,7 @@ SC Timeline — app.css (version corrigée + thème “Star Citizen / HUD”)
 - Trait lumineux sous le header
 - Coins biseautés sur les cartes
 - Modale plus haute + scroll interne
+- Ajout style pour bouton "Force upload"
 */
 
 /* ==============================
@@ -12,17 +13,16 @@ SC Timeline — app.css (version corrigée + thème “Star Citizen / HUD”)
    ============================== */
 
 :root{
-  /* Palette “plus SC” (bleu pétrole + teal/cyan HUD) */
-  --bg:#050c10;                 /* fond global (très sombre) */
-  --panel:#071b24;              /* cartes / panneaux */
-  --panel2:#06141d;             /* inputs / boutons (fond) */
+  --bg:#050c10;
+  --panel:#071b24;
+  --panel2:#06141d;
 
-  --text:#d9f4ff;               /* texte principal */
-  --muted:#7fa5b7;              /* texte secondaire */
-  --accent:#6fe4ff;             /* accent teal/cyan SC */
+  --text:#d9f4ff;
+  --muted:#7fa5b7;
+  --accent:#6fe4ff;
 
-  --border:rgba(111, 228, 255, .20); /* liseré teal/cyan */
-  --border2:rgba(255,255,255,.06);   /* liseré neutre */
+  --border:rgba(111, 228, 255, .20);
+  --border2:rgba(255,255,255,.06);
 
   --glow:rgba(111, 228, 255, .22);
   --glow2:rgba(111, 228, 255, .12);
@@ -38,10 +38,10 @@ SC Timeline — app.css (version corrigée + thème “Star Citizen / HUD”)
    ============================== */
 
 *{ box-sizing:border-box; }
-html, body{ 
+html, body{
    height:100%;
    width:100%;
-     overflow-x:hidden;
+   overflow-x:hidden;
 }
 
 body{
@@ -53,22 +53,14 @@ body{
 body::before{
   content:"";
   position: fixed;
-
-  /* mieux que inset sur certains mobiles */
-  top:0;
-  right:0;
-  bottom:0;
-  left:0;
-
+  top:0; right:0; bottom:0; left:0;
   z-index: -1;
   pointer-events: none;
-
   background:
     radial-gradient(1200px 700px at 20% -10%, rgba(111,228,255,.10), transparent 60%),
     radial-gradient(900px 600px at 110% 10%, rgba(111,228,255,.06), transparent 55%),
     linear-gradient(180deg, #041018 0%, var(--bg) 55%, #04080b 100%);
 }
-/* Liens */
 a{ color:var(--accent); text-decoration:none; }
 a:hover{ text-decoration:underline; }
 
@@ -86,7 +78,6 @@ header{
   box-shadow:0 10px 30px rgba(0,0,0,.35);
 }
 
-/* Trait lumineux HUD sous le header */
 header::after{
   content:"";
   display:block;
@@ -106,7 +97,6 @@ header::after{
   max-width:1200px;
   margin:0 auto;
   padding:14px 16px;
-
   display:flex;
   gap:12px;
   align-items:flex-start;
@@ -144,20 +134,17 @@ header::after{
   display:inline-flex;
   gap:8px;
   align-items:center;
-
   border:1px solid var(--border);
   padding:6px 10px;
   border-radius:999px;
   background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);
-
   color:var(--muted);
   font-size:12px;
   letter-spacing:.04em;
   text-transform:uppercase;
 }
 
-/* Boutons */
 button{
   padding:10px 12px;
   border-radius:12px;
@@ -184,7 +171,6 @@ button:disabled{
   cursor:not-allowed;
 }
 
-/* Inputs / select / textarea */
 input,select,textarea{
   width:100%;
   padding:10px;
@@ -207,24 +193,17 @@ textarea{
 }
 
 /* ==============================
-   Select stylisé (thème sombre)
-   Colle après la section "Inputs / select / textarea"
+   Select stylisé
    ============================== */
 
-/* Optionnel : wrapper si tu veux un pseudo-élément pour la flèche */
-.selectWrap{
-  position: relative;
-  display: block;
-}
+.selectWrap{ position: relative; display: block; }
 
-/* Champ select : apparence uniforme */
 select{
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-
   width: 100%;
-  padding: 10px 40px 10px 10px; /* espace pour icône */
+  padding: 10px 40px 10px 10px;
   border-radius: 12px;
   border: 1px solid var(--border2);
   background:
@@ -236,11 +215,8 @@ select{
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.02);
   -webkit-text-fill-color: var(--text);
 }
-
-/* Remove native arrow on IE/Edge */
 select::-ms-expand { display: none; }
 
-/* Fallback: place a custom arrow as background if no wrapper used */
 select.customArrow,
 select{
   background-repeat: no-repeat;
@@ -248,23 +224,17 @@ select{
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%236fe4ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
   background-size:18px 18px;
 }
-
-/* Focus state */
 select:focus{
   border-color: rgba(111,228,255,.55);
   box-shadow:
     inset 0 0 0 1px rgba(255,255,255,.03),
     0 0 0 4px var(--glow2);
 }
-
-/* Styling des options (fonctionne dans la plupart des navigateurs) */
 select option{
   background: linear-gradient(180deg, var(--panel2), var(--panel));
   color: var(--text);
   padding: 6px 10px;
 }
-
-/* selected / hover (avis : certains navigateurs n'appliquent pas ces règles) */
 select option:checked,
 select option:active,
 select option:hover,
@@ -272,50 +242,18 @@ select option:focus{
   background: linear-gradient(180deg, rgba(111,228,255,.04), rgba(111,228,255,.02));
   color: var(--text);
 }
+select optgroup { color: var(--muted); background: var(--panel); padding: 6px 10px; }
 
-/* optgroup styling */
-select optgroup {
-  color: var(--muted);
-  background: var(--panel);
-  padding: 6px 10px;
-}
-
-/* Scrollbar optionnelle dans le menu déroulant (WebKit) — certains navigateurs ignorent */
-select::-webkit-scrollbar { width: 10px; height: 10px; }
-select::-webkit-scrollbar-track { background: rgba(0,0,0,.08); border-radius:8px; }
-select::-webkit-scrollbar-thumb { background: rgba(111,228,255,.12); border-radius:8px; border: 2px solid rgba(0,0,0,0.12); }
-
-/* Petit fallback si le navigateur force un fond blanc dans le panneau natif :
-   on réduit la luminosité du texte blanc pour éviter l'illisibilité.
-   (ne règle pas tous les cas, mais atténue le problème) */
-@media (hover: hover) {
-  select option { color: var(--text); }
-}
-
-/* Si tu veux cibler explicitement #cat, tu peux utiliser:
-#cat { ... }    et    #cat option { ... }
-*/
-
-/* Grille 2 colonnes utilisée dans les formulaires (déjà présente) */
 .row{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px;
 }
 
-/* Textes utilitaires */
 .muted{ color:var(--muted); }
-.kbd{
-  font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,"Liberation Mono","Courier New", monospace;
-  font-size:12px;
-}
+.kbd{ font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,"Liberation Mono","Courier New", monospace; font-size:12px; }
 
-/* Séparateur horizontal */
-.sep{
-  height:1px;
-  background:var(--border2);
-  margin:12px 0;
-}
+.sep{ height:1px; background:var(--border2); margin:12px 0; }
 
 /* ==============================
    5) Layout principal
@@ -326,7 +264,6 @@ main{
   width:100%;
   margin:0 auto;
   padding:16px;
-
   display:grid;
   grid-template-columns:340px 1fr;
   gap:14px;
@@ -347,8 +284,6 @@ main{
   overflow:hidden;
   box-shadow:var(--shadow2);
   position:relative;
-
-  /* Coins biseautés (panneau futuriste) */
   clip-path:polygon(
     10px 0%,
     100% 0%,
@@ -359,7 +294,6 @@ main{
   );
 }
 
-/* Reflet “glass” */
 .card::before{
   content:"";
   position:absolute;
@@ -369,7 +303,6 @@ main{
   opacity:.55;
 }
 
-/* Liseré interne */
 .card::after{
   content:"";
   position:absolute;
@@ -387,30 +320,16 @@ main{
     var(--shadow2);
 }
 
-.card .hd{
-  padding:12px 14px;
-  border-bottom:1px solid rgba(255,255,255,.06);
-  font-weight:900;
-  letter-spacing:.10em;
-  text-transform:uppercase;
-}
-
-.card .bd{
-  padding:12px 14px;
-}
+.card .hd{ padding:12px 14px; border-bottom:1px solid rgba(255,255,255,.06); font-weight:900; letter-spacing:.10em; text-transform:uppercase; }
+.card .bd{ padding:12px 14px; }
 
 /* ==============================
    7) Timeline
    ============================== */
 
-#timeline{
-  display:grid;
-  gap:10px;
-}
-
+#timeline{ display:grid; gap:10px; }
 .event{ display:block; }
 
-/* Carte événement (texte + miniature) */
 .evt{
   display:grid;
   grid-template-columns:1fr 110px;
@@ -419,7 +338,6 @@ main{
   cursor:pointer;
   transition:transform .14s ease, box-shadow .14s ease, border-color .14s ease;
 }
-
 .evt:hover{ transform:translateY(-1px); }
 .evt:hover .title{ color:var(--accent); }
 
@@ -429,91 +347,43 @@ main{
 
 .evtMain{ padding:12px; }
 
-.date{
-  font-size:12px;
-  color:var(--muted);
-}
+.date{ font-size:12px; color:var(--muted); }
 
-.title{
-  font-size:16px;
-  font-weight:900;
-  margin:6px 0;
-}
+.title{ font-size:16px; font-weight:900; margin:6px 0; }
 
-.cat{
-  display:flex;
-  gap:8px;
-  align-items:center;
-  color:var(--muted);
-  font-size:12px;
-}
+.cat{ display:flex; gap:8px; align-items:center; color:var(--muted); font-size:12px; }
 
-.dot{
-  width:10px;
-  height:10px;
-  border-radius:999px;
-  background:var(--accent);
-}
+.dot{ width:10px; height:10px; border-radius:999px; background:var(--accent); }
 
-.preview{
-  margin-top:8px;
-  font-size:13px;
-  line-height:1.4;
-  color:rgba(215,240,255,.90);
-}
+.preview{ margin-top:8px; font-size:13px; line-height:1.4; color:rgba(215,240,255,.90); }
 
-/* Miniature */
 .evtThumb{
   border-radius:14px;
   overflow:hidden;
   border:1px solid rgba(111,228,255,.18);
   background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  display:flex; align-items:center; justify-content:center;
 }
-
 .evtThumb.empty{ opacity:.5; }
-
-.evtThumb img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
-
-.evt:hover .evtThumb{
-  border-color:rgba(111,228,255,.30);
-  box-shadow:0 0 0 3px rgba(111,228,255,.10);
-}
+.evtThumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.evt:hover .evtThumb{ border-color:rgba(111,228,255,.30); box-shadow:0 0 0 3px rgba(111,228,255,.10); }
 
 /* ==============================
    8) Modale
    ============================== */
 
-#backdrop{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.55);
-  display:none;
-  z-index:100;
-}
+#backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; z-index:100; }
 
 #modal{
   position:fixed;
   left:50%;
   top:50%;
   transform: translate(-50%,-50%);
-
   width:min(980px,94vw);
-  height: 96vh; 
-  max-height:96vh;
-
+  height: 96vh; max-height:96vh;
   display:none;
   grid-template-columns:1fr;
   gap:0;
-
   z-index:101;
   background:var(--panel);
   border:1px solid rgba(111,228,255,.22);
@@ -530,235 +400,131 @@ main{
   background:linear-gradient(180deg, rgba(111,228,255,.10), transparent 25%, rgba(0,0,0,0));
 }
 
-/* Contenu principal scrollable */
-/* Contenu principal scrollable */
 .mLeft{
-  padding: 0 14px 14px;         /* plus de padding en haut */
+  padding: 0 14px 14px;
   border-right:none;
-
-  max-height:none; /* même valeur que #modal */
-  height: 100%;        /* NEW: remplit la modale */
+  max-height:none;
+  height: 100%;
   overflow:auto;
   overscroll-behavior:contain;
   -webkit-overflow-scrolling:touch;
 }
 
-/* Garder le haut de la modale (titre + boutons) visible pendant le scroll */
 .mTop{
   position: sticky;
   top: 0;
   z-index: 2;
-
   display:flex;
   gap:8px;
   align-items:flex-start;
   justify-content:space-between;
-
-  /* fond pour éviter que le texte passe dessous */
   background: linear-gradient(180deg, rgba(7,27,36,.94), rgba(7,27,36,.70));
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-
-  /* compense le padding de .mLeft (padding:14px) pour coller aux bords */
   margin: 8px -14px 6px;
   padding: 0px 14px 6px;
-
   border-bottom: 1px solid rgba(255,255,255,.06);
 }
 
-.mTitle{
-  font-size:16px;   /* au lieu de 20px */
-  line-height:1.2;
-  font-weight:900;
-}
-  
+.mTitle{ font-size:16px; line-height:1.2; font-weight:900; }
 
-/* Texte plus compact dans l'en-tête de modale */
-#mdate{
-  font-size:11px;
-  line-height:1.2;
-  margin-bottom:2px;
-}
-/* Bouton Fermer plus petit dans la modale */
-#closeBtn{
-  padding:7px 10px;
-  border-radius:10px;
-  font-size:12px;
-}
+#mdate{ font-size:11px; line-height:1.2; margin-bottom:2px; }
+#closeBtn{ padding:7px 10px; border-radius:10px; font-size:12px; }
 
-.mActions{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  justify-content:flex-end;
-}
+.mActions{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
 
-.mCat{
-  display:flex;
-  gap:8px;
-  align-items:center;
-  color:var(--muted);
-  margin-top:8px;
-}
+.mCat{ display:flex; gap:8px; align-items:center; color:var(--muted); margin-top:8px; }
 
-#mlinks{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:10px;
-}
+#mlinks{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
 
-#mtext{
-  margin-top:12px;
-  white-space:pre-wrap;
-  line-height:1.5;
-}
+#mtext{ margin-top:12px; white-space:pre-wrap; line-height:1.5; }
 
-#mgallery{
-  margin-top:14px;
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
+#mgallery{ margin-top:14px; display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
 
-.thumb{
-  border:1px solid rgba(111,228,255,.14);
-  border-radius:14px;
-  overflow:hidden;
-  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-}
+.thumb{ border:1px solid rgba(111,228,255,.14); border-radius:14px; overflow:hidden; background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)); }
+.thumb img{ width:100%; height:160px; object-fit:cover; display:block; }
+.thumb .cap{ padding:8px; color:var(--muted); font-size:12px; }
 
-.thumb img{
-  width:100%;
-  height:160px;
-  object-fit:cover;
-  display:block;
-}
-
-.thumb .cap{
-  padding:8px;
-  color:var(--muted);
-  font-size:12px;
-}
-
-/* Éditeur inline (formulaire dans la modale) */
 #editWrap{ display:none; }
 
-/* ===== Fix scroll modale ===== */
-#modal{
-  /* on évite le clipping sur une zone scrollable */
-  clip-path:none !important;
-}
+/* fix scroll modale */
+#modal{ clip-path:none !important; }
+#modal::after{ content:none !important; }
 
-#modal::after{
-  /* si .card::after (liseré) est hérité/présent, on le neutralise sur la modale */
-  content:none !important;
-}
-
-
-/* optionnel : empêcher la page derrière de scroller quand la modale est ouverte */
-body.modal-open{
-  overflow:hidden;
-}
+body.modal-open{ overflow:hidden; }
 
 /* ==============================
    9) Barre statut Supabase (edit only)
    ============================== */
 
-/* Barre dans le flux : sous le header, sans top “magique”.
-   En contrepartie : elle disparaît quand on scroll (ton choix B). */
 #topStatus{
   z-index: 1;
-
   margin: 10px 0 0;
   width: 100%;
-
   padding:10px 12px;
   border-radius:14px;
   background:linear-gradient(180deg, rgba(6,14,20,.92), rgba(6,14,20,.75));
   border:1px solid rgba(111,228,255,.22);
   box-shadow:0 18px 60px rgba(0,0,0,.55);
-
   color:var(--text);
   font-size:12px;
   letter-spacing:.02em;
-
-  display:none; /* activé en JS seulement en #edit */
+  display:none;
 }
-
 #topStatus.show{ display:block; }
-
-/* Allow wrapping so the tag can drop to the next line on small widths */
-#topStatus .row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  flex-wrap:wrap; /* permit the tag to wrap if needed */
-}
-
-/* message: allow up to 2 lines, and ensure it can shrink inside flex */
-#topStatus .msg{
-  color:rgba(215,240,255,.92);
-
-  /* allow wrapping and clamp to 2 lines where supported */
-  white-space: normal;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; /* limit to 2 lines where supported */
-
-  /* flex sizing so the message can shrink and wrap properly */
-  flex: 1 1 0;
-  min-width: 0; /* important to allow flex children to shrink and prevent overflow */
-}
-
-#topStatus .tag{
-  flex:0 0 auto;
-  padding:4px 8px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.10);
-  background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-  color:var(--muted);
-  text-transform:uppercase;
-  font-size:11px;
-}
-
+#topStatus .row{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+#topStatus .msg{ color:rgba(215,240,255,.92); white-space: normal; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; flex: 1 1 0; min-width: 0; }
+#topStatus .tag{ flex:0 0 auto; padding:4px 8px; border-radius:999px; border:1px solid rgba(255,255,255,.10); background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); color:var(--muted); text-transform:uppercase; font-size:11px; }
 #topStatus.ok{ border-color:rgba(111,228,255,.35); }
 #topStatus.err{ border-color:rgba(255,80,80,.35); }
 
-/* ===== Modale: pleine hauteur uniquement en mode édition ===== */
-body[data-mode="edit"] #modal{
-  height: 98vh;
-  max-height: 98vh;
-}
+body[data-mode="edit"] #modal{ height: 98vh; max-height: 98vh; }
+body[data-mode="edit"] .mLeft{ height: 100%; max-height: none; }
 
-body[data-mode="edit"] .mLeft{
-  height: 100%;
-  max-height: none;
-}
-/* Sidebar (Filtres + topStatus) sticky sur PC */
 @media (min-width: 981px){
   .sidebar{
     position: sticky;
-    top: 90px;                 /* ajuste si besoin */
+    top: 90px;
     align-self: start;
-
     max-height: calc(100vh - 90px);
-
-    /* Allow vertical scrolling only, hide horizontal overflow to remove the horizontal scrollbar */
     overflow-y: auto;
     overflow-x: hidden;
-
     display: grid;
     gap: 12px;
   }
 }
 
-/* La barre “Sauvegardé…” dans la sidebar */
-.sidebar #topStatus{
-  margin: 0;                   /* plus besoin du margin-top */
-  width: 100%;
+.sidebar #topStatus{ margin: 0; width: 100%; }
+
+/* ==============================
+   10) Force upload button
+   ============================== */
+
+/* Floating primary small button bottom-right */
+#forceUploadBtn{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 300;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(111,228,255,.16), rgba(111,228,255,.08));
+  color: var(--bg);
+  border: 1px solid rgba(111,228,255,.45);
+  box-shadow: 0 6px 20px rgba(0,0,0,.5), 0 0 10px rgba(111,228,255,.06);
+  font-weight:700;
+  cursor: pointer;
+}
+#forceUploadBtn:hover{
+  box-shadow: 0 8px 26px rgba(0,0,0,.6), 0 0 18px rgba(111,228,255,.12);
+}
+#forceUploadBtn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+/* Hide by default; JS will toggle visibility in edit mode */
+#forceUploadBtn{ display:none; }
+
+/* Slight responsive tweak */
+@media (max-width:640px){
+  #forceUploadBtn{ right: 12px; bottom: 12px; padding:9px 10px; font-size:13px; }
 }

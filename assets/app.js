@@ -1,12 +1,10 @@
 /*
 SC Timeline — app.js (commenté)
 Objectif : rendre le fichier plus lisible SANS changer le comportement.
-
-Repères :
-- Charge le JSON de base (data/timeline_base.json)
-- Applique les overrides (localStorage + Supabase)
-- Affiche la liste + filtres + modale
-- En mode editor.html : édition collaborative (login Supabase)
+Ajouts récents :
+ - meilleure gestion local vs remote (horodatage)
+ - indicateur "local modified"
+ - bouton "Force upload" pour pousser immédiatement les overrides sur Supabase
 */
 
 /* global supabase */
@@ -88,8 +86,6 @@ Repères :
   function truncate(s,n){ s=stripHtml(s).trim(); return s.length<=n? s : s.slice(0,n-1)+"…"; }
   
   // parseYear : accepte "YYYY", "YYYY-MM", "YYYY-MM-DD"
-  // Retourne l'année (nombre) ou null
-  // Exemples: "2024" → 2024, "2024-03" → 2024, "2024-03-15" → 2024
   function parseYear(dateStr){
     const m = /^(\d{4})(?:-\d{2}(?:-\d{2})?)?/.exec(dateStr||"");
     return m ? parseInt(m[1], 10) : null;
@@ -152,8 +148,6 @@ Repères :
   /**
    * safeUrl — Validation d'URL pour éviter les schémas malveillants (javascript:, data:, file:, etc.)
    * N'autorise que http: et https: pour les liens cliquables.
-   * Retourne l'URL normalisée si valide, sinon null.
-   * Usage : protège contre XSS via URL et open-redirect vers des schémas dangereux.
    */
   function safeUrl(u){
     if (!u || typeof u !== "string") return null;
@@ -161,7 +155,6 @@ Repères :
     if (!trimmed) return null;
     try {
       const url = new URL(trimmed, window.location.href);
-      // N'autorise que http et https pour les liens
       if (url.protocol === "http:" || url.protocol === "https:") {
         return url.href;
       }
@@ -173,28 +166,20 @@ Repères :
 
   /**
    * safeImageUrl — Validation d'URL pour les images.
-   * Autorise http:, https: et data:image/* (pour les images encodées en base64).
-   * Retourne l'URL normalisée si valide, sinon null.
-   * Usage : protège contre le chargement d'images depuis des sources non fiables.
+   * Autorise http:, https: et data:image/*.
    */
   function safeImageUrl(u){
     if (!u || typeof u !== "string") return null;
     const trimmed = u.trim();
     if (!trimmed) return null;
     
-    // Validation des data URLs pour images base64
-    // Format attendu: data:image/[type];base64,[données]
-    // Supporte: png, jpeg, gif, svg+xml, x-icon, webp, etc.
     if (trimmed.toLowerCase().startsWith("data:image/")) {
-      // Vérification stricte du format data URL pour éviter les URLs malformées
-      // Accepte les types MIME standards: lettres, chiffres, +, -, .
       if (/^data:image\/[a-z0-9+.-]+;base64,/i.test(trimmed)) {
         return trimmed;
       }
       return null;
     }
     
-    // Validation des URLs http/https
     try {
       const url = new URL(trimmed, window.location.href);
       if (url.protocol === "http:" || url.protocol === "https:") {
@@ -355,8 +340,6 @@ Repères :
     const tl = $("timeline");
     tl.innerHTML = "";
     
-    // Utilise DocumentFragment pour construire la liste en mémoire
-    // puis l'attacher au DOM en une seule opération (réduit les reflows)
     const fragment = document.createDocumentFragment();
     
     for (const s of items){
@@ -422,7 +405,6 @@ Repères :
       fragment.appendChild(wrap);
     }
     
-    // Attacher le fragment au DOM en une seule opération
     tl.appendChild(fragment);
 
     // mode badges
@@ -435,11 +417,9 @@ Repères :
   // 5) Modale (lecture + edition)
   // ==============================
 
-  // Variable pour sauvegarder l'élément qui avait le focus avant l'ouverture de la modale
   let _previousActive = null;
 
   function openModal(story){
-    // Sauvegarder l'élément actif pour restaurer le focus à la fermeture
     _previousActive = document.activeElement;
     
     window.CURRENT_STORY_ID = String(story.id);
@@ -510,7 +490,6 @@ Repères :
     const modal = $("modal");
     $("backdrop").style.display="block";
     
-    // Accessibilité : définir le rôle dialog et aria-modal
     modal.style.display="grid";
     document.body.classList.add("modal-open");
     modal.setAttribute("aria-hidden","false");
@@ -518,7 +497,6 @@ Repères :
     modal.setAttribute("aria-modal", "true");
     modal.setAttribute("tabindex", "-1");
     
-    // Déplacer le focus dans la modale pour améliorer l'accessibilité
     modal.focus();
 
     applyEditPermissions();
@@ -533,18 +511,14 @@ Repères :
     document.body.classList.remove("modal-open");
     modal.setAttribute("aria-hidden","true");
     
-    // Retirer les attributs d'accessibilité ajoutés
     modal.removeAttribute("role");
     modal.removeAttribute("aria-modal");
     modal.removeAttribute("tabindex");
     
-    // Restaurer le focus sur l'élément qui était actif avant l'ouverture
     if (_previousActive && document.body.contains(_previousActive)){
       try {
         _previousActive.focus();
-      } catch (e) {
-        // L'élément n'est plus focusable, ignorer l'erreur
-      }
+      } catch (e) {}
     }
     _previousActive = null;
   }
@@ -557,7 +531,7 @@ Repères :
 
   function setEditMode(on){
     const isEdit = getMode() === "edit";
-    const show = isEdit && !!on; // show réel : jamais true en lecture
+    const show = isEdit && !!on;
 
     $("editWrap").style.display = show ? "block" : "none";
 
@@ -639,13 +613,11 @@ Repères :
 
     OVERRIDES = loadOverridesLocal();
 
-    // Optional: seed overrides from a file committed in the repo (useful for first install / migration)
     async function loadSeedOverrides(){
       try{
         const r = await fetch(SEED_OVERRIDES_URL, { cache: 'no-store' });
         if (!r.ok) return {};
         const j = await r.json();
-        // We only accept the overrides-object shape: { [id]: { ... } }
         if (!j || typeof j !== 'object' || Array.isArray(j)) return {};
         if ('stories' in j || 'categories' in j || 'meta' in j) return {};
         return j;
@@ -653,7 +625,6 @@ Repères :
     }
 
     const seed = await loadSeedOverrides();
-    // Merge: local overrides win over seed
     OVERRIDES = Object.assign({}, seed, OVERRIDES);
     saveOverridesLocal(OVERRIDES);
     // Mark local change
@@ -699,13 +670,11 @@ Repères :
 
     OVERRIDES = loadOverridesLocal();
 
-    // Optional: seed overrides from a file committed in the repo (useful for first install / migration)
     async function loadSeedOverrides(){
       try{
         const r = await fetch(SEED_OVERRIDES_URL, { cache: 'no-store' });
         if (!r.ok) return {};
         const j = await r.json();
-        // We only accept the overrides-object shape: { [id]: { ... } }
         if (!j || typeof j !== 'object' || Array.isArray(j)) return {};
         if ('stories' in j || 'categories' in j || 'meta' in j) return {};
         return j;
@@ -713,7 +682,6 @@ Repères :
     }
 
     const seed = await loadSeedOverrides();
-    // Merge: local overrides win over seed
     OVERRIDES = Object.assign({}, seed, OVERRIDES);
     saveOverridesLocal(OVERRIDES);
     // Mark local change
@@ -734,11 +702,8 @@ Repères :
   }
 
   async function createNewStory(){
-    // Visible even without being connected: we open the form.
-    // Saving will still require an allowed account (timeline_editors).
     const id = String(nextStoryId());
 
-    // Draft story (not persisted until "Enregistrer").
     const draft = {
       id,
       title: "(sans titre)",
@@ -755,7 +720,6 @@ Repères :
     openModal(draft);
     openEditForStory(draft);
 
-    // The draft does not exist server-side yet, so deleting makes no sense.
     if ($('deleteBtn')) $('deleteBtn').style.display = 'none';
 
     if (!CAN_EDIT){
@@ -814,7 +778,6 @@ Repères :
 
   async function sbInit(){
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
-    // Vérifier si la bibliothèque Supabase est disponible
     if (typeof supabase === "undefined") {
       console.warn("Supabase library not loaded - skipping Supabase init");
       return;
@@ -841,7 +804,6 @@ Repères :
     const email = SESSION.user.email;
     if (!email) return false;
 
-    // Check allowlist table (readable to authenticated users via RLS policy)
     const res = await sb.from(EDITORS_TABLE).select("email").eq("email", email).limit(1);
     if (!res.error && Array.isArray(res.data) && res.data.length){
       CAN_EDIT = true;
@@ -884,7 +846,6 @@ Repères :
 
     applyEditPermissions();
 
-    // Cache l'avertissement quand tu as les droits
     if (hint && getMode() === "edit") {
       hint.style.display = CAN_EDIT ? "none" : "block";
     }
@@ -893,45 +854,39 @@ Repères :
   function applyEditPermissions(){
     const isEdit = getMode() === "edit";
     const can = isEdit && CAN_EDIT;
-    // En lecture: ne jamais montrer les boutons d'édition dans la modale
     if (!isEdit){
       if ($("editBtn")) $("editBtn").style.display = "none";
       if ($("saveBtn")) $("saveBtn").style.display = "none";
       if ($("cancelBtn")) $("cancelBtn").style.display = "none";
       if ($("deleteBtn")) $("deleteBtn").style.display = "none";
     }
-    // ➕ Nouvel évènement : visible en mode édition, même sans droits
     const newBtn = $("newBtn");
     if (newBtn){
       newBtn.style.display = isEdit ? "" : "none";
       newBtn.disabled = false;
     }
 
-    // Bouton Modifier
     const editBtn = $("editBtn");
     if (editBtn){
-      
       editBtn.disabled = !can;
       editBtn.title = can ? "" : "Lecture seule : non autorisé";
     }
 
-    // Bouton Enregistrer
     const saveBtn = $("saveBtn");
     if (saveBtn){
-      
       saveBtn.disabled = !can;
       saveBtn.title = can ? "" : "Lecture seule : non autorisé";
     }
 
-    // 🗑 Bouton Supprimer (toujours visible mais grisé si non autorisé)
     const deleteBtn = $("deleteBtn");
     if (deleteBtn){ 
-      
       deleteBtn.disabled = !can;
       deleteBtn.title = can ? "" : "Lecture seule : non autorisé";
     }
 
-    // Message d’état
+    // Also update force-upload button visibility
+    updateForceBtnVisibility();
+
     const sbLine = $("sbEditModeLine") || $("sbStatus");
     if (sbLine && isEdit){
       if (!SESSION){
@@ -982,21 +937,17 @@ Repères :
 
     async function trySave(attempt = 1){
       try{
-        // Preferred: use supabase-js client upsert (handles auth headers)
         if (sb && typeof sb.from === "function"){
           const res = await sb
             .from(OVERRIDE_TABLE)
             .upsert(payload, { onConflict: "timeline_id" })
             .select();
           if (res.error) {
-            // convert to throw so retry logic can catch
             throw res.error;
           }
-          // res.data is an array (representation)
           return res.data?.[0] ?? null;
         }
 
-        // Fallback: REST fetch (kept for compatibility)
         const url = `${SUPABASE_URL}/rest/v1/${OVERRIDE_TABLE}?on_conflict=timeline_id`;
         const r = await fetch(url, {
           method: "POST",
@@ -1025,7 +976,6 @@ Repères :
           return null;
         }
       }catch(err){
-        // Retry on network errors or 5xx
         const shouldRetry = attempt < 3 && (!err.status || (err.status >= 500 && err.status < 600));
         if (shouldRetry){
           const wait = 200 * Math.pow(2, attempt-1);
@@ -1044,9 +994,7 @@ Repères :
   function debouncedRemoteSave(){
     clearTimeout(_saveTimer);
     _saveTimer = setTimeout(async ()=>{
-      // If a save is in flight, postpone the save to avoid concurrent writes
       if (_saveInFlight) {
-        // slight delay before retrying
         setTimeout(debouncedRemoteSave, 300);
         return;
       }
@@ -1063,7 +1011,6 @@ Repères :
         if (written && written.updated_at){
           LAST_REMOTE_UPDATED_AT = written.updated_at;
         } else {
-          // fallback: re-read meta
           const meta = await sbLoadOverrides();
           LAST_REMOTE_UPDATED_AT = meta.updated_at;
           LAST_REMOTE_UPDATED_BY = meta.updated_by;
@@ -1076,7 +1023,6 @@ Repères :
         setSbStatus(timestamp ? "Sauvegardé ✅ — " + timestamp : "Sauvegardé ✅");
       }catch(e){
         console.warn("Erreur de sauvegarde Supabase:", e);
-        // If the error contains useful info, include it
         let msg = e && e.message ? e.message : String(e);
         if (e && e.responseBody) {
           try { msg += " • " + (typeof e.responseBody === "string" ? e.responseBody : JSON.stringify(e.responseBody)); }
@@ -1089,11 +1035,42 @@ Repères :
     }, 600);
   }
 
+  // Force upload (bouton) : pousse immédiatement OVERRIDES -> Supabase
+  async function forceUpload(){
+    if (!ensureCanEditOrWarn()) return;
+    if (!sb) return alert("Supabase non initialisé.");
+    if (_saveInFlight) return alert("Sauvegarde déjà en cours, attends un instant...");
+    if (!confirm("Forcer l'envoi des modifications locales vers Supabase maintenant ?")) return;
+
+    try{
+      _saveInFlight = true;
+      setSbStatus("Envoi forcé en cours…");
+      const written = await sbSaveOverrides(OVERRIDES);
+      if (written && written.updated_at){
+        LAST_REMOTE_UPDATED_AT = written.updated_at;
+        LAST_REMOTE_UPDATED_BY = written.updated_by || null;
+      } else {
+        const meta = await sbLoadOverrides();
+        LAST_REMOTE_UPDATED_AT = meta.updated_at;
+        LAST_REMOTE_UPDATED_BY = meta.updated_by;
+      }
+      clearLocalModified();
+      setSbStatus("Envoyé manuellement ✅ — " + (LAST_REMOTE_UPDATED_AT ? new Date(LAST_REMOTE_UPDATED_AT).toLocaleTimeString() : ""));
+      // re-read remote to be safe and refresh UI
+      await pullRemoteAndApply();
+    }catch(e){
+      console.error("Force upload failed:", e);
+      alert("Envoi forcé échoué: " + (e && e.message ? e.message : String(e)));
+      setSbStatus("Erreur envoi forcé: " + (e && e.message ? e.message : String(e)));
+    }finally{
+      _saveInFlight = false;
+    }
+  }
+
   function setSbStatus(msg){
     const el = $("sbStatus");
     if (el) el.textContent = "";
 
-    // barre en haut uniquement en #edit
     if (getMode() === "edit") {
       const kind = (msg || "").toLowerCase().includes("erreur") ? "err" : "ok";
       if (msg) showTopStatus(msg, kind);
@@ -1120,10 +1097,6 @@ Repères :
       const remoteIsEmpty = Object.keys(remoteObj).length === 0;
       const localIsEmpty = Object.keys(localObj).length === 0;
 
-      // New logic: prefer the most recently modified copy.
-      // - If remote has no data and local has data => keep local
-      // - Else if local was modified more recently than remote.updated_at => keep local
-      // - Else prefer remote
       const localModifiedTs = getLocalModifiedTs(); // ms since epoch
       const remoteUpdatedAtTs = meta.updated_at ? Date.parse(meta.updated_at) : 0;
 
@@ -1141,7 +1114,6 @@ Repères :
         nextObj = localObj;
         chose = "local_remote_empty";
       } else {
-        // remote has data, local empty => remote
         nextObj = remoteObj;
         chose = "remote";
       }
@@ -1160,7 +1132,6 @@ Repères :
       const who = meta.updated_by ? `uid ${meta.updated_by}` : "—";
       const changedTxt = changed.length ? `Modifs détectées (${changed.length}) : ${changed.slice(0,12).join(", ")}${changed.length>12?"…":""}` : "Aucune modif détectée.";
 
-      // Message plus explicite selon la source choisie
       if (chose === "local_newer" || chose === "local_remote_empty"){
         setSbStatus(`Supabase: utilisé ${chose === "local_remote_empty" ? "local (remote vide)" : "local (plus récent)"} • ${changedTxt}`);
       } else {
@@ -1203,11 +1174,7 @@ Repères :
     if (!r.ok) throw new Error("Base JSON introuvable: " + BASE_URL);
     DATA = await r.json();
 
-    // --- Normalisation du format de base ---
-    // Format attendu: { meta, categories:[], stories:[] }
-    // Mais certains exports peuvent être un objet {id: story, ...}
     function normalizeBase(input){
-      // standard Tiki-Toki-like export
       if (input && typeof input === 'object' && Array.isArray(input.stories)) {
         return {
           meta: (input.meta && typeof input.meta === 'object') ? input.meta : {},
@@ -1216,12 +1183,10 @@ Repères :
         };
       }
 
-      // dict-like export: {"123": {title, startDate, ...}, ...}
       if (input && typeof input === 'object' && !Array.isArray(input)) {
         const stories = Object.entries(input)
           .filter(([, v]) => v && typeof v === 'object')
           .map(([k, v]) => ({ id: (v.id ?? k), ...v }));
-        // build minimal categories list from story.category / story.categoryId
         const catIds = new Map();
         for (const s of stories) {
           const cid = (s.categoryId ?? s.category ?? s.category_id ?? null);
@@ -1236,12 +1201,10 @@ Repères :
         };
       }
 
-      // fallback
       return { meta: {}, categories: [], stories: [] };
     }
 
     const normalized = normalizeBase(DATA);
-    // Keep a copy for status/debug
     DATA = normalized;
 
     cats = Array.isArray(normalized.categories) ? normalized.categories : [];
@@ -1251,13 +1214,11 @@ Repères :
 
     OVERRIDES = loadOverridesLocal();
 
-    // Optional: seed overrides from a file committed in the repo (useful for first install / migration)
     async function loadSeedOverrides(){
       try{
         const r = await fetch(SEED_OVERRIDES_URL, { cache: 'no-store' });
         if (!r.ok) return {};
         const j = await r.json();
-        // We only accept the overrides-object shape: { [id]: { ... } }
         if (!j || typeof j !== 'object' || Array.isArray(j)) return {};
         if ('stories' in j || 'categories' in j || 'meta' in j) return {};
         return j;
@@ -1265,7 +1226,6 @@ Repères :
     }
 
     const seed = await loadSeedOverrides();
-    // Merge: local overrides win over seed
     OVERRIDES = Object.assign({}, seed, OVERRIDES);
     saveOverridesLocal(OVERRIDES);
     rebuildStoriesFromBase();
@@ -1289,6 +1249,27 @@ Repères :
   }
 
   // ---- Wire UI ----
+
+  // create a floating "Force upload" button and manage its visibility
+  let _forceBtn = null;
+  function createForceBtn(){
+    if (_forceBtn) return;
+    _forceBtn = document.createElement("button");
+    _forceBtn.id = "forceUploadBtn";
+    _forceBtn.type = "button";
+    _forceBtn.textContent = "Force upload";
+    _forceBtn.title = "Forcer l'envoi des modifications locales vers Supabase";
+    _forceBtn.addEventListener("click", ()=> forceUpload());
+    document.body.appendChild(_forceBtn);
+    updateForceBtnVisibility();
+  }
+  function updateForceBtnVisibility(){
+    if (!_forceBtn) return;
+    // visible only in edit mode (and if Supabase configured)
+    const visible = (getMode() === "edit");
+    _forceBtn.style.display = visible ? "" : "none";
+    _forceBtn.disabled = !CAN_EDIT || !_forceBtn.style.display;
+  }
 
   // ==============================
   // 9) Wiring (events DOM)
@@ -1337,9 +1318,7 @@ Repères :
           if (!sb) return alert("Supabase non initialisé.");
           const email = $("authEmail").value.trim();
           if (!email) return alert("Entre un email.");
-            // IMPORTANT: ne pas inclure de hash (#edit) dans le redirect,
-            // sinon on obtient .../#edit#access_token=... et la session n'est pas stockée.
-            const redirectTo = `${window.location.origin}${window.location.pathname}`; // ex: https://keren-norn.github.io/SC-timeline/
+            const redirectTo = `${window.location.origin}${window.location.pathname}`;
             const { error } = await sb.auth.signInWithOtp({
               email,
               options: { emailRedirectTo: redirectTo }
@@ -1369,6 +1348,9 @@ Repères :
     if ($("reloadSupabaseBtn")) $("reloadSupabaseBtn").addEventListener("click", pullRemoteAndApply);
     if ($("exportSnapshotBtn")) $("exportSnapshotBtn").addEventListener("click", exportSnapshotGithub);
    
+    // Force upload button: create and manage visibility
+    createForceBtn();
+
     // Quand le mode change (#timeline <-> #edit), on rafraîchit l'UI
     window.addEventListener("sc:modechange", () => {
       setAuthUi();
