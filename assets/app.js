@@ -49,6 +49,7 @@ Repères :
   // ==============================
 
   function $(id){ return document.getElementById(id); }
+  
   function showTopStatus(msg, kind){
     const bar = $("topStatus");
     const txt = $("topStatusMsg");
@@ -62,10 +63,12 @@ Repères :
     bar.classList.toggle("err", kind === "err");
   }
 
-function hideTopStatus(){
-  const bar = $("topStatus");
-  if (!bar) return;
-  bar.classList.remove("show", "ok", "err");
+  function hideTopStatus(){
+    const bar = $("topStatus");
+    if (!bar) return;
+    bar.classList.remove("show", "ok", "err");
+  }
+  
   function isObj(x){ return x && typeof x === "object" && !Array.isArray(x); }
   
   function setStatus(msg){
