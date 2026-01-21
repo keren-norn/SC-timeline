@@ -598,18 +598,31 @@ body.modal-open{
 
 #topStatus.show{ display:block; }
 
+/* Allow wrapping so the tag can drop to the next line on small widths */
 #topStatus .row{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:10px;
+  flex-wrap:wrap; /* permit the tag to wrap if needed */
 }
 
+/* message: allow up to 2 lines, and ensure it can shrink inside flex */
 #topStatus .msg{
   color:rgba(215,240,255,.92);
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+
+  /* allow wrapping and clamp to 2 lines where supported */
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* limit to 2 lines where supported */
+
+  /* flex sizing so the message can shrink and wrap properly */
+  flex: 1 1 0;
+  min-width: 0; /* important to allow flex children to shrink and prevent overflow */
 }
 
 #topStatus .tag{
@@ -644,7 +657,11 @@ body[data-mode="edit"] .mLeft{
     align-self: start;
 
     max-height: calc(100vh - 90px);
-    overflow: auto;            /* scroll interne si trop long */
+
+    /* Allow vertical scrolling only, hide horizontal overflow to remove the horizontal scrollbar */
+    overflow-y: auto;
+    overflow-x: hidden;
+
     display: grid;
     gap: 12px;
   }
