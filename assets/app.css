@@ -38,7 +38,11 @@ SC Timeline — app.css (version corrigée + thème “Star Citizen / HUD”)
    ============================== */
 
 *{ box-sizing:border-box; }
-html, body{ height:100%; }
+html, body{ 
+   height:100%;
+   width:100%;
+     overflow-x:hidden;
+}
 
 body{
   margin:0;
@@ -223,6 +227,7 @@ textarea{
 
 main{
   max-width:1200px;
+  width:100%;
   margin:0 auto;
   padding:16px;
 
