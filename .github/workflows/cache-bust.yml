@@ -32,7 +32,7 @@ jobs:
             echo "has_content_changes=true" >> $GITHUB_OUTPUT
           else
             # If only index.html changed, check if it's just version strings
-            if git diff HEAD~1 HEAD index.html | grep -E "^\+" | grep -v "^\+\+\+" | grep -v "?v=" | grep -q .; then
+            if git diff HEAD~1 HEAD index.html | grep -E "^\+" | grep -v "^\+\+\+" | grep -v "\?v=" | grep -q .; then
               echo "has_content_changes=true" >> $GITHUB_OUTPUT
             else
               echo "has_content_changes=false" >> $GITHUB_OUTPUT
@@ -47,9 +47,9 @@ jobs:
           echo "Using version: $VERSION"
           
           # Update index.html with new version strings
-          sed -i "s|./assets/app\.css?v=[^\"]*|./assets/app.css?v=$VERSION|g" index.html
-          sed -i "s|./assets/router\.js?v=[^\"]*|./assets/router.js?v=$VERSION|g" index.html
-          sed -i "s|./assets/app\.js?v=[^\"]*|./assets/app.js?v=$VERSION|g" index.html
+          sed -i "s|./assets/app\.css[?]v=[^\"]*|./assets/app.css?v=$VERSION|g" index.html
+          sed -i "s|./assets/router\.js[?]v=[^\"]*|./assets/router.js?v=$VERSION|g" index.html
+          sed -i "s|./assets/app\.js[?]v=[^\"]*|./assets/app.js?v=$VERSION|g" index.html
           
           echo "Updated asset URLs with version $VERSION"
       
