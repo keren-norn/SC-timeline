@@ -1162,16 +1162,7 @@ Repères :
         try{
           if (!sb) return alert("Supabase non initialisé.");
           const email = $("authEmail").value.trim();
-          const code = $("authCode").value.trim();
           if (!email) return alert("Entre un email.");
-          if (code){
-            const { error } = await sb.auth.verifyOtp({ email, token: code, type: "email" });
-            if (error) throw error;
-            $("authCode").value = "";
-            await checkEditor();
-            setAuthUi();
-            alert("Connecté ✅");
-          } else {
             // IMPORTANT: ne pas inclure de hash (#edit) dans le redirect,
             // sinon on obtient .../#edit#access_token=... et la session n'est pas stockée.
             const redirectTo = `${window.location.origin}${window.location.pathname}`; // ex: https://keren-norn.github.io/SC-timeline/
