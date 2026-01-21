@@ -49,6 +49,23 @@ Repères :
   // ==============================
 
   function $(id){ return document.getElementById(id); }
+  function showTopStatus(msg, kind){
+    const bar = $("topStatus");
+    const txt = $("topStatusMsg");
+    if (!bar || !txt) return;
+
+    if (getMode() !== "edit") { bar.classList.remove("show"); return; }
+
+    txt.textContent = msg || "";
+    bar.classList.add("show");
+    bar.classList.toggle("ok", kind === "ok");
+    bar.classList.toggle("err", kind === "err");
+  }
+
+function hideTopStatus(){
+  const bar = $("topStatus");
+  if (!bar) return;
+  bar.classList.remove("show", "ok", "err");
   function isObj(x){ return x && typeof x === "object" && !Array.isArray(x); }
   
   function setStatus(msg){
@@ -904,8 +921,13 @@ Repères :
 
   function setSbStatus(msg){
     const el = $("sbStatus");
-    if (!el) return;
-    el.textContent = msg || "";
+    if (el) el.textContent = msg || "";
+
+    // barre en haut uniquement en #edit
+    if (getMode() === "edit") {
+      const kind = (msg || "").toLowerCase().includes("erreur") ? "err" : "ok";
+      if (msg) showTopStatus(msg, kind);
+    }
   }
 
   function diffOverrideKeys(a,b){
@@ -1162,6 +1184,7 @@ Repères :
       setAuthUi();
       applyEditPermissions();
       render();
+      if (getMode() !== "edit") hideTopStatus();
     });
 
     // start
