@@ -11,6 +11,9 @@ jobs:
   update-asset-versions:
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: write
+    
     # Skip if commit message contains [skip cache-bust]
     if: "!contains(github.event.head_commit.message, '[skip cache-bust]')"
     
