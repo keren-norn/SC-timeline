@@ -55,18 +55,24 @@ Repères :
     const txt = $("topStatusMsg");
     if (!bar || !txt) return;
 
-    if (getMode() !== "edit") { bar.classList.remove("show"); return; }
+    if (getMode() !== "edit") { 
+      bar.classList.remove("show"); 
+      document.body.classList.remove("has-topstatus");
+      return; 
+    }
 
     txt.textContent = msg || "";
     bar.classList.add("show");
     bar.classList.toggle("ok", kind === "ok");
     bar.classList.toggle("err", kind === "err");
+    document.body.classList.add("has-topstatus");
   }
 
   function hideTopStatus(){
     const bar = $("topStatus");
     if (!bar) return;
     bar.classList.remove("show", "ok", "err");
+    document.body.classList.remove("has-topstatus");
   }
   
   function isObj(x){ return x && typeof x === "object" && !Array.isArray(x); }
@@ -929,7 +935,8 @@ Repères :
         LAST_REMOTE_UPDATED_AT = meta.updated_at;
         LAST_REMOTE_UPDATED_BY = meta.updated_by;
 
-        setSbStatus("Sauvegardé ✅ (remote updated_at=" + (meta.updated_at || "null") + ")");
+        const timestamp = meta.updated_at ? new Date(meta.updated_at).toLocaleTimeString() : "";
+        setSbStatus("Sauvegardé ✅ — " + timestamp);
       }catch(e){
         console.warn(e);
         setSbStatus("Erreur save Supabase: " + (e.message||String(e)));
