@@ -881,15 +881,20 @@ Repères :
     clearTimeout(_saveTimer);
     _saveTimer = setTimeout(async ()=>{
       try{
-        if (getMode() !== "edit") return;
-        
+        if (getMode() !== "edit") throw new Error("Pas en mode édition (#edit).");
+        if (!sb) throw new Error("Supabase non initialisé.");
+
         const { data } = await sb.auth.getSession();
-        if (!data.session) throw new Error("Session Supabase absente (reconnecte-toi).");
-        
+        if (!data.session) throw new Error("Session absente (reconnecte-toi).");
+
+        await sbSaveOverrides(OVERRIDES);
+
+        // Preuve: on relit vraiment le remote
         const meta = await sbLoadOverrides();
         LAST_REMOTE_UPDATED_AT = meta.updated_at;
         LAST_REMOTE_UPDATED_BY = meta.updated_by;
-        setSbStatus("Sauvegardé sur Supabase ✅");
+
+        setSbStatus("Sauvegardé ✅ (remote updated_at=" + (meta.updated_at || "null") + ")");
       }catch(e){
         console.warn(e);
         setSbStatus("Erreur save Supabase: " + (e.message||String(e)));
