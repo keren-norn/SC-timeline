@@ -851,7 +851,12 @@ Repères :
     // IMPORTANT: upsert explicite sur timeline_id
     const url = `${SUPABASE_URL}/rest/v1/${OVERRIDE_TABLE}?on_conflict=timeline_id`;
 
-    const payload = { timeline_id: TIMELINE_ID, data: obj, updated_at: new Date().toISOString() }   
+    const payload = {
+      timeline_id: TIMELINE_ID,
+      data: obj,
+      updated_at: new Date().toISOString()
+    };
+    
     const r = await fetch(url, {
       method: "POST",
       headers: {
