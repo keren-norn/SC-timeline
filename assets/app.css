@@ -440,9 +440,12 @@ main{
 }
 
 /* Contenu principal scrollable */
+/* Contenu principal scrollable */
 .mLeft{
-  padding:14px;
+  padding: 0 14px 14px;         /* plus de padding en haut */
   border-right:none;
+
+  max-height:94vh;              /* même valeur que #modal */
   overflow:auto;
   overscroll-behavior:contain;
   -webkit-overflow-scrolling:touch;
@@ -460,12 +463,12 @@ main{
   justify-content:space-between;
 
   /* fond pour éviter que le texte passe dessous */
-  background: linear-gradient(180deg, rgba(7,27,36,.96), rgba(7,27,36,.78));
+  background: linear-gradient(180deg, rgba(7,27,36,.94), rgba(7,27,36,.70));
   backdrop-filter: blur(8px);
 
   /* compense le padding de .mLeft (padding:14px) pour coller aux bords */
-  margin: -14px -14px 4px;
-  padding: 8px 14px 6px;
+  margin: 8px -14px 6px;
+  padding: 0px -14px 6px;
 
   border-bottom: 1px solid rgba(255,255,255,.06);
 }
@@ -559,11 +562,6 @@ main{
   content:none !important;
 }
 
-/* le scroll doit être dans le contenu */
-.mLeft{
-  max-height:94vh;              /* même valeur que #modal */
-  overflow:auto !important;
-}
 
 /* optionnel : empêcher la page derrière de scroller quand la modale est ouverte */
 body.modal-open{
