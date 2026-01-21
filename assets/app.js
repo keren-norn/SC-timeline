@@ -867,7 +867,8 @@ Repères :
     clearTimeout(_saveTimer);
     _saveTimer = setTimeout(async ()=>{
       try{
-        if (!(getMode() === "edit" && CAN_EDIT)) return;
+        if (getMode() !== "edit") return;
+        if (!SESSION) return;
         await sbSaveOverrides(OVERRIDES);
         const meta = await sbLoadOverrides();
         LAST_REMOTE_UPDATED_AT = meta.updated_at;
