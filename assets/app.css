@@ -636,3 +636,15 @@ body[data-mode="edit"] .mLeft{
   height: 100%;
   max-height: none;
 }
+/* Sidebar filtres qui "suit" le scroll (PC uniquement) */
+@media (min-width: 981px){
+  main > section.card:first-child{
+    position: sticky;
+    top: 90px; /* ajuste si besoin: hauteur du header (ex: 70-110px) */
+    align-self: start;
+
+    /* si la sidebar est plus grande que l'écran, elle scrolle */
+    max-height: calc(100vh - 90px);
+    overflow: auto;
+  }
+}
