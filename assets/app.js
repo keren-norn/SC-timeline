@@ -6,7 +6,7 @@ Repères :
 - Charge le JSON de base (data/timeline_base.json)
 - Applique les overrides (localStorage + Supabase)
 - Affiche la liste + filtres + modale
-- En mode editor.html : édition si autorisé (table timeline_editors)
+- En mode editor.html : édition collaborative (login Supabase)
 */
 
 /* global supabase */
@@ -935,44 +935,96 @@ Repères :
     return { data: row?.data ?? null, updated_at: row?.updated_at ?? null, updated_by: row?.updated_by ?? null };
   }
 
+  /**
+   * sbSaveOverrides améliorée :
+   * - utilise supabase-js .from().upsert() quand disponible
+   * - fallback sur fetch REST si nécessaire
+   * - retry exponentiel sur erreurs transitoires (max 3)
+   * - retourne la ligne écrite (objet) si possible
+   */
   async function sbSaveOverrides(obj){
     if (!sb) throw new Error("Supabase non initialisé.");
     const { data } = await sb.auth.getSession();
     const token = data.session?.access_token || null;
     if (!token) throw new Error("Non connecté.");
 
-    // IMPORTANT: upsert explicite sur timeline_id
-    const url = `${SUPABASE_URL}/rest/v1/${OVERRIDE_TABLE}?on_conflict=timeline_id`;
-
     const payload = {
       timeline_id: TIMELINE_ID,
       data: obj,
       updated_at: new Date().toISOString()
     };
-    
-    const r = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        apikey: SUPABASE_ANON_KEY,
-        Authorization: `Bearer ${token}`,
-        // on demande un retour pour confirmer ce qui a été écrit
-        Prefer: "resolution=merge-duplicates,return=representation"
-      },
-      body: JSON.stringify(payload)
-    });
 
-    if (!r.ok) throw new Error(await r.text());
+    async function trySave(attempt = 1){
+      try{
+        // Preferred: use supabase-js client upsert (handles auth headers)
+        if (sb && typeof sb.from === "function"){
+          const res = await sb
+            .from(OVERRIDE_TABLE)
+            .upsert(payload, { onConflict: "timeline_id" })
+            .select();
+          if (res.error) {
+            // convert to throw so retry logic can catch
+            throw res.error;
+          }
+          // res.data is an array (representation)
+          return res.data?.[0] ?? null;
+        }
 
-    // Optionnel: lire la réponse pour debug / mettre à jour LAST_REMOTE...
-    // const written = await r.json();
-    // console.log("Saved row:", written);
+        // Fallback: REST fetch (kept for compatibility)
+        const url = `${SUPABASE_URL}/rest/v1/${OVERRIDE_TABLE}?on_conflict=timeline_id`;
+        const r = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${token}`,
+            Prefer: "resolution=merge-duplicates,return=representation"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const text = await r.text();
+        if (!r.ok){
+          let body = text;
+          try{ body = JSON.parse(text); }catch(e){}
+          const err = new Error("Supabase REST error: " + r.status + " " + r.statusText);
+          err.status = r.status;
+          err.responseBody = body;
+          throw err;
+        }
+        try{
+          const parsed = JSON.parse(text);
+          return parsed?.[0] ?? null;
+        }catch(e){
+          return null;
+        }
+      }catch(err){
+        // Retry on network errors or 5xx
+        const shouldRetry = attempt < 3 && (!err.status || (err.status >= 500 && err.status < 600));
+        if (shouldRetry){
+          const wait = 200 * Math.pow(2, attempt-1);
+          await new Promise(res => setTimeout(res, wait));
+          return trySave(attempt + 1);
+        }
+        throw err;
+      }
+    }
+
+    return trySave(1);
   }
 
   let _saveTimer = null;
+  let _saveInFlight = false;
   function debouncedRemoteSave(){
     clearTimeout(_saveTimer);
     _saveTimer = setTimeout(async ()=>{
+      // If a save is in flight, postpone the save to avoid concurrent writes
+      if (_saveInFlight) {
+        // slight delay before retrying
+        setTimeout(debouncedRemoteSave, 300);
+        return;
+      }
+      _saveInFlight = true;
       try{
         if (getMode() !== "edit") throw new Error("Pas en mode édition (#edit).");
         if (!sb) throw new Error("Supabase non initialisé.");
@@ -980,18 +1032,30 @@ Repères :
         const { data } = await sb.auth.getSession();
         if (!data.session) throw new Error("Session absente (reconnecte-toi).");
 
-        await sbSaveOverrides(OVERRIDES);
+        const written = await sbSaveOverrides(OVERRIDES);
 
-        // Preuve: on relit vraiment le remote
-        const meta = await sbLoadOverrides();
-        LAST_REMOTE_UPDATED_AT = meta.updated_at;
-        LAST_REMOTE_UPDATED_BY = meta.updated_by;
+        if (written && written.updated_at){
+          LAST_REMOTE_UPDATED_AT = written.updated_at;
+        } else {
+          // fallback: re-read meta
+          const meta = await sbLoadOverrides();
+          LAST_REMOTE_UPDATED_AT = meta.updated_at;
+          LAST_REMOTE_UPDATED_BY = meta.updated_by;
+        }
 
-        const timestamp = meta.updated_at ? new Date(meta.updated_at).toLocaleTimeString() : "";
+        const timestamp = LAST_REMOTE_UPDATED_AT ? new Date(LAST_REMOTE_UPDATED_AT).toLocaleTimeString() : "";
         setSbStatus(timestamp ? "Sauvegardé ✅ — " + timestamp : "Sauvegardé ✅");
       }catch(e){
-        console.warn(e);
-        setSbStatus("Erreur save Supabase: " + (e.message||String(e)));
+        console.warn("Erreur de sauvegarde Supabase:", e);
+        // If the error contains useful info, include it
+        let msg = e && e.message ? e.message : String(e);
+        if (e && e.responseBody) {
+          try { msg += " • " + (typeof e.responseBody === "string" ? e.responseBody : JSON.stringify(e.responseBody)); }
+          catch(_){}
+        }
+        setSbStatus("Erreur save Supabase: " + msg);
+      }finally{
+        _saveInFlight = false;
       }
     }, 600);
   }
