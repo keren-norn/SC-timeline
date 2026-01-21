@@ -1,9 +1,3 @@
-<!--
-SC Timeline — index.html (page unique + hash routing “propre”)
-- #timeline => lecture
-- #edit     => édition (si autorisé Supabase)
--->
-
 <!doctype html>
 <html lang="fr">
 <head>
@@ -42,93 +36,97 @@ SC Timeline — index.html (page unique + hash routing “propre”)
 </header>
 
 <main>
-  <section class="card">
-    <div class="hd">Filtres</div>
-    <div class="bd">
-      <label class="muted" for="q">Recherche</label>
-      <input id="q" placeholder="titre, texte, tags…" />
-
-      <div class="sep"></div>
-
-      <label class="muted" for="cat">Catégorie</label>
-      <select id="cat"></select>
-
-      <div class="sep"></div>
-
-      <div class="row">
-        <div>
-          <label class="muted" for="y1">Année min</label>
-          <input id="y1" type="number" />
-        </div>
-        <div>
-          <label class="muted" for="y2">Année max</label>
-          <input id="y2" type="number" />
-        </div>
-      </div>
-
-      <div class="sep"></div>
-
-      <div class="row">
-        <button id="resetBtn" type="button">Réinitialiser</button>
-      </div>
-
-      <div class="sep"></div>
-
-      <div class="row" style="margin-top:10px; display:none">
-        <button id="exportSnapshotBtn" type="button">Export snapshot (GitHub)</button>
-        <button id="reloadSupabaseBtn" type="button">Recharger (Supabase)</button>
-      </div>
-
-      <!-- ====== BLOC ÉDITION (visible seulement en #edit) ====== -->
-      <div id="editPanel" style="display:none">
-        <div class="sep"></div>
-
-        <div class="panelTitle">Édition</div>
-
-        <div class="row" style="margin-top:10px">
-          <button id="newBtn" type="button">➕ Nouvel évènement</button>
-        </div>
-
-        <div id="uiStatus" class="muted" style="margin-top:10px;font-size:12px"></div>
+  <!-- Sidebar wrapper : la card Filtres ET #topStatus doivent être à l'intérieur -->
+  <div class="sidebar">
+    <section class="card">
+      <div class="hd">Filtres</div>
+      <div class="bd">
+        <label class="muted" for="q">Recherche</label>
+        <input id="q" placeholder="titre, texte, tags…" />
 
         <div class="sep"></div>
 
-        <div id="authBox" style="margin-top:14px">
-          <div class="muted" style="font-size:12px;margin-bottom:8px">Connexion (Email OTP / Magic link)</div>
-          <input id="authEmail" type="email" placeholder="email" />
-          <div style="height:8px"></div>
-          <div class="row">
-            <button id="loginBtn" type="button" class="primary">Se connecter</button>
-            <button id="logoutBtn" type="button" disabled>Se déconnecter</button>
+        <label class="muted" for="cat">Catégorie</label>
+        <select id="cat"></select>
+
+        <div class="sep"></div>
+
+        <div class="row">
+          <div>
+            <label class="muted" for="y1">Année min</label>
+            <input id="y1" type="number" />
           </div>
-          <div id="authStatus" class="muted" style="margin-top:8px;font-size:12px">Mode: lecture</div>
-          <div class="muted" id="editHint" style="margin-top:6px;font-size:12px">
-            ⚠️ Pour éditer, ton email doit être dans <span class="kbd">timeline_editors</span> (Supabase).
+          <div>
+            <label class="muted" for="y2">Année max</label>
+            <input id="y2" type="number" />
           </div>
         </div>
-      </div>
-      <!-- ====== /BLOC ÉDITION ====== -->
 
-      <div id="stats"></div>
-      <div id="sbStatus" class="muted" style="margin-top:10px;font-size:12px"></div>
-      <div id="status" class="muted" style="margin-top:4px;font-size:12px"></div>
-      <div id="sbEditModeLine" class="muted" style="margin-top:4px;font-size:12px;display:none"></div>
+        <div class="sep"></div>
 
-      <div class="muted" style="margin-top:10px;font-size:12px">
-        Astuce : <a href="./#timeline">#timeline</a> (lecture) / <a href="./#edit">#edit</a> (édition).
+        <div class="row">
+          <button id="resetBtn" type="button">Réinitialiser</button>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="row" style="margin-top:10px; display:none">
+          <button id="exportSnapshotBtn" type="button">Export snapshot (GitHub)</button>
+          <button id="reloadSupabaseBtn" type="button">Recharger (Supabase)</button>
+        </div>
+
+        <!-- ====== BLOC ÉDITION (visible seulement en #edit) ====== -->
+        <div id="editPanel" style="display:none">
+          <div class="sep"></div>
+
+          <div class="panelTitle">Édition</div>
+
+          <div class="row" style="margin-top:10px">
+            <button id="newBtn" type="button">➕ Nouvel évènement</button>
+          </div>
+
+          <div id="uiStatus" class="muted" style="margin-top:10px;font-size:12px"></div>
+
+          <div class="sep"></div>
+
+          <div id="authBox" style="margin-top:14px">
+            <div class="muted" style="font-size:12px;margin-bottom:8px">Connexion (Email OTP / Magic link)</div>
+            <input id="authEmail" type="email" placeholder="email" />
+            <div style="height:8px"></div>
+            <div class="row">
+              <button id="loginBtn" type="button" class="primary">Se connecter</button>
+              <button id="logoutBtn" type="button" disabled>Se déconnecter</button>
+            </div>
+            <div id="authStatus" class="muted" style="margin-top:8px;font-size:12px">Mode: lecture</div>
+            <div class="muted" id="editHint" style="margin-top:6px;font-size:12px">
+              ⚠️ Pour éditer, ton email doit être dans <span class="kbd">timeline_editors</span> (Supabase).
+            </div>
+          </div>
+        </div>
+        <!-- ====== /BLOC ÉDITION ====== -->
+
+        <div id="stats"></div>
+        <div id="sbStatus" class="muted" style="margin-top:10px;font-size:12px"></div>
+        <div id="status" class="muted" style="margin-top:4px;font-size:12px"></div>
+        <div id="sbEditModeLine" class="muted" style="margin-top:4px;font-size:12px;display:none"></div>
+
+        <div class="muted" style="margin-top:10px;font-size:12px">
+          Astuce : <a href="./#timeline">#timeline</a> (lecture) / <a href="./#edit">#edit</a> (édition).
+        </div>
       </div>
-    </div>
-  </section>
-  
-   <div id="topStatus" aria-live="polite">
-    <div class="row">
-      <div class="msg" id="topStatusMsg">—</div>
-      <div class="tag" id="topStatusTag">supabase</div>
+    </section>
+
+    <!-- Barre de statut collée sous la card Filtres (doit être dans .sidebar) -->
+    <div id="topStatus" aria-live="polite">
+      <div class="row">
+        <div class="msg" id="topStatusMsg">—</div>
+        <div class="tag" id="topStatusTag">supabase</div>
+      </div>
     </div>
   </div>
-</div>
 
-  <section>
+  <!-- Zone timeline / contenu principal -->
+  <section class="timelineWrap">
     <div id="timeline"></div>
   </section>
 </main>
