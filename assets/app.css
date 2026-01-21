@@ -625,3 +625,14 @@ body.modal-open{
 
 #topStatus.ok{ border-color:rgba(111,228,255,.35); }
 #topStatus.err{ border-color:rgba(255,80,80,.35); }
+
+/* ===== Modale: pleine hauteur uniquement en mode édition ===== */
+body[data-mode="edit"] #modal{
+  height: 98vh;
+  max-height: 98vh;
+}
+
+body[data-mode="edit"] .mLeft{
+  height: 100%;
+  max-height: none;
+}
