@@ -946,7 +946,7 @@ Repères :
 
   function setSbStatus(msg){
     const el = $("sbStatus");
-    if (el) el.textContent = msg || "";
+    if (el) el.textContent = "";
 
     // barre en haut uniquement en #edit
     if (getMode() === "edit") {
