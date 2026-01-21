@@ -936,7 +936,7 @@ Repères :
         LAST_REMOTE_UPDATED_BY = meta.updated_by;
 
         const timestamp = meta.updated_at ? new Date(meta.updated_at).toLocaleTimeString() : "";
-        setSbStatus("Sauvegardé ✅ — " + timestamp);
+        setSbStatus(timestamp ? "Sauvegardé ✅ — " + timestamp : "Sauvegardé ✅");
       }catch(e){
         console.warn(e);
         setSbStatus("Erreur save Supabase: " + (e.message||String(e)));
