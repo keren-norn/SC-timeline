@@ -847,19 +847,28 @@ Repères :
     const { data } = await sb.auth.getSession();
     const token = data.session?.access_token || null;
     if (!token) throw new Error("Non connecté.");
-    const url = `${SUPABASE_URL}/rest/v1/${OVERRIDE_TABLE}`;
-    const payload = { timeline_id: TIMELINE_ID, data: obj };
+
+    // IMPORTANT: upsert explicite sur timeline_id
+    const url = `${SUPABASE_URL}/rest/v1/${OVERRIDE_TABLE}?on_conflict=timeline_id`;
+
+    const payload = { timeline_id: TIMELINE_ID, data: obj, updated_at: new Date().toISOString() }   
     const r = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         apikey: SUPABASE_ANON_KEY,
         Authorization: `Bearer ${token}`,
-        Prefer: "resolution=merge-duplicates"
+        // on demande un retour pour confirmer ce qui a été écrit
+        Prefer: "resolution=merge-duplicates,return=representation"
       },
       body: JSON.stringify(payload)
     });
+
     if (!r.ok) throw new Error(await r.text());
+
+    // Optionnel: lire la réponse pour debug / mettre à jour LAST_REMOTE...
+    // const written = await r.json();
+    // console.log("Saved row:", written);
   }
 
   let _saveTimer = null;
