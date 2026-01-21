@@ -527,7 +527,7 @@ body.modal-open{
 #topStatus{
   position:fixed;
   left:50%;
-  top:56px;
+  top:64px;
   transform:translateX(-50%);
   z-index:9999;
 
