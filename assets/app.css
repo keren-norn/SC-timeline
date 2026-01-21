@@ -580,8 +580,8 @@ body.modal-open{
 #topStatus{
   z-index: 1;
 
-  margin: 10px auto 0;
-  width: min(980px, 92vw);
+  margin: 10px 0 0;
+  width: 100%;
 
   padding:10px 12px;
   border-radius:14px;
@@ -636,15 +636,22 @@ body[data-mode="edit"] .mLeft{
   height: 100%;
   max-height: none;
 }
-/* Sidebar filtres qui "suit" le scroll (PC uniquement) */
+/* Sidebar (Filtres + topStatus) sticky sur PC */
 @media (min-width: 981px){
-  main > section.card:first-child{
+  .sidebar{
     position: sticky;
-    top: 90px; /* ajuste si besoin: hauteur du header (ex: 70-110px) */
+    top: 90px;                 /* ajuste si besoin */
     align-self: start;
 
-    /* si la sidebar est plus grande que l'écran, elle scrolle */
     max-height: calc(100vh - 90px);
-    overflow: auto;
+    overflow: auto;            /* scroll interne si trop long */
+    display: grid;
+    gap: 12px;
   }
+}
+
+/* La barre “Sauvegardé…” dans la sidebar */
+.sidebar #topStatus{
+  margin: 0;                   /* plus besoin du margin-top */
+  width: 100%;
 }
