@@ -914,6 +914,7 @@ Repères :
 
   async function pullRemoteAndApply(){
     try{
+      const meta = await sbLoadOverrides();
       const remoteObj = (meta.data && isObj(meta.data)) ? meta.data : {};
       const localObj = isObj(OVERRIDES) ? OVERRIDES : {};
 
