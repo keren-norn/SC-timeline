@@ -26,6 +26,7 @@ Repères :
   const EDITORS_TABLE = "timeline_editors"; // email allowlist
   const SEED_OVERRIDES_URL = "./data/timeline_overrides.json";
   const LS_KEY = `tikitoki_overrides_${TIMELINE_ID}_v3`;
+  const LOCAL_MODIFIED_KEY = `${LS_KEY}_modified_at`;
 
   // ==============================
   // 2) Etat global (session, data, caches)
@@ -78,9 +79,9 @@ Repères :
   function isObj(x){ return x && typeof x === "object" && !Array.isArray(x); }
   
   function setStatus(msg){
-  const el = $("status");
-  if (!el) return;
-  el.textContent = msg || "";
+    const el = $("status");
+    if (!el) return;
+    el.textContent = msg || "";
   }
 
   function stripHtml(s){ return (s||"").toString().replace(/<[^>]+>/g, ""); }
@@ -96,9 +97,9 @@ Repères :
   
   function fmtDate(dateStr){ return (dateStr||"").split(" ")[0]; }
 
-    function escapeHtml(s){
-      return (s||"").replace(/[&<>"']/g, (ch)=>({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  function escapeHtml(s){
+    return (s||"").replace(/[&<>"']/g, (ch)=>({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
     }[ch]));
   }
 
@@ -205,12 +206,29 @@ Repères :
     }
   }
 
+  // ---- local-modified helpers ----
+  function markLocalModified(){
+    try{
+      localStorage.setItem(LOCAL_MODIFIED_KEY, String(Date.now()));
+    }catch(e){}
+  }
+  function clearLocalModified(){
+    try{ localStorage.removeItem(LOCAL_MODIFIED_KEY); }catch(e){}
+  }
+  function getLocalModifiedTs(){
+    try{
+      return Number(localStorage.getItem(LOCAL_MODIFIED_KEY)) || 0;
+    }catch(e){ return 0; }
+  }
+
   function loadOverridesLocal(){
     try{ const raw = localStorage.getItem(LS_KEY); return raw? JSON.parse(raw): {}; }
     catch{ return {}; }
   }
   function saveOverridesLocal(obj){
-    localStorage.setItem(LS_KEY, JSON.stringify(obj));
+    try{
+      localStorage.setItem(LS_KEY, JSON.stringify(obj));
+    }catch(e){}
   }
 
   function getThumbUrl(story){
@@ -236,23 +254,23 @@ Repères :
         if (existing){
           // fall through to update logic below by pretending __new is not set
         } else {
-        const ns = {
-          id: parseInt(id, 10) || id,
-          title: o.title || "(sans titre)",
-          startDate: o.startDate || "",
-          endDate: o.endDate || "",
-          category: o.category || "",
-          fullTextResolved: o.fullTextResolved || "",
-          textResolved: o.textResolved || "",
-          tags: o.tags || "",
-          externalLink: o.externalLink || "",
-          media: Array.isArray(o.media) ? o.media : []
-        };
-        if (Array.isArray(o.manualLinks)) ns.__manualLinks = o.manualLinks;
-        stories.push(ns);
-        byId.set(String(id), ns);
-        continue;
-      }
+          const ns = {
+            id: parseInt(id, 10) || id,
+            title: o.title || "(sans titre)",
+            startDate: o.startDate || "",
+            endDate: o.endDate || "",
+            category: o.category || "",
+            fullTextResolved: o.fullTextResolved || "",
+            textResolved: o.textResolved || "",
+            tags: o.tags || "",
+            externalLink: o.externalLink || "",
+            media: Array.isArray(o.media) ? o.media : []
+          };
+          if (Array.isArray(o.manualLinks)) ns.__manualLinks = o.manualLinks;
+          stories.push(ns);
+          byId.set(String(id), ns);
+          continue;
+        }
       }
 
       const s = byId.get(String(id));
@@ -505,7 +523,7 @@ Repères :
 
     applyEditPermissions();
     setEditMode(false);
-    }
+  }
   
 
   function closeModal(){
@@ -638,6 +656,9 @@ Repères :
     // Merge: local overrides win over seed
     OVERRIDES = Object.assign({}, seed, OVERRIDES);
     saveOverridesLocal(OVERRIDES);
+    // Mark local change
+    markLocalModified();
+
     const prev = isObj(OVERRIDES[id]) ? OVERRIDES[id] : {};
     const o = Object.assign({}, prev);
 
@@ -695,6 +716,9 @@ Repères :
     // Merge: local overrides win over seed
     OVERRIDES = Object.assign({}, seed, OVERRIDES);
     saveOverridesLocal(OVERRIDES);
+    // Mark local change
+    markLocalModified();
+
     const existsInBase = BASE_STORIES.some(s => String(s.id) === String(id));
     if (existsInBase){
       OVERRIDES[id] = Object.assign({}, (OVERRIDES[id]||{}), { __deleted: true });
@@ -759,6 +783,8 @@ Repères :
         if (!isObj(obj)) throw new Error("JSON invalide");
         OVERRIDES = obj;
         saveOverridesLocal(OVERRIDES);
+        // mark local import
+        markLocalModified();
         rebuildStoriesFromBase();
         render();
         alert("Modifications importées ✅");
@@ -1043,6 +1069,9 @@ Repères :
           LAST_REMOTE_UPDATED_BY = meta.updated_by;
         }
 
+        // successful remote save -> local is synced
+        clearLocalModified();
+
         const timestamp = LAST_REMOTE_UPDATED_AT ? new Date(LAST_REMOTE_UPDATED_AT).toLocaleTimeString() : "";
         setSbStatus(timestamp ? "Sauvegardé ✅ — " + timestamp : "Sauvegardé ✅");
       }catch(e){
@@ -1091,8 +1120,31 @@ Repères :
       const remoteIsEmpty = Object.keys(remoteObj).length === 0;
       const localIsEmpty = Object.keys(localObj).length === 0;
 
-      // Si Supabase est vide mais qu'on a déjà des modifs en local, on garde le local
-      const nextObj = (!localIsEmpty && remoteIsEmpty) ? localObj : remoteObj;
+      // New logic: prefer the most recently modified copy.
+      // - If remote has no data and local has data => keep local
+      // - Else if local was modified more recently than remote.updated_at => keep local
+      // - Else prefer remote
+      const localModifiedTs = getLocalModifiedTs(); // ms since epoch
+      const remoteUpdatedAtTs = meta.updated_at ? Date.parse(meta.updated_at) : 0;
+
+      let nextObj;
+      let chose = "remote";
+      if (!remoteIsEmpty && !localIsEmpty){
+        if (localModifiedTs && remoteUpdatedAtTs && localModifiedTs > remoteUpdatedAtTs){
+          nextObj = localObj;
+          chose = "local_newer";
+        } else {
+          nextObj = remoteObj;
+          chose = "remote";
+        }
+      } else if (remoteIsEmpty && !localIsEmpty){
+        nextObj = localObj;
+        chose = "local_remote_empty";
+      } else {
+        // remote has data, local empty => remote
+        nextObj = remoteObj;
+        chose = "remote";
+      }
 
       const changed = diffOverrideKeys(localObj, nextObj);
 
@@ -1107,7 +1159,13 @@ Repères :
       const ts = meta.updated_at ? new Date(meta.updated_at).toLocaleString() : "—";
       const who = meta.updated_by ? `uid ${meta.updated_by}` : "—";
       const changedTxt = changed.length ? `Modifs détectées (${changed.length}) : ${changed.slice(0,12).join(", ")}${changed.length>12?"…":""}` : "Aucune modif détectée.";
-      setSbStatus(`Supabase: dernière modif ${ts} • ${who} • ${changedTxt}`);
+
+      // Message plus explicite selon la source choisie
+      if (chose === "local_newer" || chose === "local_remote_empty"){
+        setSbStatus(`Supabase: utilisé ${chose === "local_remote_empty" ? "local (remote vide)" : "local (plus récent)"} • ${changedTxt}`);
+      } else {
+        setSbStatus(`Supabase: dernière modif ${ts} • ${who} • ${changedTxt}`);
+      }
     }catch(e){
       console.warn("Reload Supabase failed:", e);
       setSbStatus("Reload Supabase impossible: " + (e.message||String(e)));
