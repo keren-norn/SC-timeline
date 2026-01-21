@@ -417,7 +417,8 @@ main{
   transform: translate(-50%,-50%);
 
   width:min(980px,94vw);
-  max-height:94vh;
+  height: 96vh; 
+  max-height:96vh;
 
   display:none;
   grid-template-columns:1fr;
@@ -445,7 +446,8 @@ main{
   padding: 0 14px 14px;         /* plus de padding en haut */
   border-right:none;
 
-  max-height:94vh;              /* même valeur que #modal */
+  max-height:none; /* même valeur que #modal */
+  height: 100%;        /* NEW: remplit la modale */
   overflow:auto;
   overscroll-behavior:contain;
   -webkit-overflow-scrolling:touch;
