@@ -575,3 +575,15 @@ body.modal-open{
 
 #topStatus.ok{ border-color:rgba(111,228,255,.35); }
 #topStatus.err{ border-color:rgba(255,80,80,.35); }
+
+/* Push content down when topStatus is visible (edit mode) */
+body.has-topstatus main{
+  padding-top:70px;
+}
+
+/* Mobile adjustment */
+@media (max-width: 600px){
+  body.has-topstatus main{
+    padding-top:80px;
+  }
+}
