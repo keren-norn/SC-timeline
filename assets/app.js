@@ -899,14 +899,18 @@ Repères :
 
   async function pullRemoteAndApply(){
     try{
-      const meta = await sbLoadOverrides();
-      if (meta.updated_at && meta.updated_at === LAST_REMOTE_UPDATED_AT && meta.updated_by === LAST_REMOTE_UPDATED_BY){
-        return;
-      }
       const remoteObj = (meta.data && isObj(meta.data)) ? meta.data : {};
-      const changed = diffOverrideKeys(OVERRIDES, remoteObj);
+      const localObj = isObj(OVERRIDES) ? OVERRIDES : {};
 
-      OVERRIDES = remoteObj;
+      const remoteIsEmpty = Object.keys(remoteObj).length === 0;
+      const localIsEmpty = Object.keys(localObj).length === 0;
+
+      // Si Supabase est vide mais qu'on a déjà des modifs en local, on garde le local
+      const nextObj = (!localIsEmpty && remoteIsEmpty) ? localObj : remoteObj;
+
+      const changed = diffOverrideKeys(localObj, nextObj);
+
+      OVERRIDES = nextObj;
       saveOverridesLocal(OVERRIDES);
       rebuildStoriesFromBase();
       render();
