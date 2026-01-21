@@ -206,7 +206,97 @@ textarea{
   resize:vertical;
 }
 
-/* Grille 2 colonnes utilisée dans les formulaires */
+/* ==============================
+   Select stylisé (thème sombre)
+   Colle après la section "Inputs / select / textarea"
+   ============================== */
+
+/* Optionnel : wrapper si tu veux un pseudo-élément pour la flèche */
+.selectWrap{
+  position: relative;
+  display: block;
+}
+
+/* Champ select : apparence uniforme */
+select{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  width: 100%;
+  padding: 10px 40px 10px 10px; /* espace pour icône */
+  border-radius: 12px;
+  border: 1px solid var(--border2);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)),
+    var(--panel2);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.02);
+  -webkit-text-fill-color: var(--text);
+}
+
+/* Remove native arrow on IE/Edge */
+select::-ms-expand { display: none; }
+
+/* Fallback: place a custom arrow as background if no wrapper used */
+select.customArrow,
+select{
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%236fe4ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-size:18px 18px;
+}
+
+/* Focus state */
+select:focus{
+  border-color: rgba(111,228,255,.55);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.03),
+    0 0 0 4px var(--glow2);
+}
+
+/* Styling des options (fonctionne dans la plupart des navigateurs) */
+select option{
+  background: linear-gradient(180deg, var(--panel2), var(--panel));
+  color: var(--text);
+  padding: 6px 10px;
+}
+
+/* selected / hover (avis : certains navigateurs n'appliquent pas ces règles) */
+select option:checked,
+select option:active,
+select option:hover,
+select option:focus{
+  background: linear-gradient(180deg, rgba(111,228,255,.04), rgba(111,228,255,.02));
+  color: var(--text);
+}
+
+/* optgroup styling */
+select optgroup {
+  color: var(--muted);
+  background: var(--panel);
+  padding: 6px 10px;
+}
+
+/* Scrollbar optionnelle dans le menu déroulant (WebKit) — certains navigateurs ignorent */
+select::-webkit-scrollbar { width: 10px; height: 10px; }
+select::-webkit-scrollbar-track { background: rgba(0,0,0,.08); border-radius:8px; }
+select::-webkit-scrollbar-thumb { background: rgba(111,228,255,.12); border-radius:8px; border: 2px solid rgba(0,0,0,0.12); }
+
+/* Petit fallback si le navigateur force un fond blanc dans le panneau natif :
+   on réduit la luminosité du texte blanc pour éviter l'illisibilité.
+   (ne règle pas tous les cas, mais atténue le problème) */
+@media (hover: hover) {
+  select option { color: var(--text); }
+}
+
+/* Si tu veux cibler explicitement #cat, tu peux utiliser:
+#cat { ... }    et    #cat option { ... }
+*/
+
+/* Grille 2 colonnes utilisée dans les formulaires (déjà présente) */
 .row{
   display:grid;
   grid-template-columns:1fr 1fr;
