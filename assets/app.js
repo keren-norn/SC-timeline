@@ -882,8 +882,10 @@ Repères :
     _saveTimer = setTimeout(async ()=>{
       try{
         if (getMode() !== "edit") return;
-        if (!SESSION) return;
-        await sbSaveOverrides(OVERRIDES);
+        
+        const { data } = await sb.auth.getSession();
+        if (!data.session) throw new Error("Session Supabase absente (reconnecte-toi).");
+        
         const meta = await sbLoadOverrides();
         LAST_REMOTE_UPDATED_AT = meta.updated_at;
         LAST_REMOTE_UPDATED_BY = meta.updated_by;
