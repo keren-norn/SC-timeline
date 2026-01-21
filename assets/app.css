@@ -448,11 +448,26 @@ main{
   -webkit-overflow-scrolling:touch;
 }
 
+/* Garder le haut de la modale (titre + boutons) visible pendant le scroll */
 .mTop{
+  position: sticky;
+  top: 0;
+  z-index: 2;
+
   display:flex;
   gap:10px;
   align-items:flex-start;
   justify-content:space-between;
+
+  /* fond pour éviter que le texte passe dessous */
+  background: linear-gradient(180deg, rgba(7,27,36,.98), rgba(7,27,36,.82));
+  backdrop-filter: blur(10px);
+
+  /* compense le padding de .mLeft (padding:14px) pour coller aux bords */
+  margin: -14px -14px 10px;
+  padding: 14px 14px 10px;
+
+  border-bottom: 1px solid rgba(255,255,255,.06);
 }
 
 .mTitle{
