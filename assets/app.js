@@ -1198,7 +1198,9 @@ function hideTopStatus(){
     window.addEventListener("sc:modechange", () => {
       setAuthUi();
       applyEditPermissions();
-      render();
+      if (DATA && Array.isArray(stories) && stories.length) {
+        render();
+    }
       if (getMode() !== "edit") hideTopStatus();
     });
 
