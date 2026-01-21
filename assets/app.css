@@ -414,7 +414,7 @@ main{
   position:fixed;
   left:50%;
   top:50%;
-  transform: none;
+  transform: translate(-50%,-50%);
 
   width:min(980px,94vw);
   max-height:94vh;
@@ -464,7 +464,8 @@ main{
 
   /* fond pour éviter que le texte passe dessous */
   background: linear-gradient(180deg, rgba(7,27,36,.94), rgba(7,27,36,.70));
-  backdrop-filter: blur(8px);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 
   /* compense le padding de .mLeft (padding:14px) pour coller aux bords */
   margin: 8px -14px 6px;
