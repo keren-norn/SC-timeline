@@ -414,7 +414,7 @@ main{
   position:fixed;
   left:50%;
   top:50%;
-  transform:translate(-50%,-50%);
+  transform: none;
 
   width:min(980px,94vw);
   max-height:94vh;
