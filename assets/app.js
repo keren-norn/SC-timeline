@@ -1173,7 +1173,7 @@ Repères :
             if (error) throw error;
             alert("Email envoyé ✅ (lien magique).");
           }
-        }catch(e){
+        catch(e){
           console.warn(e);
           alert("Login impossible: " + (e.message||String(e)));
         }
