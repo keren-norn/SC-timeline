@@ -96,6 +96,58 @@ Repères :
   
   function fmtDate(dateStr){ return (dateStr||"").split(" ")[0]; }
 
+    function escapeHtml(s){
+      return (s||"").replace(/[&<>"']/g, (ch)=>({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[ch]));
+  }
+
+  /**
+   * Rend le texte avec:
+   * - liens Markdown: [label](https://url)
+   * - liens bruts: https://url
+   * Sécurité:
+   * - supprime toute balise HTML (stripHtml)
+   * - échappe le texte
+   * - n'autorise que http/https via safeUrl
+   */
+  function renderTextWithLinks(raw){
+    const plain = stripHtml(raw || "");
+
+    // 1) remplacer d'abord les liens Markdown par des placeholders
+    const md = [];
+    const withPlaceholders = plain.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, (m, label, url)=>{
+      const safe = safeUrl(url);
+      if (!safe) return m;
+      const idx = md.length;
+      md.push({ label, url: safe });
+      return `@@MDLINK_${idx}@@`;
+    });
+
+    // 2) échapper tout (empêche HTML / XSS)
+    let html = escapeHtml(withPlaceholders);
+
+    // 3) linkifier les URLs brutes restantes
+    html = html.replace(/(https?:\/\/[^\s<]+)/g, (match)=>{
+      const safe = safeUrl(match);
+      if (!safe) return match;
+      return `<a href="${safe}" target="_blank" rel="noopener noreferrer">${match}</a>`;
+    });
+
+    // 4) réinjecter les liens Markdown (label échappé)
+    html = html.replace(/@@MDLINK_(\d+)@@/g, (m, n)=>{
+      const item = md[Number(n)];
+      if (!item) return m;
+      const label = escapeHtml(item.label);
+      return `<a href="${item.url}" target="_blank" rel="noopener noreferrer">${label}</a>`;
+    });
+
+    // 5) conserver les retours à la ligne
+    html = html.replace(/\n/g, "<br>");
+
+    return html;
+  }
+  
   /**
    * safeUrl — Validation d'URL pour éviter les schémas malveillants (javascript:, data:, file:, etc.)
    * N'autorise que http: et https: pour les liens cliquables.
@@ -416,8 +468,8 @@ Repères :
     }
 
     const text = (story.fullTextResolved && story.fullTextResolved.trim()) ? story.fullTextResolved : (story.textResolved || "");
-    $("mtext").textContent = stripHtml(text);
-
+    $("mtext").innerHTML = renderTextWithLinks(text);
+    
     const gal = $("mgallery");
     gal.innerHTML = "";
     if (Array.isArray(story.media) && story.media.length){
