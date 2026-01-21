@@ -971,7 +971,7 @@ Repères :
 
   async function boot(){
     // load base
-    const r = await fetch(BASE_URL);
+    const r = await fetch(BASE_URL, { cache: "no-store" });
     if (!r.ok) throw new Error("Base JSON introuvable: " + BASE_URL);
     DATA = await r.json();
 
