@@ -95,6 +95,8 @@ jobs:
                   media: Array.isArray(o.media) ? o.media : []
                 };
                 if (Array.isArray(o.manualLinks)) ns.__manualLinks = o.manualLinks;
+                // New: preserve credit if present
+                if (typeof o.credit === 'string') ns.credit = o.credit;
                 stories.push(ns);
                 byId.set(sid, ns);
                 continue;
@@ -117,6 +119,8 @@ jobs:
               if (typeof o.externalLink === 'string') existing.externalLink = o.externalLink;
               if (Array.isArray(o.media)) existing.media = o.media;
               if (Array.isArray(o.manualLinks)) existing.__manualLinks = o.manualLinks;
+              // New: update credit if present
+              if (typeof o.credit === 'string') existing.credit = o.credit;
             }
 
             // 4) Optionnel : sort stories by startDate stable
