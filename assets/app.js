@@ -178,6 +178,8 @@
             media: Array.isArray(o.media) ? o.media : []
           };
           if (Array.isArray(o.manualLinks)) ns.__manualLinks = o.manualLinks;
+          // New: preserve credit on newly created story
+          if (typeof o.credit === "string") ns.credit = o.credit;
           stories.push(ns);
           byId.set(String(id), ns);
           continue;
@@ -196,6 +198,8 @@
       if (typeof o.externalLink === "string") s.externalLink = o.externalLink;
       if (Array.isArray(o.media)) s.media = o.media;
       if (Array.isArray(o.manualLinks)) s.__manualLinks = o.manualLinks;
+      // New: propagate credit if present in overrides
+      if (typeof o.credit === "string") s.credit = o.credit;
     }
   }
 
@@ -307,6 +311,9 @@
     $("mtitle").textContent = story.title || "(sans titre)";
     $("mcat").textContent = catTitle;
     $("mdot").style.background = color;
+    // NOUVEAU : afficher credit si présent
+    if ($("mcredit")) $("mcredit").textContent = story.credit || "";
+
     const links = $("mlinks"); links.innerHTML = "";
     const ext = (story.externalLink||"").trim();
     if (ext){
@@ -399,6 +406,43 @@
 
   function getStoryById(id){ return stories.find(s => String(s.id) === String(id)); }
 
+  // ---------- UI helpers pour media rows ----------
+  function createMediaRow(m = {}) {
+    const row = document.createElement('div');
+    row.className = 'media-row';
+
+    const src = document.createElement('input');
+    src.type = 'url';
+    src.className = 'media-src';
+    src.placeholder = 'https://.../image.jpg';
+    src.value = m.src || m.url || '';
+
+    const caption = document.createElement('input');
+    caption.type = 'text';
+    caption.className = 'media-caption';
+    caption.placeholder = 'Légende (optionnel)';
+    caption.value = m.caption || '';
+
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.className = 'media-remove';
+    remove.textContent = 'Supprimer';
+    remove.addEventListener('click', () => row.remove());
+
+    row.appendChild(src);
+    row.appendChild(caption);
+    row.appendChild(remove);
+    return row;
+  }
+
+  function addMediaRow(m = {}) {
+    const container = document.getElementById('e_images');
+    if (!container) return;
+    container.appendChild(createMediaRow(m));
+  }
+
+  // ---------- end helpers ----------
+
   function openEditForStory(story){
     fillEditCategorySelect(story.category || "");
     $("e_title").value = story.title || "";
@@ -407,8 +451,22 @@
     $("e_link").value = story.externalLink || "";
     const t = (story.fullTextResolved && story.fullTextResolved.trim()) ? story.fullTextResolved : (story.textResolved || "");
     $("e_text").value = stripHtml(t);
-    const thumb = getThumbUrl(story);
-    $("e_img").value = thumb || "";
+
+    // NOUVEAU : crédit aucteur / credit
+    if ($("e_credit")) $("e_credit").value = story.credit || "";
+
+    // Remplir la liste d'images (si media existe)
+    const imgsContainer = $("e_images");
+    if (imgsContainer) {
+      imgsContainer.innerHTML = '';
+      const media = Array.isArray(story.media) ? story.media : [];
+      if (media.length === 0) {
+        addMediaRow(); // un champ vide par défaut
+      } else {
+        media.forEach(m => addMediaRow(m));
+      }
+    }
+
     setEditMode(true);
   }
 
@@ -434,8 +492,20 @@
     const endDate = $("e_end").value.trim();
     const category = $("e_cat").value;
     const externalLink = $("e_link").value.trim();
-    const img = $("e_img").value.trim();
     const text = $("e_text").value;
+    const credit = ($("e_credit") ? $("e_credit").value.trim() : "").trim();
+
+    // collecter media depuis DOM
+    const mediaRows = Array.from(document.querySelectorAll('#e_images .media-row'));
+    const media = mediaRows
+      .map((r, idx) => {
+        const src = (r.querySelector('.media-src') || {}).value || '';
+        const caption = (r.querySelector('.media-caption') || {}).value || '';
+        const s = (src || '').trim();
+        if (!s) return null;
+        return { id: idx + 1, src: s, caption: caption || '', type: "Image", thumbPosition: "0,0", externalMediaThumb: "", externalMediaType: "", externalMediaId: "", orderIndex: 10 };
+      })
+      .filter(Boolean);
 
     // load local overrides only (no seed file)
     OVERRIDES = loadOverridesLocal();
@@ -452,9 +522,14 @@
     o.externalLink = externalLink || "";
     o.fullTextResolved = text || "";
     o.textResolved = "";
-    if (img){
-      o.media = [{ id: 1, src: img, caption: "", type: "Image", thumbPosition: "0,0", externalMediaThumb: "", externalMediaType: "", externalMediaId: "", orderIndex: 10 }];
-    } else { o.media = []; }
+    // NOUVEAU : sauvegarder credit
+    if (credit) o.credit = credit;
+    // Sauver media (array)
+    o.media = media.length ? media : [];
+
+    // Compatibilité ascendante : garder "image" simple si nécessaire
+    o.image = o.media && o.media.length ? (o.media[0].src || "") : (o.image || "");
+
     OVERRIDES[id] = o;
     saveOverridesLocal(OVERRIDES);
 
@@ -695,7 +770,7 @@
       setSbStatus("Envoi forcé en cours…");
       const written = await sbSaveOverrides(OVERRIDES);
       if (written && written.updated_at){ LAST_REMOTE_UPDATED_AT = written.updated_at; LAST_REMOTE_UPDATED_BY = written.updated_by || null; }
-      else { const meta = await sbLoadOverrides(); LAST_REMOTE_UPDATED_AT = meta.updated_at; LAST_REMOTE_UPDATED_BY = meta.updated_by; }
+      else { const meta = await sb_loadOverrides(); LAST_REMOTE_UPDATED_AT = meta.updated_at; LAST_REMOTE_UPDATED_BY = meta.updated_by; }
       clearLocalModified();
       setSbStatus("Envoyé manuellement ✅ — " + (LAST_REMOTE_UPDATED_AT ? new Date(LAST_REMOTE_UPDATED_AT).toLocaleTimeString() : ""));
       await pullRemoteAndApply();
@@ -887,6 +962,9 @@
     if ($("exportSnapshotBtn")) $("exportSnapshotBtn").addEventListener("click", exportSnapshotGithub);
 
     createForceBtn();
+
+    // ajout listener pour le bouton Ajouter image
+    if ($("e_add_image")) $("e_add_image").addEventListener("click", ()=> addMediaRow());
 
     window.addEventListener("sc:modechange", () => {
       setAuthUi();

@@ -121,6 +121,12 @@ main{ max-width:1200px; width:100%; margin:0 auto; padding:16px; display:grid; g
 #modal::after{ content:none !important; }
 body.modal-open{ overflow:hidden; }
 
+/* Styles pour l'éditeur multi‑images (media rows) */
+.media-row{ display:flex; gap:8px; align-items:center; margin-top:8px; }
+.media-row .media-src{ flex: 1 1 60%; min-width: 120px; }
+.media-row .media-caption{ flex: 1 1 35%; min-width: 90px; }
+.media-row .media-remove{ flex: 0 0 auto; padding:8px 10px; border-radius:10px; background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.04); color:var(--text); }
+
 /* Barre statut */
 #topStatus{ z-index: 1; margin: 10px 0 0; width: 100%; padding:10px 12px; border-radius:14px; background:linear-gradient(180deg, rgba(6,14,20,.92), rgba(6,14,20,.75)); border:1px solid rgba(111,228,255,.22); box-shadow:0 18px 60px rgba(0,0,0,.55); color:var(--text); font-size:12px; letter-spacing:.02em; display:none; }
 #topStatus.show{ display:block; }
