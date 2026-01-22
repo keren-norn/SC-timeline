@@ -140,6 +140,8 @@
         <div class="muted" id="mdate"></div>
         <h2 class="mTitle" id="mtitle"></h2>
         <div class="mCat mcat"><span class="dot" id="mdot"></span><span id="mcat"></span></div>
+        <!-- NOUVEAU : affichage du crédit/auteur (dans la modale en lecture) -->
+        <div id="mcredit" class="muted" style="margin-top:6px;font-size:12px"></div>
       </div>
       <div class="mActions">
         <!-- En lecture, app.js peut les cacher -->
@@ -181,10 +183,22 @@
         <label class="muted" for="e_link">Lien externe</label>
         <input id="e_link" />
       </div>
+
+      <!-- NOUVEAU : champ Auteur / Crédit -->
       <div style="margin-top:10px">
-        <label class="muted" for="e_img">Image (URL)</label>
-        <input id="e_img" />
+        <label class="muted" for="e_credit">Auteur / Crédit</label>
+        <input id="e_credit" placeholder="Ex: Photo : Jean Dupont" />
       </div>
+
+      <!-- NOUVEAU : bloc multi-images -->
+      <div style="margin-top:10px">
+        <label class="muted">Images</label>
+        <div id="e_images"></div>
+        <div style="margin-top:8px">
+          <button id="e_add_image" type="button">Ajouter une image</button>
+        </div>
+      </div>
+
       <div style="margin-top:10px">
         <label class="muted" for="e_text">Texte</label>
         <textarea id="e_text"></textarea>
