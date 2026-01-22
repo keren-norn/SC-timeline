@@ -94,7 +94,7 @@
     {
       "id": 18830303,
       "title": "ceci est une modification de la time line de Tarmak974",
-      "startDate": "0000-01-01",
+      "startDate": "",
       "endDate": "",
       "category": "846083",
       "fullTextResolved": "ceci est une modification de la time line de Tarmak974 \n\nsources d'origine :\n-Robertspaceindustries.com\n-Citizenlogbook.com\n-Starcitizenfrance.fr\n-Starcitizen.fandom.com\n\nSources ajoutés :\n-www.nirgal.net\n-fr.wikipedia.org",
@@ -120,13 +120,13 @@
         {
           "id": 1,
           "src": "https://zupimages.net/up/24/02/ut1x.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -184,13 +184,13 @@
         {
           "id": 1,
           "src": "https://zupimages.net/up/23/37/3g22.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -216,13 +216,13 @@
         {
           "id": 1,
           "src": "https://www.polka.paris/docs/Le_store/mcith/mcith_720x538_GRK_4904310.jpg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -248,13 +248,13 @@
         {
           "id": 1,
           "src": "https://upload.wikimedia.org/wikipedia/commons/8/8d/Mars3_lander_vsm.jpg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -280,13 +280,13 @@
         {
           "id": 1,
           "src": "https://www.researchgate.net/profile/Rahul-Jayawardana/publication/349310054/figure/fig2/AS:991321552601111@1613360884779/Fig-2-The-Viking-1-lander-The-Mars-Rovers-NASA-Space-Place-NASA-Science-for-Kids.jpg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -312,13 +312,13 @@
         {
           "id": 1,
           "src": "https://upload.wikimedia.org/wikipedia/commons/f/ff/ISS-56_International_Space_Station_fly-around_%2805%29.jpg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -344,13 +344,13 @@
         {
           "id": 1,
           "src": "https://upload.wikimedia.org/wikipedia/commons/8/84/OSIRIS-REx_mission_logo_%28circa_2015%29.png?uselang=fr",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -376,13 +376,13 @@
         {
           "id": 1,
           "src": "https://upload.wikimedia.org/wikipedia/commons/9/92/Unmasking_the_Secrets_of_Mercury.jpg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -408,13 +408,13 @@
         {
           "id": 1,
           "src": "https://img.20mn.fr/WrvqfKB_TtywwkQjaWUlbg/830x532_voila-quoi-doit-ressembler-vol-petit-helicoptere-ingenuity-illustration.jpg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -440,13 +440,13 @@
         {
           "id": 1,
           "src": "https://upload.wikimedia.org/wikipedia/commons/d/d3/NASA_NEXT_Ion_thruster.712983main_NEXT_LDT_Thrusterhi-res_full.jpg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -472,13 +472,13 @@
         {
           "id": 1,
           "src": "https://zupimages.net/up/23/37/w6r3.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -504,13 +504,13 @@
         {
           "id": 1,
           "src": "https://zupimages.net/up/25/02/wxzm.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -536,19 +536,19 @@
         {
           "id": 1,
           "src": "https://zupimages.net/up/23/37/tjvf.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
         "raw": "Cette avancÃ©e technologique permet Ã  l'humanitÃ© d'explorer le systÃ¨me solaire Ã  des vitesses inatteignables jusqu'alors.\n\n[Liste des gÃ©nÃ©rateurs quantique Ã  ce jour](https://www.citizen-logbook.com/composant-generateur.html)"
       },
-      "fullTextResolved": "\n\nCette avancée technologique permet à l'humanité d'explorer le système solaire à des vitesses inatteignables jusqu'alors.\n\nUn Générateur Quantum ou moteur quantique est un type de propulseur qui génère un champ de Chan-Eisen, permettant aux vaisseaux spatiaux de voyager à environ 20 % de la vitesse de la lumière. Son fonctionnement nécessitant une grande quantité d'énergie, les vaisseaux plus grands, disposant de davantage d'espace pour des systèmes d'alimentation et de refroidissement spécialisés, peuvent rester en voyage quantique plus longtemps que les vaisseaux plus petits. Un module de saut permet de transformer un moteur quantique en moteur de saut capable de voyager dans l'espace interstellaire .\n\nLe premier Xi'an moteur quantique fut créé en MXY 0.5171 (SEY 25343 av. J.-C.) par la Maison Yaing. \nAyant récemment maîtrisé la terraformation , les Xi'an utilisèrent cette nouvelle technologie pour s'étendre au-delà de leur planète d'origine, RyiXy'an (Hyoton III), et colonisèrent finalement Ka'ua (Hyoton IV) et Tethle'a (Hyoton II). \n\nLe premier prototype de moteur quantique humain fut créé par le Dr Scott Childress et son équipe en SEY 2075 et était capable d'atteindre 1/100e de la vitesse de la lumière. \n\nL'avènement du moteur quantique entraîna une forte augmentation de l'exploration du système solaire, menée par des institutions et des particuliers. \nLes historiens ignorent depuis combien de temps les Banu possèdent la technologie des moteurs quantiques, faute de données historiques. \n\n\nLe matin du 3 mai 2075 commença comme tous les autres.\nRebecca Childress était assise à la table de la salle à manger, en train de colorier, tandis que sa mère regardait les informations du matin. C'étaient ces moments, se souvint-elle des années plus tard, qu'elle chérissait le plus. \nCe jour-là, cependant, resterait gravé dans sa mémoire, ainsi que dans celle de chaque être humain sur Terre.\n\nExtrait du journal de Rebecca Childress :\n\n« Maman a encore fait des omelettes aujourd'hui. J'étais en train de colorier quand j'ai vu Papa sur l'écran holographique. J'ai crié après Maman. Danny s'est mis à crier et à courir autour de la table. Pfff, c'était insupportable. Il était là, à côté du Président ! Ils parlaient de l'espace et tout ça, c'était cool, mais il avait l'air tellement important. Ça faisait tellement longtemps qu'on ne l'avait pas vu. Il a une barbe maintenant. Maman n'aime pas ça, mais moi je trouve que ça lui va bien. »\n\nChaque fois que papa était sur le point de partir, je lui demandais pourquoi il devait travailler tout le temps et il me répondait toujours la même chose :\n\nIl essayait de me donner les étoiles.\n\nLe Dr Scott Childress et son équipe avaient mis au point le premier moteur à propulsion quantique autonome, capable d'atteindre 1/100e de la vitesse de la lumière. Pour la première fois, l'humanité pouvait explorer le système solaire à une vitesse sans précédent. \n",
+      "fullTextResolved": "\n\nCette avancée technologique permet à l'humanité d'explorer le système solaire à des vitesses inatteignables jusqu'alors.\n\nUn Générateur Quantum ou moteur quantique est un type de propulseur qui génère un champ de Chan-Eisen, permettant aux vaisseaux spatiaux de voyager à environ 20 % de la vitesse de la lumière. Son fonctionnement nécessitant une grande quantité d'énergie, les vaisseaux plus grands, disposant de davantage d'espace pour des systèmes d'alimentation et de refroidissement spécialisés, peuvent rester en voyage quantique plus longtemps que les vaisseaux plus petits. Un module de saut permet de transformer un moteur quantique en moteur de saut capable de voyager dans l'espace interstellaire .\n\nLe premier Xi'an moteur quantique fut créé en MXY 0.5171 (SEY 25343 av. J.-C.) par la Maison Yaing. \nAyant r��cemment maîtrisé la terraformation , les Xi'an utilisèrent cette nouvelle technologie pour s'étendre au-delà de leur planète d'origine, RyiXy'an (Hyoton III), et colonisèrent finalement Ka'ua (Hyoton IV) et Tethle'a (Hyoton II). \n\nLe premier prototype de moteur quantique humain fut créé par le Dr Scott Childress et son équipe en SEY 2075 et était capable d'atteindre 1/100e de la vitesse de la lumière. \n\nL'avènement du moteur quantique entraîna une forte augmentation de l'exploration du système solaire, menée par des institutions et des particuliers. \nLes historiens ignorent depuis combien de temps les Banu possèdent la technologie des moteurs quantiques, faute de données historiques. \n\n\nLe matin du 3 mai 2075 commença comme tous les autres.\nRebecca Childress était assise à la table de la salle à manger, en train de colorier, tandis que sa mère regardait les informations du matin. C'étaient ces moments, se souvint-elle des années plus tard, qu'elle chérissait le plus. \nCe jour-là, cependant, resterait gravé dans sa mémoire, ainsi que dans celle de chaque être humain sur Terre.\n\nExtrait du journal de Rebecca Childress :\n\n« Maman a encore fait des omelettes aujourd'hui. J'étais en train de colorier quand j'ai vu Papa sur l'écran holographique. J'ai crié après Maman. Danny s'est mis à crier et à courir autour de la table. Pfff, c'était insupportable. Il était là, à côté du Président ! Ils parlaient de l'espace et tout ça, c'était cool, mais il avait l'air tellement important. Ça faisait tellement longtemps qu'on ne l'avait pas vu. Il a une barbe maintenant. Maman n'aime pas ça, mais moi je trouve que ça lui va bien. »\n\nChaque fois que papa était sur le point de partir, je lui demandais pourquoi il devait travailler tout le temps et il me répondait toujours la même chose :\n\nIl essayait de me donner les étoiles.\n\nLe Dr Scott Childress et son équipe avaient mis au point le premier moteur à propulsion quantique autonome, capable d'atteindre 1/100e de la vitesse de la lumière. Pour la première fois, l'humanité pouvait explorer le système solaire à une vitesse sans précédent. \n",
       "textResolved": ""
     },
     {
@@ -568,19 +568,19 @@
         {
           "id": 1,
           "src": "https://static1.millenium.org/articles/3/35/64/63/@/1257903-terraformers-broken-moon-article_image_bd-1.jpg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
         "raw": "[En savoir plus sur la terraformation](https://starcitizen.tools/Terraforming)"
       },
-      "fullTextResolved": "La terraformation est le processus qui consiste à rendre un environnement habitable pour des populations spécifiques grâce à l'utilisation de technologies industrielles appliquées à l'échelle planétaire. \n\nL'humanité pratique la terraformation depuis le début du XXIIe siècle de l'ère SEY, ce qui a permis une expansion galactique plus rapide. Les Xi'an pratiquent la terraformation depuis environ 25 400 avant notre ère (0,5085 MXY). \n\nLa terraformation est un processus extrêmement complexe. Mal réalisée ou effectuée avec des matériaux et des procédés inadéquats, elle peut engendrer des catastrophes majeures. \n\nElle a également un effet dévastateur sur la faune et la flore existantes et peut provoquer des extinctions massives . ",
+      "fullTextResolved": "La terraformation est le processus qui consiste à rendre un environnement habitable pour des populations spécifiques grâce à l'utilisation de technologies industrielles appliquées à l'échelle planétaire. \n\nL'humanité pratique la terraformation depuis le début du XXIIe siècle de l'ère SEY, ce qui a permis une expansion galactique plus rapide. Les Xi'an pratiquent la terraformation depuis environ 25 400 avant notre ère (0,5085 MXY). \n\nLa terraformation est un processus extrêmement complexe. Mal réalisée ou effectuée avec des matériaux et des procédés inadéquats, elle peut engendrer des catastrophes majeures. \n\nElle a également un effet dévastateur sur la faune et la flore existantes et peut provoquer des extinctions massives . \n\n\n[Éditorial des archives du United Times](https://robertsspaceindustries.com/en/comm-link/spectrum-dispatch/12668-2113-When-Do-We-Go-Too-Far)\n\n\nPublié le 21 avril 2113\n\nDÉBUT DU FICHIER . . .\n« Quand allons-nous trop loin ? »\npar Hannigan Terrell\n\nÀ moins d'avoir vécu sous un rocher la semaine dernière, vous avez sans doute entendu parler de la dernière « prouesse » de RSI . Pour ceux qui auraient vécu coupés du monde, voici un petit résumé : ils affirment avoir conçu une machine capable de « traiter l'atmosphère d'une planète pour la convertir en un environnement oxygéné durable, la rendant ainsi habitable pour les humains ». En bref, ils parlent de terraformation. Eh oui, c'est bien de la science-fiction ! Je sais que tout le monde s'enthousiasme pour les perspectives que cela offre, mais personne ne semble prendre le temps de réfléchir aux conséquences réelles de tout cela.\n\nAlors, une fois de plus, c'est à moi de faire entendre la voix de la raison dans cette hystérie technologique. Eh oui, chers lecteurs, je vais poser la question que personne ne se pose. Vous êtes prêts ?\n\nSi nous pouvons terraformer une planète, pourquoi le ferions-nous ?\n\nJe vous laisse une seconde. Réfléchissez-y. Je le répète : ce n'est pas parce qu'on peut faire quelque chose qu'on doit le faire. Je sais que les experts de SSN TV aiment se moquer de moi, me faire passer pour un technophobe, mais je vous le dis, je n'avais aucun problème avec les initiatives de clonage. Je n'avais même aucun problème avec le codage génétique pour minimiser les maladies héréditaires. C'étaient des avancées qui contribuaient à améliorer la vie. À quoi ça sert ? À quoi ça sert ? Où est-ce qu'on va trop loin ? Sérieusement, on parle de restructurer l'atmosphère même d'une planète. Les planètes dont on parle se sont formées ainsi pour une raison. Qui sommes-nous pour supposer que l'univers veut qu'on les façonne à notre avantage ? Nous ne sommes pas des dieux et jouer avec la structure même d'une planète est arrogant et dangereux.\n\nJe sais que mes paroles risquent de tomber dans l'oreille d'un sourd. Le monde est trop sûr de lui, trop absorbé par sa propre magnificence, mais je vous le promets : rien de bon n'en sortira.\n \n. . . FIN DU FICHIER ",
       "textResolved": ""
     },
     {
@@ -600,13 +600,13 @@
         {
           "id": 1,
           "src": "https://www.citizen-logbook.com/images/thumbnails/Art-0255.jpg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -614,6 +614,30 @@
       },
       "fullTextResolved": "[En savoir plus sur Chris ROBERT]\nChris Roberts, de son vrai nom Christopher Roberts, né le 27 mai 1968 à Redwood City (Californie), est un réalisateur, producteur de cinéma et développeur de jeux vidéo américain.\n\n[Biographie]\n\nRoberts est né à Redwood City, en Californie, d’un père britannique et d’une mère américaine. Il a passé son enfance à Manchester, en Angleterre, où il a étudié au lycée Parrs Wood. Durant son adolescence, il a conçu plusieurs jeux vidéo pour le BBC Micro, parmi lesquels Stryker's Run, Wizadore et King Kong. \n\nOrigin Systems\n\nChris Roberts a rejoint Origin Systems en 1987. Il y a créé Times of Lore qui a été publié en 1988. L'interface du jeu a eu une forte influence sur d'autres produits Origin tels que la populaire série Ultima. Un système de jeu similaire a été utilisé dans la prochaine version de Roberts pour Origin, Bad Blood (1990).\n\nWing Commander fut publié plus tard en 1990 et fut très bien accueilli. Wing Commander (et la franchise qu'il engendra) devint rapidement le produit le plus populaire d'Origin. Roberts ne s'impliqua pas autant dans la suite , Wing Commander II, qu'il produisit seulement. Il se concentra plutôt sur Strike Commander . Présenté au public pour la première fois au CES d'été 1991, le projet connut de nombreux retards et ne sortit qu'en 1993. Il retourna à Wing Commander peu après, concevant le concept original du spin-off Wing Commander: Privateer (que son frère, Erin Roberts, produisit) et s'impliquant davantage dans Wing Commander III et Wing Commander IV . Pour ces suites, Roberts réalisa les cinématiques en prises de vues réelles. Le rôle majeur de Roberts dans le développement des jeux Wing Commander lui valut d'être nommé parmi les « 75 personnalités les plus importantes de l'industrie du jeu vidéo en 1995 » par Next Generation. ",
       "textResolved": ""
+    },
+    {
+      "id": 18830304,
+      "title": "Le sujet d'expérience : Mars.",
+      "startDate": "2120",
+      "endDate": "",
+      "category": "845865",
+      "fullTextResolved": "Après des années de simulations et d'essais, les gouvernements du monde mettent en commun leurs connaissances et leurs ressources pour tenter la première conversion planétaire.\nLe sujet d'expérience : Mars.\n\nDes équipes de géomètres ont été dépêchées à la surface de la planète pour établir des cartes topographiques, déterminer l'emplacement de l'Atmo-Processor et analyser des échantillons de surface afin de détecter d'éventuels contaminants pour le nouvel environnement oxygéné.\n\nIl s'agissait de notre première exploration complète de notre planète la plus proche et les gouvernements du monde n'allaient rien laisser au hasard… ",
+      "textResolved": "",
+      "tags": "",
+      "externalLink": "https://robertsspaceindustries.com/en/comm-link/spectrum-dispatch/12670-2120-Give-These-People-Air",
+      "media": [
+        {
+          "id": 1,
+          "src": "https://robertsspaceindustries.com/media/7e1mr7g2ycanhr/post_section_header/MarsTerraform_Final2b.jpg",
+          "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
+          "thumbPosition": "0,0",
+          "externalMediaId": "",
+          "externalMediaType": "",
+          "externalMediaThumb": ""
+        }
+      ]
     },
     {
       "id": 16600283,
@@ -632,13 +656,13 @@
         {
           "id": 1,
           "src": "https://cdn.futura-sciences.com/buildsv6/images/mediumoriginal/3/5/7/357ce6d680_105189_mars-histoire-atmosphere-nasa-gfsc-01.jpg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -664,19 +688,19 @@
         {
           "id": 1,
           "src": "https://pbs.twimg.com/media/DM2l3tJUMAARDU2.jpg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
         "raw": ""
       },
-      "fullTextResolved": "Roberts Space Industries présente son vaisseau Zeus, le premier vaisseau spatial à court rayon d'action abordable pour des acheteurs potentiels.  le premier vaisseau commercial RSI Zeus ouvre les portes de l’espace aux civils\n\nLe Zeus était un vaisseau spatial à courte portée développé par Roberts Space Industries (RSI) . Il fut le premier vaisseau équipé d'un moteur quantique proposé au marché civil. Après le développement du premier moteur quantique par RSI pour l'armée en 2075, la demande pour une version civile augmenta jusqu'à la production du premier prototype de vaisseau spatial commercial à propulsion quantique dans les années 2130. Connu sous le nom de Zeus, le vaisseau ne fut commercialisé qu'en 2140 en raison de problèmes d'intégrité de sa coque lors de ses premiers vols d'essai. Après de nombreux retards, RSI sollicita l'aide de Michelle Saleno, pilote d'essai de la Marine et première personne à avoir voyagé quantiquement au-delà de l'orbite de Jupiter (Sol V). Saleno convainquit la Marine américaine de créer le 999e Escadron d'essais pour l'évaluation des vaisseaux spatiaux de pointe, et la Marine accepta d'utiliser ce dernier pour aider RSI à perfectionner le Zeus. Après une refonte complète de la coque du Zeus, basée sur les conseils de Saleno et du 999e, Saleno pilota avec succès le Zeus en 2137. La disponibilité du Zeus fut essentielle pour accélérer l'expansion initiale de Des humains au-delà de leur planète d'origine.",
+      "fullTextResolved": "Roberts Space Industries présente son vaisseau Zeus, le premier vaisseau spatial à court rayon d'action abordable pour des acheteurs potentiels.  le premier vaisseau commercial RSI Zeus ouvre les portes de l’espace aux civils\n\nLe Zeus était un vaisseau spatial à courte portée développé par Roberts Space Industries (RSI) . Il fut le premier vaisseau équipé d'un moteur quantique proposé au marché civil. Après le développement du premier moteur quantique par RSI pour l'armée en 2075, la demande pour une version civile augmenta jusqu'à la production du premier prototype de vaisseau spatial commercial à propulsion quantique dans les années 2130. Connu sous le nom de Zeus, le vaisseau ne fut commercialisé qu'en 2140 en raison de problèmes d'intégrité de sa coque lors de ses premiers vols d'essai. Après de nombreux retards, RSI sollicita l'aide de Michelle Saleno, pilote d'essai de la Marine et première personne à avoir voyagé quantiquement au-delà de l'orbite de Jupiter (Sol V). Saleno convainquit la Marine américaine de créer le 999e Escadron d'essais pour l'évaluation des vaisseaux spatiaux de pointe, et la Marine accepta d'utiliser ce dernier pour aider RSI à perfectionner le Zeus. Après une refonte complète de la coque du Zeus, basée sur les conseils de Saleno et du 999e, Saleno pilota avec succès le Zeus en 2137. La disponibilité du Zeus fut essentielle pour accélérer l'expansion initiale de Des humains au-delà de leur planète d'origine.\n\n\n [Un bateau dans chaque garage](https://robertsspaceindustries.com/en/comm-link/spectrum-dispatch/12674-2140-A-Ship-In-Every-Garage)",
       "textResolved": ""
     },
     {
@@ -728,13 +752,13 @@
         {
           "id": 1,
           "src": "https://www.docteurclic.com/galerie-photos/image_4912_400.jpg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -760,19 +784,19 @@
         {
           "id": 1,
           "src": "https://zupimages.net/up/23/37/92vm.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
         "raw": ""
       },
-      "fullTextResolved": "Le Mars Tragedy Memorial est un monument situé près de Port Renatus, Mars (Sol IV) qui a été construit pour honorer la mémoire des 4 876 personnes décédées lors de la catastrophe de terraformation de Mars du 13 septembre 2125. Il a été inauguré lors d'une cérémonie par le sénateur Stephen Nguyen en 2157, qui avait perdu un frère dans la tragédie.\n\n\nAprès près de quarante ans d'épreuves et de tragédies, Mars est officiellement classée comme un environnement propice à la vie sur Terre. Un mémorial en hommage aux victimes de la Grande Tragédie martienne de 1925 est inauguré à l'issue de cette déclaration officielle, en présence du sénateur Stephen Nguyen, orateur principal.\n\nVoici la transcription de son discours :\nMon frère Sean adorait construire. Quand on était petits, moi je faisais du sport et je me présentais aux élections étudiantes, lui, il passait son temps à bricoler. Chez nous, ce n'était pas rare de rentrer et de trouver le DistroBox démonté et étalé sur le sol du salon, ou Sean qui explorait les conduits d'aération en entendant un cliquetis. Une fois, je n'ai jamais pu le prouver, mais je crois qu'il a attrapé le chien. Il avait dix ans, je vous le rappelle, dix ans seulement, et il était déjà si doué. « Doué » n'est peut-être pas le mot juste, parce que ce n'était pas seulement son talent, c'était aussi sa curiosité et la joie immense qu'il éprouvait à démonter quelque chose et à comprendre l'importance de chaque pièce.\n\nAu fil des années, on s'est un peu éloignés. Il était juste mon petit frère bizarre et intello qui passait son temps à démonter mes affaires. On allait à l'université aux antipodes. Il a étudié l'ingénierie et la physique, sans surprise. Moi, je faisais ce que je voulais.\n\nUne fois adultes, nous prenions des nouvelles de temps en temps, mais je ne dirais pas que nous étions particulièrement proches. Plutôt des connaissances que des frères. Nous étions tout simplement trop différents. J'aimais bien les Phoenix Five, il les trouvait sans originalité. Je pensais que le nouveau programme de citoyenneté était un moyen important de récompenser ceux qui s'engagent activement pour bâtir une nation plus forte. Il le trouvait élitiste. Et ainsi de suite.\n\nIl y a de nombreuses années, lorsque j'ai remporté mon premier siège de député, Sean est venu à la fête de victoire. Je pense qu'un de mes collaborateurs l'avait invité. Franchement, l'idée ne m'avait même pas effleuré l'esprit. Un membre de mon équipe m'a dit l'avoir aperçu dans un coin, visiblement mal à l'aise au milieu de la foule. Il n'est même pas venu me parler, il a juste écrit un mot et demandé à quelqu'un de me le remettre. Voici ce qu'il disait :\n\n« Salut Stephen, tu avais l'air d'avoir beaucoup de monde à qui parler, alors je n'ai pas voulu t'interrompre. Mais je voulais juste te dire que tu es génial ! Je sais qu'on se dispute parfois, mais ça me donne espoir de voir quelqu'un qui croit vraiment en ses convictions entrer au gouvernement. C'est vraiment formidable et je suis très heureux pour toi. Souviens-toi, peu importe les difficultés qui t'entourent, sois courageux, reste toi-même et tout ira bien. »\n\nMon frère Sean. Sean le destructeur. Sean le reconstruiteur. Sean fut l'une des nombreuses victimes de la Tragédie de 2125. Depuis, je n'ai plus jamais entendu ses tirades politiques exaspérantes ni ses divagations soporifiques sur les alliages et les points de tension. C'est un réconfort de savoir que le projet qui a coûté la vie à mon frère est désormais achevé. Ce monument, bien maigre consolation face à la perte de ces êtres, perpétuera au moins leur mémoire aux yeux de l'humanité.\n\nVous savez quoi ? Excusez ma franchise, mais tant pis. Je ne veux pas que les gens contemplent ce mémorial en silence et en pleine introspection. Je veux que les noms gravés dans cette pierre allument en eux une flamme, une flamme qui les pousse à se dépasser, à défier l'humanité. Je veux que ces noms soient un cri de ralliement pour que nous excellions tous, que nous nous épanouissions dans l'univers et trouvions notre voie.\n\nAlors, comme le dit mon petit frère un peu idiot : courage à tous ! Soyez vous-mêmes ! Et tout ira bien. \n\nhttps://robertsspaceindustries.com/en/comm-link/spectrum-dispatch/12675-2157-Blue-Skies-On-Mars",
+      "fullTextResolved": "Le Mars Tragedy Memorial est un monument situé près de Port Renatus, Mars (Sol IV) qui a été construit pour honorer la mémoire des 4 876 personnes décédées lors de la catastrophe de terraformation de Mars du 13 septembre 2125. Il a été inauguré lors d'une cérémonie par le sénateur Stephen Nguyen en 2157, qui avait perdu un frère dans la tragédie.\n\n\nAprès près de quarante ans d'épreuves et de tragédies, Mars est officiellement classée comme un environnement propice à la vie sur Terre. Un mémorial en hommage aux victimes de la Grande Tragédie martienne de 1925 est inauguré à l'issue de cette déclaration officielle, en présence du sénateur Stephen Nguyen, orateur principal.\n\nVoici la transcription de son discours :\nMon frère Sean adorait construire. Quand on était petits, moi je faisais du sport et je me présentais aux élections étudiantes, lui, il passait son temps à bricoler. Chez nous, ce n'était pas rare de rentrer et de trouver le DistroBox démonté et étalé sur le sol du salon, ou Sean qui explorait les conduits d'aération en entendant un cliquetis. Une fois, je n'ai jamais pu le prouver, mais je crois qu'il a attrapé le chien. Il avait dix ans, je vous le rappelle, dix ans seulement, et il était déjà si doué. « Doué » n'est peut-être pas le mot juste, parce que ce n'était pas seulement son talent, c'était aussi sa curiosité et la joie immense qu'il éprouvait à démonter quelque chose et à comprendre l'importance de chaque pièce.\n\nAu fil des années, on s'est un peu éloignés. Il était juste mon petit frère bizarre et intello qui passait son temps à démonter mes affaires. On allait à l'université aux antipodes. Il a étudié l'ingénierie et la physique, sans surprise. Moi, je faisais ce que je voulais.\n\nUne fois adultes, nous prenions des nouvelles de temps en temps, mais je ne dirais pas que nous étions particulièrement proches. Plutôt des connaissances que des frères. Nous étions tout simplement trop différents. J'aimais bien les Phoenix Five, il les trouvait sans originalité. Je pensais que le nouveau programme de citoyenneté était un moyen important de récompenser ceux qui s'engagent activement pour bâtir une nation plus forte. Il le trouvait élitiste. Et ainsi de suite.\n\nIl y a de nombreuses années, lorsque j'ai remporté mon premier siège de député, Sean est venu à la fête de victoire. Je pense qu'un de mes collaborateurs l'avait invité. Franchement, l'idée ne m'avait même pas effleuré l'esprit. Un membre de mon équipe m'a dit l'avoir aperçu dans un coin, visiblement mal à l'aise au milieu de la foule. Il n'est même pas venu me parler, il a juste écrit un mot et demandé à quelqu'un de me le remettre. Voici ce qu'il disait :\n\n« Salut Stephen, tu avais l'air d'avoir beaucoup de monde à qui parler, alors je n'ai pas voulu t'interrompre. Mais je voulais juste te dire que tu es génial ! Je sais qu'on se dispute parfois, mais ça me donne espoir de voir quelqu'un qui croit vraiment en ses convictions entrer au gouvernement. C'est vraiment formidable et je suis très heureux pour toi. Souviens-toi, peu importe les difficultés qui t'entourent, sois courageux, reste toi-même et tout ira bien. »\n\nMon frère Sean. Sean le destructeur. Sean le reconstruiteur. Sean fut l'une des nombreuses victimes de la Tragédie de 2125. Depuis, je n'ai plus jamais entendu ses tirades politiques exaspérantes ni ses divagations soporifiques sur les alliages et les points de tension. C'est un réconfort de savoir que le projet qui a coûté la vie à mon frère est désormais achevé. Ce monument, bien maigre consolation face à la perte de ces êtres, perpétuera au moins leur mémoire aux yeux de l'humanité.\n\nVous savez quoi ? Excusez ma franchise, mais tant pis. Je ne veux pas que les gens contemplent ce mémorial en silence et en pleine introspection. Je veux que les noms gravés dans cette pierre allument en eux une flamme, une flamme qui les pousse à se dépasser, à défier l'humanité. Je veux que ces noms soient un cri de ralliement pour que nous excellions tous, que nous nous épanouissions dans l'univers et trouvions notre voie.\n\nAlors, comme le dit mon petit frère un peu idiot : courage à tous ! Soyez vous-mêmes ! Et tout ira bien. \n\n[Ciel bleu sur Mars](https://robertsspaceindustries.com/en/comm-link/spectrum-dispatch/12675-2157-Blue-Skies-On-Mars)",
       "textResolved": ""
     },
     {
@@ -790,22 +814,22 @@
       "tags": "",
       "media": [
         {
-          "id": 9434452,
+          "id": 1,
           "src": "https://www.researchgate.net/profile/Shane-Lynn/publication/224384016/figure/fig1/AS:302753470533633@1449193460583/Schematic-of-VASIMR-engine-2.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
         "raw": ""
       },
-      "fullTextResolved": "Une nouvelle version du générateur quantique est mis au point par Roberts Space Industries, permettant d'atteindre un dixième de la vitesse de la lumière (29 979,24 km/s). De plus en plus de vaisseaux parcourent le système solaire.",
-      "textResolved": "Une nouvelle version du générateur quantique est mis au point par Roberts Space Industries, permettant d'atteindre un dixième de la vitesse de la lumière (29 979,24 km/s). De plus en plus de vaisseaux parcourent le système solaire."
+      "fullTextResolved": "Une nouvelle version du générateur quantique est mis au point par Roberts Space Industries, permettant d'atteindre un dixième de la vitesse de la lumière (29 979,24 km/s). De plus en plus de vaisseaux parcourent le système solaire.\n\n\n [La Marche du Progrès ](https://robertsspaceindustries.com/en/comm-link/spectrum-dispatch/12676-2214-The-March-Of-Progress)\n\nLorsque RSI a annoncé la nouvelle génération de moteurs à fusion, de nouvelles perspectives passionnantes pour les voyages spatiaux se sont ouvertes, mais tout le monde n'était pas aussi enthousiaste :\n\nBailey n'en revenait pas. Vingt minutes après le début du cours de physique, sa feuille de calcul était déjà en train de se mettre à jour. Un nouveau module sur les technologies des moteurs ou quelque chose du genre, sorti aujourd'hui. Il l'avait aperçu en sortant ce matin, mais ces fichues feuilles de calcul des écoles publiques ne recevaient les notifications de mise à jour des manuels scolaires que maintenant.\n\nM. Caro avait déjà dit qu'on serait interrogés là-dessus et c'est déjà en train de se mettre à jour ?! C'est pas possible. C'est vraiment n'importe quoi. Comment je suis censé apprendre ça maintenant ?\n\nTant pis. Je vais tout faire sauter. Tant pis pour ce cours. Tant pis pour la citoyenneté. Tant pis pour tout ce système. Je n'en ai pas besoin…\n\nM. Caro annonça que le quiz commencerait dans dix minutes. Bailey s'enfonça dans son siège et se mit à réviser. ",
+      "textResolved": ""
     },
     {
       "id": 16600384,
@@ -824,20 +848,44 @@
         {
           "id": 1,
           "src": "https://zupimages.net/up/21/47/2fnq.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
         "raw": "Construit avant la dÃ©couverte des points de saut et aprÃ¨s la dÃ©couverte du voyage quantique, sa mission Ã©tait de se rendre au systÃ¨me planÃ©taire potentiellement habitable GJ 667Cc et Ã©tablir une colonie humaine grÃ¢ce Ã  des moteurs d'entraÃ®nement quantiques conventionnels.\n\n Le voyage a Ã©tÃ© estimÃ© Ã  prendre plus d'un siÃ¨cle. \n\nLes 5000 personnes Ã  bord, toutes volontaires, devaient rester en stase pendant que le prototype d'intelligence artificielle surnommÃ© Janus pilotait le navire et gÃ©rait le maintien de la vie. \n\nEn 2237, quatorze ans avant que le vaisseau ne perde contact avec la Terre, ses mises Ã  jour quotidiennes de l'Ã©tat ont brusquement cessÃ©. \n\nIl n'a pas Ã©tÃ© revu depuis.  \nLorsque la nouvelle de la disparition du navire a Ã©tÃ© publiÃ©e, beaucoup ont Ã©mis l'hypothÃ¨se que Janus Ã©tait responsable de la perte du navire. \n\nLes preuves corroborant cette affirmation n'ont jamais Ã©tÃ© trouvÃ©es."
       },
-      "fullTextResolved": "Construit avant la découverte des points de saut et après la découverte du voyage quantique, sa mission était de se rendre au système planétaire potentiellement habitable GJ 667Cc et établir une colonie humaine grâce à des moteurs d'entraînement quantiques conventionnels.\n\n Le voyage a été estimé à prendre plus d'un siècle. \n\nLes 5000 personnes à bord, toutes volontaires, devaient rester en stase pendant que le prototype d'intelligence artificielle surnommé Janus pilotait le navire et gérait le maintien de la vie. \n\nEn 2237, quatorze ans avant que le vaisseau ne perde contact avec la Terre, ses mises à jour quotidiennes de l'état ont brusquement cessé. \n\nIl n'a pas été revu depuis.  \nLorsque la nouvelle de la disparition du navire a été publiée, beaucoup ont émis l'hypothèse que Janus était responsable de la perte du navire. \n\nLes preuves corroborant cette affirmation n'ont jamais été trouvées.",
+      "fullTextResolved": "Construit avant la découverte des points de saut et après la découverte du voyage quantique, sa mission était de se rendre au système planétaire potentiellement habitable GJ 667Cc et établir une colonie humaine grâce à des moteurs d'entraînement quantiques conventionnels.\n\n Le voyage a été estimé à prendre plus d'un siècle. \n\nLes 5000 personnes à bord, toutes volontaires, devaient rester en stase pendant que le prototype d'intelligence artificielle surnommé Janus pilotait le navire et gérait le maintien de la vie. \n\nEn 2237, quatorze ans avant que le vaisseau ne perde contact avec la Terre, ses mises à jour quotidiennes de l'état ont brusquement cessé. \n\nIl n'a pas été revu depuis.  \nLorsque la nouvelle de la disparition du navire a été publiée, beaucoup ont émis l'hypothèse que Janus était responsable de la perte du navire. \n\nLes preuves corroborant cette affirmation n'ont jamais été trouvées.\n\n\n[2232 : La première poussée ](https://robertsspaceindustries.com/en/comm-link/spectrum-dispatch/12680-2232-The-First-Push)",
       "textResolved": ""
+    },
+    {
+      "id": 18830306,
+      "title": "Fondation d'ARGO Astronautics",
+      "startDate": "2243",
+      "endDate": "",
+      "category": "846346",
+      "fullTextResolved": "𝗗𝗘𝗦𝗖𝗥𝗜𝗣𝗧𝗜𝗢𝗡\n\nARGO Astronautics est une entreprise de conception et de fabrication industrielle située dans le Empire uni de la Terre (UEE). Surtout connu pour leur Véhicule utilitaire polyvalent. Dans la gamme d'engins spatiaux (MPUV), l'entreprise a commencé à concevoir des wagons terrestres mag-lev et est devenue, au fil des siècles, principalement associée aux engins spatiaux industriels.\n\n𝗛𝗜𝗦𝗧𝗢𝗜𝗥𝗘\n\nLa société a été fondée sous le nom d'AR-Go Technologies dans SEY 2243 par Alana Redmond, ingénieure adjointe des trains mag-lev. Ayant grandi le long de la ligne ferroviaire Trans-America, qui s'étend sur plusieurs continents, Redmond s'est toujours intéressée aux trains. Pendant son temps libre, elle a inventé un outil permettant de réparer automatiquement les points faibles des voies mag-lev. Après avoir été encouragée par ses parents à breveter et à commercialiser l’outil, Redmond a déposé des statuts constitutifs et accepté les investissements des parties intéressées. La sortie commerciale de l’outil a été un succès immédiat et, au cours des décennies suivantes, AR-Go s’est concentré sur l’amélioration du transport ferroviaire. Les innovations de l'entreprise comprenaient la conception d'un loquet et d'un verrou de chargement plus rapides, de nouveaux systèmes de gestion des passagers et un chargeur vibrant unique.\n\nPeu de temps après avoir acquis Todairo Manufacture et rebaptisé ARGO Transportation, la société a remporté un contrat pour concevoir et fabriquer l'ensemble du système de transport ferroviaire de la ville nouvellement fondée de Port Renatussur Mars(Sol IV). Personnellement planifié par Redmond, le projet a été un succès et la société a continué à produire des réseaux ferroviaires sur d'autres mondes, notamment le Prime Transit Metrorail Terre(Terra III) et la ligne de transport municipal sur Angéli(Croshaw II).\n\nCherchant à améliorer encore leurs services et leurs réseaux, ARGO a investi une partie des bénéfices de ces projets dans la constitution d'une équipe de concepteurs chargée d'identifier et de corriger les problèmes de retard courants dans le fret ferroviaire. L’équipe a constaté que l’attente des déchargeurs dans les spatioports entraînait d’importantes périodes d’inactivité. En réponse à ces découvertes, ARGO a acheté Telluman Shipworks avec l'intention de construire son propre vaisseau spatial chargeur. Le résultat a été l'ARGO Orbital Utility Craft(OUC).\n\nL'OUC était capable de décharger les conteneurs de fret des chemins de fer ARGO et de déplacer leur contenu vers les stations orbitales beaucoup plus rapidement et de manière plus économique que les transports lourds traditionnels. Cela s’est avéré attrayant pour de nombreuses industries, qui ont acheté l’OUC et l’ont adapté à une grande variété d’utilisations. En 2619, ARGO commença à proposer au public un nouveau modèle de l'OUC sous la marque MPUV. Les ventes de ce navire ont été suffisamment rentables pour que l'entreprise déplace son attention des travaux ferroviaires vers les engins spatiaux industriels.\n\nEn 2665, la société s'est rebaptisée ARGO Astronautics en reconnaissance de sa nouvelle orientation en tant que développeur d'engins spatiaux industriels. Au cours des siècles suivants, l'entreprise a diversifié son portefeuille d'abord en proposant d'autres modèles de MPUV, notamment des monospaces, des modules de récupération et des modules de réparation, puis en développant des navires industriels supplémentaires spécifiques à un emploi. Bien que le MPUV soit toujours son produit le plus vendu, ARGO produit également des navettes, des skippers à basse atmosphère et des modules de rentrée, entre autres.\n\nL'entreprise a signé un partenariat avec Shubin Interstellar et la Navy de l'UEE.\n\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\n\n𝗜𝗻𝗱𝘂𝘀𝘁𝗿𝗶𝗲: Fabrication d'engins spatiaux\n𝗙𝗼𝗻𝗱𝗮𝘁𝗲𝘂𝗿: Alana Redmond\n𝗗𝗮𝘁𝗲 𝗱𝗲 𝗳𝗼𝗻𝗱𝗮𝘁𝗶𝗼𝗻: 2243\n𝗖𝗼𝗱𝗲 𝗳𝗮𝗯𝗿𝗶𝗰𝗮𝗻𝘁: ARGO\n𝗦𝗶𝗲𝗴𝗲 𝘀𝗼𝗰𝗶𝗮𝗹: Mars, Système Solaire (anciennement Terre, Système Solaire)\n",
+      "textResolved": "",
+      "tags": "",
+      "externalLink": "https://robertsspaceindustries.com/galactapedia/article/0KnA1vvJEM-argo-astronautics",
+      "media": [
+        {
+          "id": 1,
+          "src": "https://media.starcitizen.tools/2/2d/Sc-logo-argo-astronautics.svg",
+          "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
+          "thumbPosition": "0,0",
+          "externalMediaId": "",
+          "externalMediaType": "",
+          "externalMediaThumb": ""
+        }
+      ]
     },
     {
       "id": 16606395,
@@ -856,13 +904,13 @@
         {
           "id": 1,
           "src": "https://photos.lci.fr/images/613/344/tombe-cimetiere-enterrement-c14f36-0@1x.jpeg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -888,13 +936,13 @@
         {
           "id": 1,
           "src": "https://i.ytimg.com/vi/K1j-h6jwaZI/maxresdefault.jpg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -920,19 +968,19 @@
         {
           "id": 1,
           "src": "https://www.neozone.org/blog/wp-content/uploads/2020/09/trou-de-vers.jpg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
         "raw": "Le systÃ¨me Croshaw est un systÃ¨me planÃ©taire de l'Empire-Uni de la Terre (UEE). \n\nDÃ©couvert en 2271 par Nick Croshaw, ce fut le premier systÃ¨me planÃ©taire explorÃ© et colonisÃ© par les humains en dehors de leur systÃ¨me d'origine Sol. \n\nDes entreprises privÃ©es ont dâabord tentÃ© de revendiquer les planÃ¨tes du systÃ¨me, mais ont Ã©chouÃ© lorsque le coÃ»t du transport des matÃ©riaux et de la maintenance des opÃ©rations sâest avÃ©rÃ© trop Ã©levÃ©. \n\nEn rÃ©ponse, les dirigeants de la Terre (Sol III) ont convoquÃ© un sommet mondial en 2281, au cours duquel ils ont adoptÃ© le Freeman Act, un texte lÃ©gislatif coopÃ©ratif entre tous les gouvernements de la Terre qui a crÃ©Ã© un systÃ¨me de loterie pour accorder aux colons potentiels des droits fonciers et miniers. \n\nLe succÃ¨s du Freeman Act a finalement conduit les dirigeants humains Ã  former un nouveau gouvernement unifiÃ© en 2380, appelÃ© les Nations Unies pour la Terre (UNE)."
       },
-      "fullTextResolved": "Le système Croshaw est un système planétaire de l'Empire-Uni de la Terre (UEE). \n\nDécouvert en 2271 par Nick Croshaw, ce fut le premier système planétaire exploré et colonisé par les humains en dehors de leur système d'origine Sol. \n\nDes entreprises privées ont d’abord tenté de revendiquer les planètes du système, mais ont échoué lorsque le coût du transport des matériaux et de la maintenance des opérations s’est avéré trop élevé. \n\nEn réponse, les dirigeants de la Terre (Sol III) ont convoqué un sommet mondial en 2281, au cours duquel ils ont adopté le Freeman Act, un texte législatif coopératif entre tous les gouvernements de la Terre qui a créé un système de loterie pour accorder aux colons potentiels des droits fonciers et miniers. \n\nLe succès du Freeman Act a finalement conduit les dirigeants humains à former un nouveau gouvernement unifié en 2380, appelé les Nations Unies pour la Terre (UNE).",
+      "fullTextResolved": "Le système Croshaw est un système planétaire de l'Empire-Uni de la Terre (UEE). \n\nDécouvert en 2271 par Nick Croshaw, ce fut le premier système planétaire exploré et colonisé par les humains en dehors de leur système d'origine Sol. \n\nDes entreprises privées ont d’abord tenté de revendiquer les planètes du système, mais ont échoué lorsque le coût du transport des matériaux et de la maintenance des opérations s’est avéré trop élevé. \n\nEn réponse, les dirigeants de la Terre (Sol III) ont convoqué un sommet mondial en 2281, au cours duquel ils ont adopté le Freeman Act, un texte législatif coopératif entre tous les gouvernements de la Terre qui a créé un système de loterie pour accorder aux colons potentiels des droits fonciers et miniers. \n\nLe succès du Freeman Act a finalement conduit les dirigeants humains à former un nouveau gouvernement unifié en 2380, appelé les Nations Unies pour la Terre (UNE).\n\n\n\n[Un petit saut pour l'homme ](https://robertsspaceindustries.com/en/comm-link/spectrum-dispatch/12685-2271-One-Small-Jump-For-Man)\n\n JUMPER Review\n\nUS/Color/123 min\n\nPar Kevin Lazarus\n \n\nL'an dernier, quand Global/Nexus a annoncé la production d'un nouveau biopic sur le célèbre astronaute Nick Croshaw, cela paraissait absurde. Tout le monde connaît son histoire : de ses recherches acharnées sur l'anomalie spatiale qui semblait engloutir les vaisseaux tout entiers, jusqu'à devenir le premier homme à découvrir et à franchir avec succès un point de saut. On a déjà vu ça partout. On l'a vu en vidéo, en chanson, et sûrement en peinture. Mais voilà… celui-ci est vraiment excellent.\n\nÀ partir d'un scénario du jeune auteur Thomas Goss, Prods a su attirer des talents de renom tels que Michael Forbe (Croshaw) et Lima Hannigan (Baxter), ainsi que le réalisateur Ariel Kalil (Requiem's ​​Run). Text and Vis dégage une authenticité saisissante, sans jamais tomber dans le paternalisme. Le film insuffle une vitalité et une urgence nouvelles à ce qui avait toujours constitué le point faible des précédentes adaptations : les débuts de Croshaw. Cette période de sa vie fut une véritable épreuve, faite d'essais et d'erreurs. Tenter de comprendre l'origine de l'anomalie et comment la reproduire est un sujet plutôt aride, se résumant à des débats sur l'astrophysique et les distorsions spatio-temporelles. Les réalisateurs parviennent à l'adoucir juste ce qu'il faut pour le rendre accessible et susciter l'émotion, sans pour autant sacrifier la profondeur intellectuelle du propos.\n\nUne fois que le film aborde la première tentative de Croshaw pour franchir le Pli, il bascule dans un récit d'aventure plus classique. Mais comme il a si bien mis en place les enjeux, on est prêt pour un rythme plus soutenu, ce qui nous amène à la scène la plus marquante du film. Tout le monde connaît les dangers de la navigation par points de saut : c'est comme piloter un astéroïde à plein régime. Du moins, c'est ce qu'on nous dit. On peut maintenant ressentir ce que ça représente : la vitesse vertigineuse, la terreur absolue, mais aussi cette montée d'adrénaline, cette euphorie intense de frôler le précipice et d'en ressortir de l'autre côté. C'est ce qui rend la chose d'autant plus incroyable et hallucinante.\n\nLes images que Croshaw aperçoit une fois de l'autre côté du point de saut sont impeccablement réalisées, ramenant ce que nous connaissons tous comme le système Croshaw à ce à quoi il ressemblait probablement lorsqu'il l'a vu pour la première fois, avec toute l'émerveillement qu'il a dû ressentir.\n\nLes prouesses techniques sont irréprochables à tous les niveaux. La musique de William Kurtz est à la fois grandiose et intimiste.\n\nLa vidéo devrait plaire à un large public, même si les jeunes enfants risquent de rebuter par le jargon scientifique. Disponible cette semaine pour les abonnés Dish et Wave ; les tarifs habituels de téléchargement et d'envoi s'appliquent. ",
       "textResolved": ""
     },
     {
@@ -952,13 +1000,13 @@
         {
           "id": 1,
           "src": "https://scriptvtech.com/uploads/images/img_x500_5f49f5a56405b6-49014640-42770179.jpg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -984,13 +1032,13 @@
         {
           "id": 1,
           "src": "https://zupimages.net/up/23/37/r691.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -1016,13 +1064,13 @@
         {
           "id": 1,
           "src": "https://static1.millenium.org/articles/5/35/47/95/@/1239870-rhetor-et-ses-astres-dans-la-starmap-full-1.PNG",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -1048,13 +1096,13 @@
         {
           "id": 1,
           "src": "https://zupimages.net/up/21/47/8e8n.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -1080,13 +1128,13 @@
         {
           "id": 1,
           "src": "https://static1.millenium.org/articles/3/35/34/03/@/1224897-moteur-quantique-tarsus-article_image_d-1.jpg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -1112,13 +1160,13 @@
         {
           "id": 1,
           "src": "https://zupimages.net/up/23/05/s7ip.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -1144,13 +1192,13 @@
         {
           "id": 1,
           "src": "https://zupimages.net/up/23/37/btpo.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -1176,13 +1224,13 @@
         {
           "id": 1,
           "src": "https://zupimages.net/up/21/47/9dnv.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -1208,13 +1256,13 @@
         {
           "id": 1,
           "src": "https://zupimages.net/up/21/47/whhj.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -1240,13 +1288,13 @@
         {
           "id": 1,
           "src": "https://zupimages.net/up/21/47/pnjn.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -1272,13 +1320,13 @@
         {
           "id": 1,
           "src": "https://zupimages.net/up/21/47/ilh4.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
@@ -1302,22 +1350,22 @@
       "tags": "",
       "media": [
         {
-          "id": 9432609,
-          "src": "https://zupimages.net/up/23/37/ltqn.png",
-          "caption": "",
+          "id": 1,
+          "src": "https://robertsspaceindustries.com/media/vftuaa1qtefrjr/source/UNE_SampleImage3.jpg",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
         "raw": "La dÃ©couverte de tous ces nouveaux jump points et systÃ¨mes associÃ©s agrandissent les perspectives des dirigeants de lâhumanitÃ©. \nLes diffÃ©rences culturelles et sociales sur Terre sont mises de cÃ´tÃ© pour ne former quâune seule et mÃªme entitÃ©.\n \nLâUNE (United Nations of Earth) est alors crÃ©Ã©e. LâhumanitÃ©, unie sous une mÃªme banniÃ¨re, est prÃªte Ã  affronter le 25Ã¨me siÃ¨cle."
       },
-      "fullTextResolved": "La découverte de tous ces nouveaux jump points et systèmes associés agrandissent les perspectives des dirigeants de l’humanité. \nLes différences culturelles et sociales sur Terre sont mises de côté pour ne former qu’une seule et même entité.\n \nL’UNE (United Nations of Earth) est alors créée. L’humanité, unie sous une même bannière, est prête à affronter le 25ème siècle.",
-      "textResolved": "le système Croshaw est terraformé."
+      "fullTextResolved": "La découverte de tous ces nouveaux jump points et systèmes associés agrandissent les perspectives des dirigeants de l’humanité. \nLes différences culturelles et sociales sur Terre sont mises de côté pour ne former qu’une seule et même entité.\n \nL’UNE (United Nations of Earth) est alors créée. L’humanité, unie sous une même bannière, est prête à affronter le 25ème siècle.\n\n\n\n[Ensemble, nous nous élevons](https://robertsspaceindustries.com/en/comm-link/spectrum-dispatch/12687-2380-Together-We-Rise)\n\n\nL'humanité semblait progresser sereinement vers l'avenir. Des planètes du système Croshaw étaient terraformées pour y établir des colonies et exploiter leurs ressources. Trois nouveaux points de saut avaient été découverts (deux dans Croshaw, un dans notre système), rendant ainsi possible l'expansion vers d'autres systèmes.\n\nLes chefs de gouvernement du monde entier se sont réunis lors d'un sommet mondial pour discuter de la prochaine phase des initiatives mondiales dans l'espace et sur Terre.\n\nPersonne ne savait que cela ouvrirait une nouvelle voie pour l'humanité…\n\n\nTranscriptions LRO NewsDiv \n\n4.23.80, 6:05CSET\n\nAngela Brevot : Nous sommes à la deuxième semaine du Sommet mondial et, bien que des rumeurs circulent quant à une annonce importante imminente, personne n'a pu glaner le moindre indice sur sa nature. Un analyste avance l'hypothèse qu'il s'agirait d'une simple opération de communication visant à maintenir l'attention des médias sur le Sommet, dans une tentative désespérée de préserver son importance.\n\nMalgré cela, chaque jour à 18h00 heure d'Europe centrale , les équipes de NewsOrg s'installent dans la salle d'audience et attendent. Rien n'indique s'il y aura une annonce ou non. Cela dure depuis huit jours.\n\n4.23.80, 6:28 CSET\n\nAngela Brevot : Il y a une trentaine de secondes, un assistant est entré dans la salle d'audience et a rassemblé les équipes de NewsOrg. Il nous conduit plus profondément dans le complexe. Peut-être que cette annonce n'est pas un coup de publicité après tout. Comme vous pouvez le voir, on nous conduit vers…\n\nVoici l'Assemblée générale. Tous les délégués de tous les gouvernements du monde sont encore présents. Que se passe-t-il ?\n\n4.23.80, 6:42 CSET\n\n[LE DÉLÉGUÉ IVAN TSANG EST AU PODIUM , FLANQUÉ PAR DES REPRÉSENTANTS DES SUPERPUISSANCES MONDIALES ]\n\nIvan Tsang : Merci de votre patience. Si chacun peut commencer à transmettre, nous commencerons.\n\n[pause]\n\nBonsoir. Nous vivons une période passionnante de l'histoire de l'humanité. Nous sommes à l'aube d'une nouvelle ère, où l'exploration et la colonisation de l'espace lointain ne sont plus une simple possibilité, mais une certitude. Les progrès réalisés dans les technologies de terraformation et d'astroconception nous permettent de voyager toujours plus loin dans le cosmos. Les scientifiques ont découvert deux points de passage dans le système Croshaw qui, une fois franchis, nous ouvriront les portes d'un nombre encore plus important de planètes et de systèmes à explorer.\n\nL'objectif de ce sommet était de poser une question. Il ne s'agissait pas de savoir où aller à partir de maintenant, mais comment y parvenir. Un développement de cette envergure est impossible face à des intérêts nationaux, politiques, voire commerciaux concurrents. Nos querelles personnelles paraissent insignifiantes au regard de l'immensité des possibilités qui s'offrent à nous.\n\nAinsi, les représentants de la Terre se sont réunis à ce Sommet. Après avoir débattu et discuté, nous avons conclu que si nous voulons partir à la conquête de l'espace, nous devons le faire en tant qu'espèce unique et unifiée. C'est pourquoi nous annonçons notre intention de former un organe de gouvernance unique pour cette planète et toutes les autres.\n\nLes Nations Unies de la Terre.\n\nChacun des chefs de gouvernement qui vous ont précédés reviendra avec un référendum dans son pays. Il y a beaucoup à faire. De nombreux problèmes à aborder et à résoudre. Le chemin est encore long avant de pouvoir bâtir un gouvernement stable et opérationnel de cette envergure. Sachez-le, nous y parviendrons. Nous serons justes. Nous serons unis. Merci et bonne nuit.\nAu cours des années suivantes, les pays se sont livrés à des débats et des controverses. Bien que peu l'admettaient, tous savaient qu'il leur serait impossible de mener seuls une expansion spatiale constante. Ce n'est qu'après l'engagement des superpuissances mondiales au sein de l' UNE que les autres pays ont commencé à suivre leur exemple.\n\nL'humanité conservait ses divergences, mais face à l'univers, nous étions désormais unis. ",
+      "textResolved": ""
     },
     {
       "id": 16605616,
@@ -1526,22 +1574,22 @@
       "tags": "",
       "media": [
         {
-          "id": 9432621,
+          "id": 1,
           "src": "https://i.imgur.com/Zerde6a.jpg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
         "raw": "En 2438, Vernon Tar scannait le systÃ¨me Davien Ã  la recherche d'Ã©ventuels points de saut quand son radar lui signala un contact. \n\nPensant que ce nâÃ©tait quâun autre explorateur, il ouvrit le feu avant de rÃ©aliser que câÃ©tait en fait un vaisseau alien Banu. \n\nIl contacta rapidement l'UNE qui s'occupa de calmer l'extraterrestre.  \n\nL'incident fut Ã©touffÃ© par le gÃ©nÃ©ral Neal Socolovich et trÃ¨s peu d'informations furent transmises aux mÃ©dias."
       },
-      "fullTextResolved": "En 2438, Vernon Tar scannait le système Davien à la recherche d'éventuels points de saut quand son radar lui signala un contact. \n\nPensant que ce n’était qu’un autre explorateur, il ouvrit le feu avant de réaliser que c’était en fait un vaisseau alien Banu. \n\nIl contacta rapidement l'UNE qui s'occupa de calmer l'extraterrestre.  \n\nL'incident fut étouffé par le général Neal Socolovich et très peu d'informations furent transmises aux médias.",
-      "textResolved": "L'explorateur Vernon Tar rencontre accidentellement les Banu."
+      "fullTextResolved": "En 2438, Vernon Tar scannait le système Davien à la recherche d'éventuels points de saut quand son radar lui signala un contact. \n\nPensant que ce n’était qu’un autre explorateur, il ouvrit le feu avant de réaliser que c’était en fait un vaisseau alien Banu. \n\nIl contacta rapidement l'UNE qui s'occupa de calmer l'extraterrestre.  \n\nL'incident fut étouffé par le général Neal Socolovich et très peu d'informations furent transmises aux médias.\n\n\n\n[Bonjour](https://robertsspaceindustries.com/en/comm-link/spectrum-dispatch/12690-2438-Hello)\n\n\nUnited Times/Tribune NewsOrg Archive\n\nPremière date prévue : 12 juin 2438\nPar Shelley Field\n\nNous nous sommes toujours posé des questions. Depuis que nous avons exploré l'univers, nous nous sentions terriblement seuls. Malgré la découverte de points de saut et de systèmes extraterrestres, le vide absolu nous pesait. Maintenant, tout change. Car maintenant, nous savons.\n\nAux alentours de 3 h 13, heure normale d'Europe centrale (SET) , Vernon Tar, un explorateur de trente-six ans, scrutait le système Davien à la recherche de points de saut inconnus. Dérivant dans l'immensité noire, bercé seulement par le bourdonnement de ses scanners longue portée, Tar détecta soudain une cible.\n\n« Quand on reste aussi longtemps dans le silence, le moindre signal vous fait sursauter pendant une seconde », a relaté Tar via DataCom, « alors j'ai vérifié mon écran et, eh bien, ce n'était pas un point de saut. »\n\nC'était un navire. Pensant d'abord qu'il s'agissait simplement d'un autre Explorer ou d'un vaisseau perdu, Tar y prêta à peine attention.\n\n« J'ai failli détourner le regard. J'étais persuadé que c'était un autre Jumper, à la recherche de la même chose que moi. » Ce n'est que lorsque le vaisseau s'est approché qu'il a compris ce qu'il voyait : le premier membre d'une race extraterrestre. « Après avoir surmonté ma surprise, j'ai compris que la situation était délicate. Nous nous sommes simplement dévisagés un long moment. »\n\nTar contacta de l'UNE le SOC et transmit ses coordonnées. Une délégation fut rapidement constituée et dépêchée sur place. Des forces militaires étaient présentes par précaution, au cas où les extraterrestres se montreraient hostiles. La réunion dura une quarantaine de minutes. Les forces de l'UNE restèrent sur place, attendant une réponse de la race extraterrestre.\n\nLes scientifiques s'efforcent actuellement de concevoir des programmes pour faciliter la traduction et la communication, mais après des millénaires de civilisation, nous pouvons tous affirmer avoir géré le premier contact avec la dignité et la grâce d'une civilisation véritablement avancée. Désormais, nous savons avec certitude qu'il existe une autre civilisation, une autre civilisation avec laquelle partager et évoluer.\n \nRapport d'incident\n\nSoumis à H-SOC Central\n\nAuteur : Général Neal Socolovich\n\nUtilisateurs autorisés uniquement\n\nRe: Contact extraterrestre\n\nVers 15 h cet après-midi, un premier contact a été établi avec une civilisation extraterrestre dans le système Davien. Voici un résumé des événements :\n\nVernon Tar explorait le système à la recherche de points de saut lorsque ses systèmes ont détecté un contact. Pensant qu'il s'agissait d'un autre explorateur, il a ouvert le feu avant de réaliser qu'il s'agissait en fait d'un vaisseau extraterrestre. Pris de panique, il a demandé l'autorisation de se déplacer. Nous avons isolé les communications pour maîtriser la situation et nous sommes rendus sur place aussi vite que possible. Nous avons immédiatement mis en œuvre le protocole de confinement standard et coupé toute communication avec les médias.\n\nD'après nos observations, l'extraterrestre [désormais JERRY ] semblait secoué et agacé d'avoir été pris pour cible par Tar. Nous n'avons pas voulu insister et avons tenté de calmer Jerry par mime. Nous avons immédiatement demandé à la Division Technique de se pencher sur la conception d'un appareil de traduction. Jerry leur a permis d'enregistrer quelques bribes de son langage. Nous avons également effectué des analyses sommaires de ses vaisseaux. Rien de flagrant, afin de ne pas éveiller les soupçons, mais les données sont jointes.\n\nNous avons divulgué quelques informations à la presse et utilisé un de nos employés pour se faire passer pour Tar lors de l'interview, afin de nous assurer qu'il respecte nos consignes. Nous ne pensons pas que Tar posera problème. Nous lui avons expliqué sans détour que s'il gardait le silence, il deviendrait le héros du premier contact plutôt que l'idiot qui a failli déclencher la première guerre interstellaire. Tar a compris.\nEntre-temps, nous avons déployé des radars à Davien pour surveiller la situation, mais nous prévoyons d'autres contacts dans les jours ou les semaines à venir. Je suis sûr qu'ils sont tout aussi curieux que nous.\n\nIls étaient curieux. Deux semaines plus tard, une délégation extraterrestre fit son apparition dans le système Davien et établit le contact avec Socolovich. Durant les mois qui suivirent, les deux civilisations s'efforcèrent de franchir la barrière de communication. Lorsque nous eûmes enfin pu interagir, nous apprîmes qu'il s'agissait des Banu, une civilisation composée d'États planétaires qui, elle aussi, venait de commencer à explorer l'univers.\n\nEn octobre 2438, Socolovich et les autres délégués signèrent le premier accord interstellaire de paix et de commerce avec les Banu. ",
+      "textResolved": ""
     },
     {
       "id": 16606513,
@@ -1750,22 +1798,22 @@
       "tags": "",
       "media": [
         {
-          "id": 9435568,
-          "src": "https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41415-021-2813-6/MediaObjects/41415_2021_2813_Fig1_HTML.jpg",
-          "caption": "",
+          "id": 1,
+          "src": "https://robertsspaceindustries.com/media/xwmr7iit6nf0ir/post/OffWorldAd_2.jpg",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
         "raw": "Souhaitant tirer avantage de cette situation, RSI lance une campagne publicitaire intitulÃ©e \"L'air que vous respirez\" afin de promouvoir leurs vols commerciaux. \nLa sociÃ©tÃ© promet aux gens une nouvelle vie, une chance de tout recommencer ailleurs dans l'univers. Cette campagne rencontre un Ã©norme succÃ¨s."
       },
-      "fullTextResolved": "Souhaitant tirer avantage de cette situation, RSI lance une campagne publicitaire intitulée \"L'air que vous respirez\" afin de promouvoir leurs vols commerciaux. \nLa société promet aux gens une nouvelle vie, une chance de tout recommencer ailleurs dans l'univers. Cette campagne rencontre un énorme succès.",
-      "textResolved": "La Terre est surpeuplée."
+      "fullTextResolved": "Souhaitant tirer avantage de cette situation, RSI lance une campagne publicitaire intitulée \"L'air que vous respirez\" afin de promouvoir leurs vols commerciaux. \nLa société promet aux gens une nouvelle vie, une chance de tout recommencer ailleurs dans l'univers. Cette campagne rencontre un énorme succès.\n\n\n\n[La Terre est surpeuplée.](https://robertsspaceindustries.com/en/comm-link/spectrum-dispatch/12691-2460-Breathe-Free)\n\nL'expansion et la terraformation offrent de vastes territoires à l'humanité, mais une certaine appréhension persiste au sein du public. Ce n'est qu'avec la campagne « L'air que vous respirez » de RSI que des individus ont commencé à explorer l'univers, désireux de recommencer à zéro sur une nouvelle planète.\n\n- Échange de messages entre :\n\n Mark Carl [Willet & Ngo Advertising]\n\nFrancois Kelsen [RSI, Corp]\n\nRe; Campagne publicitaire\n\nMC : Salut Francois, le service juridique a validé le contrat et l'équipe de conception a signé les accords de confidentialité , donc il semble que nous soyons en affaires.\n\nFK : Excellent. Quand pouvons-nous commencer le brainstorming ?\n\nMC : Nous sommes à votre disposition. Quel genre de campagne envisagiez-vous ?\n\nFK : Eh bien, je ne sais pas. Dites-moi.\n\nMC : Spontanément, je dirais qu’on insiste sur le sentiment d’opportunité. La Terre restera toujours la Terre, mais on a un peu épuisé ses ressources.\n\nFK : En effet.\n\nMC : Tu vas sur une nouvelle planète. L’air sera plus pur. Je n’en sais rien. Je lance juste des idées en l’air.\n\nFK : Bien sûr, je pense qu’il y a quelque chose. Tout est nouveau. Je veux dire, à quand remonte la dernière fois que vous vous êtes assis dans un champ ?\n\nMC : Un vrai ?\n\nFK : Vous voyez ce que je veux dire ?\n\nMC : C’est donc une opportunité. L’opportunité de renaître. De recommencer à zéro. C’est une question de possibilités. L’excitation de ne pas savoir à quoi s’attendre.\n\nFK : Mais je ne veux pas que ça paraisse sauvage. Il y a la civilisation et la technologie.\n\nMC : Oui. Mais il y a de la place. De l'espace..\n\nFK : Exactement. Je veux que les gens comprennent qu’une nouvelle vie est possible. C’est ce que l’univers nous offre : une chance de recommencer à zéro. Nous voulons leur donner l’opportunité de saisir cette chance. ",
+      "textResolved": ""
     },
     {
       "id": 16604781,
@@ -2504,6 +2552,30 @@
       "textResolved": "Le système Hades a autrefois été le berceau d’une civilisation technologiquement avancée qui est aujourd’hui éteinte, ravagée par la guerre. Malgré les paysages désolés, le système reste une destination parfaite pour toute archéologue en herbe."
     },
     {
+      "id": 18830305,
+      "title": "découverte de Terra  (342A.03M)",
+      "startDate": "2516",
+      "endDate": "",
+      "category": "846040",
+      "fullTextResolved": "En 2516, l'UNE s'était étendue à douze systèmes. Si les points de saut et les relais de données permettaient des voyages plus rapides, vers les systèmes situés aux confins de l'Univers, la Terre commençait à paraître bien loin.\n\nWei-Yin Song, l'un des principaux arpenteur du projet Far Star de l'UNE , a fait une découverte dans un nouveau système et a rédigé un message contenant une idée intéressante.\n \n\nTO: AU HAUT CONSEIL DE L'UNE\n\nCC : Général Kelso Trask, Sénatrice Patricia Oat\n\nRE : PROSPECTIF SYSTÈME\n\nMesdames et Messieurs :\n\nComme vous le savez, ma mission actuelle consiste à rechercher et à classifier de nouveaux systèmes en vue de leur terraformation et de leur exploration. Le dernier système (342A) que mon équipe et moi avons découvert se situe dans ce qui peut être décrit comme un confluent, un véritable carrefour. Nous avons déjà repéré quatre points de saut, en plus de celui par lequel nous sommes arrivés, et il est possible qu'un cinquième se profile à l'horizon.\n\nJe joins une carte actualisée du système en question, indiquant les zones restant à explorer ainsi que les points de saut déjà découverts. L'une des planètes (342A.03M) est une super-Terre. Les analyses et les missions de reconnaissance ont confirmé la présence d'une atmosphère naturellement oxygénée, d'une végétation indigène, de vastes océans et d'un climat tempéré. Au cœur de la région sud, une équipe d'exploration a découvert les vestiges d'une formation rocheuse, suggérant qu'elle était autrefois organisée de cette manière, mais nous n'avons décelé aucune trace de vie intelligente.\n\nEn résumé, je propose que 342A.03M soit établi comme base opérationnelle avancée pour la terraformation et l'expansion vers les systèmes voisins. L'équipe a nommé la planète Terra en raison de ses similitudes avec la Terre.\n\nToutes nos données et conclusions actuelles sont incluses dans ce dossier de communication, je vous invite à le consulter vous-même.\n\nSincèrement,\n\nWei-Yin Song\n\narpenteur en chef/Ingénieur\n\nProjet Far Star\n\nLe Congrès de l'UNE approuva le plan de centralisation des opérations du système oriental hors de Terra. Au fil des ans, des villes se développèrent et une nouvelle culture vit le jour. ",
+      "textResolved": "",
+      "tags": "",
+      "externalLink": "https://robertsspaceindustries.com/galactapedia/article/VlMX7Mo9B4-terra-system",
+      "media": [
+        {
+          "id": 1,
+          "src": "https://cig-galactapedia-prod.s3.amazonaws.com/upload/f0f05252-7a54-46b4-b99d-21d1ab2ca829",
+          "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
+          "thumbPosition": "0,0",
+          "externalMediaId": "",
+          "externalMediaType": "",
+          "externalMediaThumb": ""
+        }
+      ]
+    },
+    {
       "id": 16604899,
       "ownerId": "1879974",
       "ownerName": "",
@@ -2578,26 +2650,26 @@
       "fullText": "none",
       "category": "845865",
       "dateFormat": "auto",
-      "externalLink": "",
+      "externalLink": "https://robertsspaceindustries.com/galactapedia/article/0QxBjKP2PN-united-planets-of-earth",
       "tags": "",
       "media": [
         {
-          "id": 9435588,
-          "src": "https://dto9r5vaiz7bu.cloudfront.net/e8nc0nzkpd8wl/source.png",
-          "caption": "",
+          "id": 1,
+          "src": "https://robertsspaceindustries.com/media/6wvy8xmjh2cscr/post_section_header/ShowdownPanel1_Size_FI.jpg",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
         "raw": ""
       },
-      "fullTextResolved": "En 2523, l’UNE recense plus d’une vingtaine de systèmes dans sa zone d’influence. 70% de l’humanité vit sur d’autres astres que la Terre. Pour mieux représenter chacun de ces individus, un nouveau gouvernement est instauré, l’UPE (United Planet of Earth), dans lequel sont créés les postes de Haut Secrétaire (responsable des infrastructures), de Haut Général (responsable de l’expansion et de la protection) et de Haut Juge (responsable de la justice). Quelques années plus tard, en 2528, la monnaie unique, l'UEC, est créée et est toujours en vigueur de nos jours.",
-      "textResolved": "En 2523, l’UNE recense plus d’une vingtaine de systèmes dans sa zone d’influence. 70% de l’humanité vit sur d’autres astres que la Terre. Pour mieux représenter chacun de ces individus, un nouveau gouvernement est instauré, l’UPE (United Planet of Earth), dans lequel sont créés les postes de Haut Secrétaire (responsable des infrastructures), de Haut Général (responsable de l’expansion et de la protection) et de Haut Juge (responsable de la justice). Quelques années plus tard, en 2528, la monnaie unique, l'UEC, est créée et est toujours en vigueur de nos jours."
+      "fullTextResolved": "En 2523, l’UNE recense plus d’une vingtaine de systèmes dans sa zone d’influence. 70% de l’humanité vit sur d’autres astres que la Terre. Pour mieux représenter chacun de ces individus, un nouveau gouvernement est instauré, l’UPE (United Planet of Earth), dans lequel sont créés les postes de Haut Secrétaire (responsable des infrastructures), de Haut Général (responsable de l’expansion et de la protection) et de Haut Juge (responsable de la justice). Quelques années plus tard, en 2528, la monnaie unique, l'UEC, est créée et est toujours en vigueur de nos jours.\n\n\n[- SSN/CAtv Auto-Transcription pour S&P Archives et soumission NFCC:](https://robertsspaceindustries.com/en/comm-link/spectrum-dispatch/12695-2523-The-Three-Pillars)\n\nANNONCEUR : Bienvenue dans l'émission d'actualités la plus brûlante de Spectrum. Avec nos panélistes : Kyle Black, analyste politique, Sheldi Chen, auteure à succès et conférencière, et Ben Feller, futurologue. C'est l'heure d'un nouveau… DÉBAT !\n\nKYLE : On en revient donc à cette nouvelle bombe de l' UNE , ils vont se restructurer pour… comment ça s'appelle déjà ? UPE ?\n\nBEN : Planètes Unies de la Terre.\n\nSHELDI : Quel nom ridicule !\n\nBEN : Allons donc ! C'est parfaitement logique. On a une vingtaine de planètes dont la population approche celle de la Terre, et d'autres sont en préparation. Ces populations doivent être représentées. Et franchement, l'ONU de la Terre est un peu dépassée.\n\nKYLE : D'après ce que nous pouvons constater – et ils ont publié un dossier de mille cinq cents pages détaillant les changements, nous sommes donc encore en train d'analyser les détails –, il semble que la configuration reste sensiblement la même.\n\nBEN : C'est exact. Le Congrès sera désormais composé de délégués représentant les planètes plutôt que les anciennes nations obsolètes. C'est un meilleur système.\n\nKYLE : Que pensez-vous de ces nouvelles figures emblématiques : un Haut Secrétaire chargé des infrastructures, un Haut Général pour les affaires militaires et un Haut Défenseur pour la justice ?\n\nBEN : Lorsqu'un gouvernement doit gérer le nombre considérable de ses électeurs...\n\nSHELDI : Ça ressemble à un excellent terreau pour le fascisme.\n\nBEN : Tu es sérieux ?\n\nSHELDI : Dès qu'on concentre le pouvoir du plus grand nombre entre les mains de quelques-uns, il y a forcément des abus. Et puis, comment diable Robert Thorn a-t-il pu devenir procureur général ? C'est un imbécile, il devrait être destitué par la foule, pas par un élu. Il n'est même pas citoyen.\n\nKYLE : Oh, arrêtez, il a été prouvé à maintes reprises qu'il-\n\nSHELDI : JE N'Y PAS CROIS . Son dossier pourrait être falsifié. Vous vous rendez compte à quel point c'est facile ?\n\nKYLE : Écoutez, si c'est si facile de pirater FedDataBanks, alors la citoyenneté de tout le monde est suspecte. Comment puis-je être sûr que vous êtes citoyen américain ?\n\nSHELDI : Hé, j'ai fait mon service militaire et j'ai effectué deux fois le double des travaux d'intérêt général requis pour obtenir ma citoyenneté. Renseigne-toi, espèce d'«  INFRACTION  » !\n\nBEN : Exactement, vos parents n'ont absolument rien contribué…\n\nSHELDI : Ferme ta gueule >.\n\nBEN : VOUS > .\n\nANNONCEUR : Restez avec nous pour la suite de SHOWDOWN ! Après ces publicités locales. \n\n\nEnd Transmission\n",
+      "textResolved": ""
     },
     {
       "id": 16604903,
@@ -2774,22 +2846,22 @@
       "tags": "",
       "media": [
         {
-          "id": 9441571,
+          "id": 1,
           "src": "https://zupimages.net/up/23/37/8lyf.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
         "raw": "Les premiers rapports diplomatiques se dÃ©clenchent sur fond de litige territorial. \n\n En effet, l'UPE est engagÃ© dans une politique de terraformation extrÃªmement agressive, et c'est en voulant terraformer par mÃ©connaissance un monde Xi'An en 2530 que Gaia Planet Services tombe sur une de leurs patrouilles. \n\nLes Xi'An sont mÃ©dusÃ©s devant la situation, ils prennent en otage les 275 techniciens et relÃ¢chent le contremaÃ®tre en guise de bonne foi. \n\nLa guerre froide n'est pas loin, faite de tensions et d'escalades ayant failli mener Ã  la guerre ouverte.\n\nLa question fut rÃ©glÃ©e, mais la mÃ©fiance respective que les deux espÃ¨ces entretinrent, Ã©tant de toute vraisemblance aussi puissante l'une que l'autre (il est probable que les Xi'An ai Ã©tÃ© depuis le dÃ©but bien plus puissants que les humains, mais ayant prÃ©fÃ©rÃ©s la diplomatie, cette question nâeut jamais de rÃ©ponse), ne s'Ã©teint jamais vraiment."
       },
-      "fullTextResolved": "Les premiers rapports diplomatiques se déclenchent sur fond de litige territorial. \n\n En effet, l'UPE est engagé dans une politique de terraformation extrêmement agressive, et c'est en voulant terraformer par méconnaissance un monde Xi'An en 2530 que Gaia Planet Services tombe sur une de leurs patrouilles. \n\nLes Xi'An sont médusés devant la situation, ils prennent en otage les 275 techniciens et relâchent le contremaître en guise de bonne foi. \n\nLa guerre froide n'est pas loin, faite de tensions et d'escalades ayant failli mener à la guerre ouverte.\n\nLa question fut réglée, mais la méfiance respective que les deux espèces entretinrent, étant de toute vraisemblance aussi puissante l'une que l'autre (il est probable que les Xi'An ai été depuis le début bien plus puissants que les humains, mais ayant préférés la diplomatie, cette question n’eut jamais de réponse), ne s'éteint jamais vraiment.",
-      "textResolved": "Alors en pleine expansion, les humains rencontre une nouvelle espèce, les Xi'An."
+      "fullTextResolved": "Les premiers rapports diplomatiques se déclenchent sur fond de litige territorial. \n\n En effet, l'UPE est engagé dans une politique de terraformation extrêmement agressive, et c'est en voulant terraformer par méconnaissance un monde Xi'An en 2530 que Gaia Planet Services tombe sur une de leurs patrouilles. \n\nLes Xi'An sont médusés devant la situation, ils prennent en otage les 275 techniciens et relâchent le contremaître en guise de bonne foi. \n\n\n[La galaxie s'agrandit ](https://robertsspaceindustries.com/en/comm-link/spectrum-dispatch/12697-2530-The-Galaxy-Gets-Bigger)\n\n\nC'était comme la ruée vers l'or : les prospecteurs planétaires étaient prêts à tout pour s'approprier des mondes « informés ». La plupart respectaient les protocoles fédéraux, d'autres non.\n\nGaia Planet Services a tenté de terraformer une planète sans autorisation. Il s'est avéré que la planète était habitée. Une nouvelle race, identifiée plus tard comme l'Empire Xi'An, est apparue pendant que les terraformeurs construisaient l'équipement. Inutile de dire qu'ils étaient quelque peu perturbés. Les Xi'An ont capturé tout l'équipage et l'ont gardé sous surveillance. Ils ont libéré l'un d'eux, le contremaître Charles Baxter, en signe de bonne foi.\n\nDe retour sur Terre, le Haut-Secrétaire Cho, le Haut-Général Volder et le Haut-Avocat Machado, accompagnés d'un sous-comité restreint de sénateurs, se sont réunis pour obtenir de Baxter une évaluation claire de ce qui s'était passé et des mesures à prendre concernant les Xi'An.\n\nHAUTE SECRÉTAIRE . CHO : Monsieur Baxter, si tout le monde est prêt, veuillez commencer. Racontez-nous les événements de cette journée\n\nBAXTER : J'ai été conseillé par l'avocat de la société...\n\nMaître Machado : . Monsieur Baxter, il ne s'agit pas d'une audience pénale. Nous cherchons simplement à comprendre ce qui s'est passé. Deux cent soixante-quinze de vos collègues sont toujours détenus par une civilisation extraterrestre. Toute aide que vous nous apporterez aujourd'hui sera prise en compte une fois cette crise résolue.\n\n-[Baxter consulte son avocat]\n\nBAXTER : Nous étions en reconnaissance, à la recherche d'emplacements pour installer le matériel. Trois transports devaient atterrir, nous nous attendions donc à entendre des navires. J'étais sur une crête quand le premier est apparu. J'ai tout de suite su que ce n'était pas un navire humain. Il ne ressemblait à aucun vaisseau Banu que j'avais vu auparavant, mais vous savez comment ils sont…\n\nHAUT - SECRÉTAIRE CHO : Veuillez rester sur le sujet.\n\nBAXTER : Eh bien, l'instant d'après, ils nous encerclaient. Des navires venant de toutes parts.\n\nHAUT - GÉNÉRAL VOLDER : Vous n'avez pas effectué de scans avant d'atterrir ?\n\nBAXTER : Pas vraiment. Enfin, je ne crois pas.\n\nHAUT GÉNÉRAL ? VOLDER : Ne pensez-vous pas qu'il serait sage d'être prudent avant de tenter de terraformer une planète\n\nBAXTER : Vous n'imaginez pas ce qui se passe là-bas. Si vous attendez trop longtemps, une autre corporation va s'emparer du minerai et le traiter en un clin d'œil.\n\nHAUT GÉNÉRAL : Bien que nous apprécions votre analyse sociologique, Monsieur Baxter, nous avons besoin de faits, et non d'exagérations , VOLDER si nous voulons libérer les otages.\n\nHAUT - SECRÉTAIRE CHO : Général, nous n'avons pas conclu qu'une action militaire soit nécessaire.\n\nHAUT GÉNÉRAL : Je comprends , VOLDER mais nous devons avoir un plan sur la table à mettre en œuvre au cas où les solutions diplomatiques tourneraient mal.\nHAUTE SECRÉTAIRE : D' CHO accord. Veuillez continuer, M. Baxter.\n\n. . .FIN DE L'EXTRAIT\n\nLes forces militaires de l'UPE ont maintenu un périmètre de sécurité à l'entrée du point de saut. Il a fallu quinze jours pour mettre en place un système de communication avec les Xi'an. S'en est suivie une période de négociations tendues. Les Xi'an étaient très exigeants.\n\nAu moment de la libération des otages, plus de cinquante-sept jours s'étaient écoulés. Bien que l' UPE ait réussi à éviter la guerre, les relations avec les Xi'an restaient tendues. \n\n\n\nLa guerre froide n'est pas loin, faite de tensions et d'escalades ayant failli mener à la guerre ouverte.\n\nLa question fut réglée, mais la méfiance respective que les deux espèces entretinrent, étant de toute vraisemblance aussi puissante l'une que l'autre (il est probable que les Xi'An ai été depuis le début bien plus puissants que les humains, mais ayant préférés la diplomatie, cette question n’eut jamais de réponse), ne s'éteint jamais vraiment.\n\n\n- End Transmission",
+      "textResolved": ""
     },
     {
       "id": 16600498,
@@ -3062,22 +3134,22 @@
       "tags": "",
       "media": [
         {
-          "id": 9432679,
+          "id": 1,
           "src": "https://static1.millenium.org/articles/7/33/65/97/@/1050144-ces-modeles-sont-des-concepts-et-ne-sont-pas-forcements-definitifs-ils-nous-donnent-quand-meme-une-bonne-idee-de-lappare-full-2.jpg",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
         "raw": ""
       },
-      "fullTextResolved": "Découverte des Tevarin sur Elysium IV",
-      "textResolved": "Découverte des Tevarin sur Elysium IV"
+      "fullTextResolved": "Découverte des Tevarin sur Elysium IV\n\n-[Mon ciel est terriblement encombré ](https://robertsspaceindustries.com/en/comm-link/spectrum-dispatch/12700-2541-Awfully-Crowded-In-My-Sky)\n\nAlors que l' UPE maintenait une tension palpable avec les Xi'An près de Terra, à l'Est, nous restions incontestés dans les systèmes situés à l'Ouest de la Terre. Cela allait bientôt changer.\n\nLes Tevarin avaient environ un siècle de retard technologique sur les humains. Ils commençaient tout juste à quitter leur monde natal, Kaleeth. Les Tevarin adhéraient à une éthique guerrière rigoureuse, vénérant le devoir et la loyauté comme des vertus. Ce n'était pas un peuple sanguinaire ; ils honoraient simplement l'art du combat.\n\n-UPE Désignation du système: Elysium\n\n-Date de découverte: 15 novembre 2541\n\n-Directions de navigation des points de saut U/L: Kellar Lench [Pilote/n.C]\n\n-Évaluation du système : Sur Elysium IV vit une espèce indigène se nommant les Tevarin. Bien que sensibles et intelligents, ils n’ont pas atteint notre niveau de développement technologique. Nous recommandons d’établir un contact avec eux et de les intégrer à l’UPE. C’est une occasion exceptionnelle de les faire entrer dans l’ère moderne.\n\nL'UPE a pris contact avec les Tevarin. Ils n'étaient pas intéressés par l'établissement de relations diplomatiques, ni même par notre technologie. Ce qui les intéressait, c'était nos systèmes. Ainsi débuta la première guerre interespèces, comme la plupart des guerres : pour le contrôle du territoire.\n\nAlors que la guerre de Tevarin prenait de l'ampleur, l'armée craignait que le conflit à l'Ouest n'encourage une attaque de Xi'An à l'Est et instaura la conscription. Heureusement, un jeune et ambitieux officier, Ivar Messer, se fit remarquer lors de la bataille d'Idris IV. L'UPE s'en rendit vite compte et fit de Messer le visage de la guerre de Tevarin. ",
+      "textResolved": ""
     },
     {
       "id": 16605240,
@@ -3090,26 +3162,26 @@
       "fullText": "",
       "category": "846040",
       "dateFormat": "auto",
-      "externalLink": "",
+      "externalLink": "https://robertsspaceindustries.com/galactapedia/article/RvlQrKZxPO-elysium-system",
       "tags": "",
       "media": [
         {
-          "id": 9442841,
+          "id": 1,
           "src": "https://zupimages.net/up/21/47/tm9w.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 5
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
         "raw": "[En savoir plus sur le systÃ¨me Elysium](https://www.starcitizenfrance.fr/systeme-elysium-aux-origines-peuple-tevarin/)"
       },
-      "fullTextResolved": "[En savoir plus sur le système Elysium](https://www.starcitizenfrance.fr/systeme-elysium-aux-origines-peuple-tevarin/)",
-      "textResolved": "Le 15 novembre 2541, le Docteur Kellar Lench découvre pour la première fois la race Tevarin dans leur système natal, Elysium, nommé Kaleeth’ala par les autochtones."
+      "fullTextResolved": "Le système Elysium est un système planétaire de l' Empire Uni de la Terre (UEE) , composé d'une étoile de type F de la séquence principale, d'une géante gazeuse, de trois planètes telluriques et d'une planète naine. Berceau ancestral des Tevarins , Elysium fut annexé par le gouvernement des Planètes Unies de la Terre (UPE) à la fin de la Première Guerre Tevarine (2541-2546). En 2603, le seigneur de guerre tevarin Corath'thal lança une campagne contre l'UEE pour reconquérir le système, déclenchant ainsi la Seconde Guerre Tevarine (2603-2610). Finalement, la campagne échoua et Elysium demeura sous contrôle de l'UEE. ",
+      "textResolved": ""
     },
     {
       "id": 16600611,
@@ -3350,22 +3422,22 @@
       "tags": "",
       "media": [
         {
-          "id": 9432804,
+          "id": 1,
           "src": "https://jolstatic.fr/www/captures/1895/8/78908.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
         "raw": ""
       },
-      "fullTextResolved": "Prime Citizen était la plus haute fonction gouvernementale pouvant être obtenue par un résident des Planètes Unies de la Terre (UPE). Créé en 2546, le bureau a été proposé par Ivar Messer I, alors haut-général de l'UPE, en réponse à une série d'attentats à la bombe signalés comme des attaques terroristes sur plusieurs planètes peuplées. Après que l'Advocacy n'a pas réussi à appréhender les responsables des attentats à la bombe, les citoyens de l'UPE ont voté la dissolution du conseil exécutif connu sous le nom de Tribunal et la création du bureau du Premier citoyen. Le 15 décembre de la même année, Messer a été élu premier citoyen lors d'une victoire écrasante.  L'UEE était née.",
-      "textResolved": "Prime Citizen était la plus haute fonction gouvernementale pouvant être obtenue par un résident des Planètes Unies de la Terre (UPE). Créé en 2546, le bureau a été proposé par Ivar Messer I, alors haut-général de l'UPE, en réponse à une série d'attentats à la bombe signalés comme des attaques terroristes sur plusieurs planètes peuplées. Après que l'Advocacy n'a pas réussi à appréhender les responsables des attentats à la bombe, les citoyens de l'UPE ont voté la dissolution du conseil exécutif connu sous le nom de Tribunal et la création du bureau du Premier citoyen. Le 15 décembre de la même année, Messer a été élu premier citoyen lors d'une victoire écrasante.  L'UEE était née."
+      "fullTextResolved": "Prime Citizen était la plus haute fonction gouvernementale pouvant être obtenue par un résident des Planètes Unies de la Terre (UPE). Créé en 2546, le bureau a été proposé par Ivar Messer I, alors haut-général de l'UPE, en réponse à une série d'attentats à la bombe signalés comme des attaques terroristes sur plusieurs planètes peuplées. Après que l'Advocacy n'a pas réussi à appréhender les responsables des attentats à la bombe, les citoyens de l'UPE ont voté la dissolution du conseil exécutif connu sous le nom de Tribunal et la création du bureau du Premier citoyen. Le 15 décembre de la même année, Messer a été élu premier citoyen lors d'une victoire écrasante.  \n\n-L'UEE était née.\n\n[Un leader se lève](https://robertsspaceindustries.com/en/comm-link/spectrum-dispatch/12702-2546-A-Leader-Rises)\n\nAlyssa Jamali était en retard. Elle s'était endormie la veille au soir en travaillant sur ses devoirs de chimie et devait maintenant dicter son exposé de sciences politiques en route pour son cours. Le général Messer avait pris la parole lors d'une cérémonie commémorative en hommage aux victimes du bombardement de Cestulus et M. Kent souhaitait un résumé d'une page de son discours.\n\nDébut de la dictée :\nAlyssa Jamali\nSciences politiques/Kent/45Bcf\nDevoir : Discours de Messer\n\nNos systèmes s'effondrent. Depuis la fin de la guerre, nous sommes confrontés à une nouvelle menace, qui ne se joue ni sur les champs de bataille ni entre les porte-avions. {Cette guerre se mène en secret, au moyen de menaces et de sabotages.}\n\nTel était le message il y a huit mois. Six attentats terroristes au cours de l'année précédente avaient dissipé tous les espoirs que la défaite de Tevarin mènerait à la paix. On réclamait des réponses, mais surtout, on voulait sentir que le Tribunal reprenait le contrôle. On n'a obtenu ni l'un ni l'autre.\n\nL'organisation n'a jamais appréhendé les auteurs de ces attentats. Elle savait seulement que les bombes avaient été fabriquées en partie grâce à la technologie de Xi'an. Pendant ce temps, le Tribunal a longuement débattu de la marche à suivre, jusqu'à l'inaction.\n\nLes systèmes étaient donc en train de s'effondrer. {Le tribunal a échoué}. L'humanité avait besoin d'un leader. La solution ? Élire un nouveau poste, celui de Premier Citoyen, afin de représenter une voix unique, le vote décisif au sein d'un gouvernement en proie au chaos.\n\nDes citoyens de tous les systèmes ont commencé à se présenter à ce nouveau poste. Chaque semaine, un nouveau candidat semblait apparaître, reprenant les mêmes promesses. Cela a duré des mois. À l'approche des élections, le général Messer a déposé sa candidature. Il a pris la parole hier soir lors d'une cérémonie commémorative en hommage aux victimes du quatrième attentat terroriste.\n\nCitoyens, je m'adresse à vous aujourd'hui en tant que croyant. Je crois que nous avons une histoire riche et vivante. Je crois qu'il reste encore tant de merveilles à découvrir. Je crois en l'humanité.\n\nMais des ennemis veulent nous abattre. Ils s'irritent de notre ascension. Ils veulent nous faire retomber dans l'oubli. Les attaques féroces contre nos systèmes ne sont que le début. En tant que soldat ayant connu l'horreur de la guerre, je ne le dis pas à la légère. Nous devons nous protéger. Protéger nos familles. Protéger notre avenir. Protéger notre droit à ce qui nous revient de droit.\n\nJe ne veux pas d'une autre guerre. Trop de fils et de filles, de maris et de femmes ont déjà péri dans le vide spatial et sur ces planètes désolées. Mais je le dis, je protégerais chaque système et chaque point de saut avec des boucliers et un réseau de câbles de mille kilomètres d'épaisseur si cela pouvait nous éviter d'autres pertes.\n\nJ'ai toujours été un soldat de l'humanité. Donnez-moi cette chance de vous protéger, d'éloigner les menaces et la violence des espèces moins civilisées que la nôtre, afin que nous puissions prendre la place qui nous revient dans la galaxie.\n\nCroyez en moi comme je crois en vous. Croyez en l'humanité !\n\n{Le public a adoré. En écoutant ce discours maintenant,} Le général-major Messer parle avec une conviction qui le rend crédible.\n\nEn résumé, je pense qu'il a raison. Le partage égal du pouvoir entre trois entités pose un problème fondamental. Si ce débat est préférable en temps de paix, nous vivons une période dangereuse. Il faut parfois prendre des décisions rapidement et efficacement. Je sais que cela ressemble à un premier pas vers l'absolutisme, mais le système est toujours en place. La méthode qu'ils proposent maintient le Haut-Secrétaire, le Général et l'Avocat, ainsi que le Sénat, mais tous conseillent le Premier ministre, qui prend la décision finale.\n\nComme l'a dit le Haut Général Messer après avoir présenté la Motion du Premier Citoyen, « chaque navire a besoin d'un capitaine ».\n\nAppliquer les modifications et envoyer \n\n- End Transmission\n",
+      "textResolved": ""
     },
     {
       "id": 16600620,
@@ -3594,22 +3666,22 @@
       "tags": "",
       "media": [
         {
-          "id": 9432793,
+          "id": 1,
           "src": "https://www.wormholetribune.com/wp-content/uploads/2021/04/36cc4340-6f3b-40e2-8af3-b8f94be069cb.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
         "raw": "Cette seconde guerre renforce le pouvoir de Messer, qui instaure l'Ã©tat d'urgence pour supprimer dÃ©finitivement tout pouvoir aux Haut-SecrÃ©taire et Haut-Avocat et se proclamer Imperator de l'Empire Uni de la Terre. \n\n Ã la fin de la Seconde Guerre Tevarin, Aaron Fring peint un tableau qui marquera cette confrontation. \n\nSon Åuvre intitulÃ©e \"Larmes de feu\" est introduite au MusÃ©um d'AntiquitÃ© Historique ( Angl.  Historical Vault for Antiquity) de l'UPE en 2633."
       },
-      "fullTextResolved": "Cette seconde guerre renforce le pouvoir de Messer, qui instaure l'état d'urgence pour supprimer définitivement tout pouvoir aux Haut-Secrétaire et Haut-Avocat et se proclamer Imperator de l'Empire Uni de la Terre. \n\n À la fin de la Seconde Guerre Tevarin, Aaron Fring peint un tableau qui marquera cette confrontation. \n\nSon œuvre intitulée \"Larmes de feu\" est introduite au Muséum d'Antiquité Historique ( Angl.  Historical Vault for Antiquity) de l'UPE en 2633.",
-      "textResolved": "À l'aube du vingt-septième siècle, entre 2603 et 2610, les Tevarins, défaits et dispersés dans la bordure extérieure de l'espace connu, trouvent un nouveau chef de guerre en Corath’Thal, qui rassemble une flotte de guerre et la lance à l'attaque de l'UPE."
+      "fullTextResolved": "Cette seconde guerre renforce le pouvoir de Messer, qui instaure l'état d'urgence pour supprimer définitivement tout pouvoir aux Haut-Secrétaire et Haut-Avocat et se proclamer Imperator de l'Empire Uni de la Terre. \n\n À la fin de la Seconde Guerre Tevarin, Aaron Fring peint un tableau qui marquera cette confrontation. \n\nSon œuvre intitulée [\"Larmes de feu\"](https://robertsspaceindustries.com/en/comm-link/spectrum-dispatch/12705-2610-Tears-Of-Fire) est introduite au Muséum d'Antiquité Historique ( Angl.  Historical Vault for Antiquity) de l'UPE en 2633.\n\n\n\nBentley National Gallery\n\nInformations sur la visite libre des tableaux\n\nMorceau : « Tears of Fire »\n\nArtiste : Aaron Fring\n\nCréé le : 2610\n\nVous avez devant vous l'une des images les plus marquantes de la deuxième guerre tévarine (2603-2610). Cette pièce a été intégrée aux archives de la Chambre historique de l'UPE pour l'Antiquité en 2633.\n\nL'artiste, Aaron Fring, est né sur Ferron en 2578, fils de Max et Mary Fring, respectivement instituteur et pilote. Enfant, il souffrit d'une crise de la maladie de Kilos et resta alité pendant plus d'un an. Durant cette période, il passa son temps à dessiner. Jeune homme, Fring s'engagea dans la Force Expéditionnaire comme infirmier de campagne. Il voyagea dans de nombreux systèmes avant de finalement s'installer sur Elysium IV.\n\nGérant un petit dispensaire le jour, Fring se remettait à la peinture le soir. On le croisait souvent errant des heures durant dans la campagne, peignant tout ce qui l'entourait. Bien qu'il ait montré un certain talent pour le paysage, il ne parvint jamais à se faire une place dans le milieu artistique. Malgré ses aspirations, Fring se contentait de sa pratique et de son passe-temps.\n\nEn 2603, un nouveau seigneur de guerre tevarin, Corath'Thal, surgit des confins du cosmos à la tête d'une flotte de combat tevarin reconstruite et lança sa première attaque contre les systèmes de l'UPE . La seule mission des Tevarins était de reconquérir Elysium IV, leur ancien monde natal. Les colonies d'Elysium IV prirent les armes pour défendre leurs foyers. Fring tenta de les rejoindre, mais la même maladie qui l'avait frappé enfant réapparut, l'empêchant d'accomplir son devoir.\n\nLe 24 juin 2610 SET , Corath'Thal subit une défaite catastrophique face à l'Escadron 42 lors de la tristement célèbre bataille de Centauri. Voyant sa flotte décimée ou contrainte à la reddition, Corath'Thal rassembla ses pilotes les plus fidèles pour une charge désespérée vers Elysium IV. Malgré des pertes supplémentaires de 70 %, sa flotte atteignit finalement l'atmosphère de son ancien monde natal.\n\nCorath'Thal et ses pilotes abaisirent leurs boucliers thermiques et plongèrent vers la planète.\n\nAaron Fring se promenait ce soir-là. Son malaise s'était un peu atténué. Il sentait le besoin de prendre l'air et de se changer les idées. Il erra dans la campagne comme il l'avait fait tant de fois auparavant. Au sommet d'une colline, il aperçut quelque chose de spectaculaire :\n\nLa flotte Tevarine se consumait dans l'atmosphère en fonçant vers le sol.\n\n-Extrait de Art Today (2613) :\n\n« Comme pour la plupart de mes œuvres, je ne cherchais pas à représenter l'instant à l'identique. C'est ce que j'avais toujours fait auparavant, mais cette fois-ci, c'était bien plus qu'une simple image. Il y avait une telle complexité dans cette action, de la part des Tevarin, de ce qu'elle signifiait pour nous en tant qu'espèce, et de ce qu'elle représentait pour moi. Je voulais simplement tenter de saisir l'émotion de cet instant fugace. Si beau et si triste à la fois. »\n\n-Aaron Fring \n\n\n- End Transmission\n",
+      "textResolved": ""
     },
     {
       "id": 16604295,
@@ -3878,14 +3950,26 @@
       "fullText": "",
       "category": "846002",
       "dateFormat": "auto",
-      "externalLink": "",
+      "externalLink": "https://robertsspaceindustries.com/galactapedia/article/RWwZQK774P-assan-kieren",
       "tags": "",
-      "media": [],
+      "media": [
+        {
+          "id": 1,
+          "src": "https://robertsspaceindustries.com/media/ogr4oanxxt17yr/post_section_header/SovereigntyFI_1_Crop.jpg",
+          "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
+          "thumbPosition": "0,0",
+          "externalMediaId": "",
+          "externalMediaType": "",
+          "externalMediaThumb": ""
+        }
+      ],
       "extraInfo": {
         "raw": "Le sÃ©nateur Assan Kieren de Terra dÃ©nonce lâagenda militaire de lâUEE. Il demande de nouvelle Ã©lection pour lâindÃ©pendance de Terra et des systÃ¨mes adjacents. Livia Messer III le discrÃ©dite Ã  coups de propagande musclÃ©e. \n\nAssan Kieren disparaÃ®t...\n\nLâassassinat est fortement suspectÃ©."
       },
-      "fullTextResolved": "Le sénateur Assan Kieren de Terra dénonce l’agenda militaire de l’UEE. Il demande de nouvelle élection pour l’indépendance de Terra et des systèmes adjacents. Livia Messer III le discrédite à coups de propagande musclée. \n\nAssan Kieren disparaît...\n\nL’assassinat est fortement suspecté.",
-      "textResolved": "Il faut attendre 2638 pour voir le premier signe de rébellion face au régime Messer."
+      "fullTextResolved": "Le sénateur Assan Kieren de Terra dénonce l’agenda militaire de l’UEE. Il demande de nouvelle élection pour l’indépendance de Terra et des systèmes adjacents. Livia Messer III le discrédite à coups de propagande musclée. \n\nAssan Kieren disparaît...\n\nL’assassinat est fortement suspecté.\n\n--[Un appel à la souveraineté](https://robertsspaceindustries.com/en/comm-link/spectrum-dispatch/12706-2638-A-Call-For-Sovereignty)\n\n-Terra Gazette – Édition du 3.12.38\n\nLe gouverneur de Terra rédige un projet de loi pour la souveraineté terrienne\n\n¤Par Viola Filler\n\nLors d'un meeting politique pour la réélection du maire de New Benzi, Nadir Padwani, le gouverneur de Terran a dévoilé une proposition surprenante. Alors que la nuit commençait à tomber et que la levée de fonds progressait bien, Assan Kieren est monté à la tribune. Personne ne se doutait alors qu'il allait lâcher une bombe.\n\nAux alentours de 5h15 heure locale, Assan Kieren a dévoilé son intention d'organiser un référendum auprès des habitants de Terra et des systèmes voisins afin de demander leur séparation de l'Imperator et de l'UEE .\n\nL'Empereur vit à une époque où les civilisations extraterrestres sont source de crainte. Nous qui vivons ici, où les Banu et les Xi'an sont nos voisins, où nous les côtoyons au quotidien, savons qu'ils ne sont pas l'ennemi. Ce sont des êtres humains comme nous ; leur culture et leurs motivations sont peut-être différentes, mais ils cherchent simplement à vivre, à vivre en sécurité. L'Empereur se complaît à les tenir à distance par la force des armes, mais je ne crois pas que nous puissions continuer ainsi. Comme l'a dit Carson : « Si vous vivez en anticipant la guerre, tôt ou tard, elle éclatera. » En bref, je crois que la Terre est de plus en plus déconnectée des réalités actuelles, ce qui engendre une instabilité politique et sociale généralisée. Ceci n'est pas un appel aux armes ni une invitation au conflit. Je demande simplement l'ouverture d'un dialogue.\n\nInutile de préciser que peu de gens parlaient de la réélection du maire après cela… [SUITE]\n \n-United/Tribune NewsOrg - Édition du 5.4.38\n\nLe projet de loi séditieux de Terra échoue\n\n¤Par Raymond Castor\n\nLa motion de séparation rédigée par le tristement célèbre gouverneur terrien Assan Kieren a été rejetée lors du référendum d'aujourd'hui. Comme prévu, les citoyens loyaux de Terra et des systèmes voisins ont compris que le plan de souveraineté de Kieren était une idée mal conçue et irréaliste qui les condamnerait, eux et leurs enfants, à un avenir instable. Ils ont donc fait entendre leur voix, se rendant en masse aux bureaux de vote et criant : « Non ! Nous ne sommes pas d'accord. Nous ne pensons pas que l' UEE nous trahisse. »\n\nIl ne reste plus qu'à espérer que Kieren comprenne le message.\n \n-Terra Gazette – Édition du 9.24.38\n\nGouverneur en proie à un scandale\n\n¤Par Viola Filler\n\nOù qu'Assan Kieren se tourne, il se heurte à une nouvelle accusation. Depuis le dépôt de sa motion de souveraineté il y a six mois, le gouverneur doit faire face à des accusations allant de l'infidélité à la toxicomanie en passant par la corruption. Il a publié une déclaration plus tôt dans la journée à l'attention de tous les médias.\n\n« Ces allégations sont totalement infondées et ne visent qu'à détourner l'attention du véritable problème. L'Empereur et ses sbires ont perverti les rouages ​​du gouvernement en ignorant la volonté manifeste du peuple de se libérer d'un gouvernement corrompu et abject. »\n\nKieren a expliqué avoir obtenu des preuves de manipulation des élections et de fraudes caractérisées commises par des employés de l'UEE . Ces preuves ont été versées au dossier et feront partie de la procédure fédérale qu'il poursuit contre Imperator Messer III .\n \n-Terra Gazette – Édition du 11.4.38\n\nXi'an/Réseau terroriste humain dévoilé\n\n¤Par Raymond Castor\n\nL'ennemi est parmi nous ! Tôt ce matin, les agents de la Défense des droits ont annoncé la résolution d'une vaste opération d'infiltration inter-agences menée dans le monde obscur des traîtres et des saboteurs. Des dizaines d'arrestations ont été effectuées et d'autres sont à prévoir. Des sources anonymes au sein du gouvernement affirment que des terroristes financés par Xi'an ont infiltré divers postes au sein des structures gouvernementales et des entreprises. Dans l'attente d'une déclaration officielle, nous avons confirmé, grâce à de multiples sources, que l'ancien gouverneur de Terra, Assan Kieren, pourrait être impliqué.\n\nLe même gouverneur, si vous vous en souvenez, qui a disparu après avoir été chassé du pouvoir par les bons citoyens suite à ses tentatives désespérées et paranoïaques de semer le désordre et l'anarchie dans le système. \n\n\n-End Transmission",
+      "textResolved": ""
     },
     {
       "id": 16622567,
@@ -4062,22 +4146,22 @@
       "tags": "",
       "media": [
         {
-          "id": 9434494,
+          "id": 1,
           "src": "https://zupimages.net/up/21/47/4oc9.png",
-          "caption": "",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
         "raw": ""
       },
-      "fullTextResolved": "Le premier contact entre l’humanité et l'espèce Vanduul a eu lieu en 2681 et s’est conclu par l’anéantissement d’une colonie dans le système Orion. Depuis les relations entre les deux espèces n’ont pas réellement évolué.  L’ensemble des interactions de l'Empire Uni de la Terre avec les Vanduul se sont soldées par des combats. Après la fin de l’Ère Messer, le nouvel Imperator a tenté de faire cesser les violences et d’ouvrir des relations diplomatiques avec les Vanduul. Mais la structure éclatée de leur civilisation rend toute diplomatie avec l’ensemble de l’espèce impossible, d’autant que tous les clans rencontrés ont manifesté une franche hostilité, les représentants plénipotentiaires étant systématiquement accueillis avec des tirs de lasers.  Au final, l'humanité ignorent toujours pourquoi les Vanduul les haïssent et qu’il est très facile de voir pourquoi l’UEE les présentent comme des barbares.",
-      "textResolved": "Le premier contact entre l’humanité et l'espèce Vanduul a eu lieu en 2681 et s’est conclu par l’anéantissement d’une colonie dans le système Orion. Depuis les relations entre les deux espèces n’ont pas réellement évolué.  L’ensemble des interactions de l'Empire Uni de la Terre avec les Vanduul se sont soldées par des combats. Après la fin de l’Ère Messer, le nouvel Imperator a tenté de faire cesser les violences et d’ouvrir des relations diplomatiques avec les Vanduul. Mais la structure éclatée de leur civilisation rend toute diplomatie avec l’ensemble de l’espèce impossible, d’autant que tous les clans rencontrés ont manifesté une franche hostilité, les représentants plénipotentiaires étant systématiquement accueillis avec des tirs de lasers.  Au final, l'humanité ignorent toujours pourquoi les Vanduul les haïssent et qu’il est très facile de voir pourquoi l’UEE les présentent comme des barbares."
+      "fullTextResolved": "Le premier contact entre l’humanité et l'espèce Vanduul a eu lieu en 2681 et s’est conclu par l’anéantissement d’une colonie dans le système Orion. Depuis les relations entre les deux espèces n’ont pas réellement évolué.  L’ensemble des interactions de l'Empire Uni de la Terre avec les Vanduul se sont soldées par des combats. Après la fin de l’Ère Messer, le nouvel Imperator a tenté de faire cesser les violences et d’ouvrir des relations diplomatiques avec les Vanduul. Mais la structure éclatée de leur civilisation rend toute diplomatie avec l’ensemble de l’espèce impossible, d’autant que tous les clans rencontrés ont manifesté une franche hostilité, les représentants plénipotentiaires étant systématiquement accueillis avec des tirs de lasers.  Au final, l'humanité ignorent toujours pourquoi les Vanduul les haïssent et qu’il est très facile de voir pourquoi l’UEE les présentent comme des barbares.\n\n\n--[Terre brûlée ](https://robertsspaceindustries.com/en/comm-link/spectrum-dispatch/12707-2681-Scorched-Earth)\n\nÀ l'ouest, dans le système d'Orion, les communications avec une petite colonie située sur une planète du tiers monde sont interrompues. Des semaines s'écoulent avant que quelqu'un ne prenne contact avec eux. Lorsqu'ils le font enfin, ils découvrent la ville en cendres. L'organisation dépêche immédiatement un agent sur place pour enquêter.\n\n\nÉVALUATION DE L'INCIDENT\n\nLieu : Dell Township/Water Purification Settlement/Armitage Planet/Orion System\n\nSAIC : Rhedon Lamr\n\nLes premières images aériennes indiquent des mitraillages répétés de plusieurs appareils, vraisemblablement de petite taille, par des armes aéroportées. Aucun usage évident d'armes de gros calibre ou de bombes. De larges traces de brûlure à l'est et au sud-ouest de la ville indiquent que c'est là que les assaillants ont atterri. Des échantillons de terre brûlée ont été envoyés à des laboratoires pour analyse. Les angles de mitraillage corroborent l'hypothèse d'attaques provenant de plusieurs directions. La tour de communication a été endommagée, mais ne semble pas avoir été spécifiquement visée. Étrange. S'il s'agissait de pillards, leur première cible n'aurait-elle pas été la tour de communication ?\n\nSur le terrain, des fouilles ont permis de découvrir d'étranges douilles de munitions non létales éparpillées dans toute la ville. Leur fabrication ne semble pas humaine. Analyse en cours. Transmission aux agents de plaidoyer ayant des contacts dans le protectorat de Banu.\n\nLes assaillants ont été méticuleux, fouillant maison par maison. Ils ont tout tué, tout le monde. La totalité des six cent trente-huit habitants du village a été retrouvée, à l'exception d'une personne :\n\nJohn Phillips. 38 ans . Agriculteur. Rien n'indique pourquoi il aurait été ciblé, si tant est qu'il l'ait été. Les analystes se penchent sur son cas. Le dossier complet sera fourni une fois l'enquête terminée.\n\nLe vol semble être le mobile principal, mais il y a une incohérence parmi les objets disparus. Parfois, des objets de valeur sont laissés sur place tandis que des objets apparemment inutiles ou insignifiants ont été emportés.\n\nL'agent Vasquez a découvert une petite caméra CommLink qui, d'une manière ou d'une autre, fonctionnait pendant l'attaque. Après avoir visionné les images, il a constaté qu'elle était en grande partie inutilisable. Une image, après zoom et nettoyage, semble laisser entrevoir brièvement un attaquant.\n\n[On les appelait les Vanduul](https://robertsspaceindustries.com/media/uftv86ajk6nenr/post/VanduulRaidScreenGrab3b.jpg)\n",
+      "textResolved": ""
     },
     {
       "id": 16600666,
@@ -4538,26 +4622,26 @@
       "fullText": "none",
       "category": "846346",
       "dateFormat": "auto",
-      "externalLink": "",
+      "externalLink": "https://robertsspaceindustries.com/galactapedia/article/0qnN6Od6YD-anvil-aerospace",
       "tags": "",
       "media": [
         {
-          "id": 9438045,
-          "src": "https://zupimages.net/up/21/47/nx8g.png",
-          "caption": "",
+          "id": 1,
+          "src": "https://media.starcitizen.tools/8/8e/Sc-logo-anvil-aerospace.svg",
           "type": "Image",
+          "caption": "",
+          "orderIndex": 10,
           "thumbPosition": "0,0",
-          "externalMediaThumb": "",
-          "externalMediaType": "",
           "externalMediaId": "",
-          "orderIndex": 10
+          "externalMediaType": "",
+          "externalMediaThumb": ""
         }
       ],
       "extraInfo": {
         "raw": ""
       },
-      "fullTextResolved": "Anvil Aerospace est une société de fabrication d'engins spatiaux humains fondée en 2772 qui produit à la fois des embarcations militaires et civiles. Le F7 Hornet et le F8 Lightning font partie des vaisseaux spatiaux Anvil actuellement produits pour toutes les branches de l'armée de l'Empire-Uni de la Terre (UEE). Depuis la fondation de l'entreprise, toutes les conceptions finales des engins spatiaux doivent être approuvées par le PDG. Il a son siège sur Terra (Terra III).",
-      "textResolved": "Anvil Aerospace est une société de fabrication d'engins spatiaux humains fondée en 2772 qui produit à la fois des embarcations militaires et civiles. Le F7 Hornet et le F8 Lightning font partie des vaisseaux spatiaux Anvil actuellement produits pour toutes les branches de l'armée de l'Empire-Uni de la Terre (UEE). Depuis la fondation de l'entreprise, toutes les conceptions finales des engins spatiaux doivent être approuvées par le PDG. Il a son siège sur Terra (Terra III)."
+      "fullTextResolved": "𝗗𝗘𝗦𝗖𝗥𝗜𝗣𝗧𝗜𝗢𝗡\n\nAnvil Aerospace est une entreprise de fabrication de vaisseaux spatiaux basée sur Terra. Fournissant des vaisseaux à l'armée et aux citoyens ordinaires, Anvil Aerospace a fabriqué certains des meilleurs vaisseaux de combat aérien de l'univers Star Citizen.\n\nCaractéristiques du vaisseau : Bonne visibilité. La plupart du temps, un cercle très reconnaissable sert de support pour une mitrailleuse. Interface utilisateur verte.\n\n𝗛𝗜𝗦𝗧𝗢𝗜𝗥𝗘\n\nAnvil Aerospace est l'une des premières réussites terriennes. Elle a été fondée en 2772 par J. Harris Arnold. Le premier site de recherche et développement d'Anvil était situé à Nova Kyiv, sur Terra, où se trouve toujours le siège social de la société. Pendant les quelque soixante-dix premières années d'existence d'Anvil, chaque projet de conception était personnellement dirigé par le fondateur de la société, J. Harris Arnold. Arnold, un concepteur de vaisseaux spatiaux excentrique de la vieille école qui tenait à approuver chaque élément des sous-systèmes de ses conceptions, était une figure très appréciée dans un secteur autrement impitoyable.\n\n𝘼𝙘𝙦𝙪𝙞𝙨𝙞𝙩𝙞𝙤𝙣 𝙙𝙚 𝘾𝙖𝙨𝙨𝙚 𝘼𝙚𝙧𝙤𝙨𝙥𝙖𝙘𝙚\n\nLorsque J. Harris Arnold était à l'école, il était obsédé par les travaux de Leonard Casse. Pour lui, cet ingénieur presque tombé dans l'oubli incarnait tout ce qu'il aimait dans la conception navale. Lorsqu'il a finalement lancé Anvil, Arnold s'est fortement inspiré du modèle commercial et des navires de Casse pour ses propres conceptions, en utilisant des éléments caractéristiques tels que les ailes incurvées et le sceau en forme de cercle ouvert. Les similitudes étaient telles qu'Arnold et Anvil ont été poursuivis en justice par la société holding qui avait acheté les droits sur les conceptions de Casse. Arnold a décidé de régler l'affaire en achetant lui-même l'ensemble du portefeuille de Casse Aerospace.\n\n𝘾𝙤𝙣𝙩𝙧𝙖𝙩𝙨 𝙢𝙞𝙡𝙞𝙩𝙖𝙞𝙧𝙚𝙨\n\nDepuis près de deux siècles, Anvil fournit en toute fiabilité des équipements de qualité militaire à la marine de l'UEE. Le nom de la société provient d'une citation tirée du célèbre discours de Robert Calvin justifiant l'expansion de l'UEE, dans lequel il explique que les dépenses militaires « alimentent les fourneaux de l'expansion et frappent les enclumes de l'innovation ». Il n'y a pas à discuter : alimenter les fourneaux de l'expansion, c'est exactement ce que fait Anvil depuis le premier jour. Au fil des ans, l'entreprise a produit des dizaines de vaisseaux spatiaux militaires emblématiques et couronnés de succès, notamment le Hurricane, l'Osprey, le Devastator, le Hornet et le Gladiator. Au cours des deux derniers siècles, aucune campagne militaire n'a été lancée sans que les vaisseaux spatiaux Anvil ne soient en première ligne, et aucun transporteur dans l'espace de l'UEE ne fonctionne aujourd'hui sans au moins un escadron de chasseurs conçus par Anvil. En fait, les modèles Anvil ont historiquement enregistré plus de victoires spatiales que tout autre vaisseau spatial militaire. Les Hornets, en particulier, ont détruit plus de matériel ennemi (mesuré en crédits stellaires) que tous les autres chasseurs spatiaux actuels de la marine réunis.\n\n𝘾𝙞𝙫𝙞𝙡𝙞𝙨𝙖𝙩𝙞𝙤𝙣\n\nLa gamme civile d'Anvil est relativement récente, une décision à laquelle beaucoup au sein de l'entreprise se sont initialement opposés. Le sentiment général était que produire des versions civiles de vaisseaux spatiaux militaires spécialisés diluerait la marque : la position soigneusement entretenue par Anvil en tant que fer de lance serait menacée. Le débat sur la question s'est tellement prolongé qu'il a failli diviser l'entreprise en deux groupes distincts, la branche civile obtenant une licence officielle pour les conceptions militaires. Tout cela a finalement été vain, car le gouvernement de l'UEE est intervenu dans le débat avec une résolution surprenante : il s'est en fait prononcé en faveur du concept de fournir des armes de type militaire aux civils, en particulier dans les régions frontalières éloignées. Il a été estimé qu'une escadrille de milice de défense nationale composée de Hornets légèrement moins performants que les modèles militaires, mais néanmoins redoutables, constituerait un meilleur moyen de dissuasion qu'une escadrille de Drake Cutlasses.\n\nLe processus de civilianisation d'un modèle tel que le Hornet est plus complexe qu'il n'y paraît : en vertu des lois sur le secret militaire de l'UEE, 60 % en moyenne des composants matériels d'un vaisseau spatial donné ne peuvent tout simplement pas être proposés au public. Certains de ces remplacements, comme les mitrailleuses Gatling de spécification militaire, seraient prévisibles et relativement faciles à trouver dans une conception modulaire moderne... mais ces exigences s'appliquent également à des systèmes aussi anodins que les verrous des pédales de gouvernail ou les bandes d'étanchéité en caoutchouc du cockpit. Les équipes de conception doivent en fait travailler à double insu, en remplaçant les systèmes existants sans avoir accès à leurs équivalents militaires. Dans certains cas, les concepteurs doivent reconstruire des sous-systèmes en se basant uniquement sur des hologrammes accessibles au public... tandis que l'équipe qui a conçu les systèmes d'origine travaille juste à côté, sans en avoir conscience.\n\nLa conversion civile des vaisseaux spatiaux militaires haut de gamme est un processus frustrant, mais qui s'est finalement avéré très profitable pour Anvil : les bénéfices de l'entreprise ont augmenté de 34 % après la mise sur le marché du premier modèle civil Hornet (le F7C), sans que cela n'entache la réputation de la marque Anvil. Au contraire, l'idée de pouvoir posséder un vaisseau « militaire » est immédiatement devenue un symbole de statut social, ce qui a fait grimper la valeur de revente des Hornets et des conversions successives ; les Hornets civils sont essentiellement (et de manière inattendue) devenus une marque de luxe. Les équivalents civils d'Anvil se vendent à la fois à des unités paramilitaires réelles à la frontière qui ont désespérément besoin de matériel robuste et à de riches industriels de la planète d'origine qui pensent que piloter un Hornet fait d'eux des pilotes de chasse de haut niveau.\n\n𝙋𝙧𝙚𝙨𝙚𝙣𝙩\n\nAujourd'hui, Anvil possède des usines sur trois douzaines de mondes centraux de l'UEE, mais continue à s'approvisionner elle-même dans tous les systèmes et exige que le PDG en exercice approuve chaque modification apportée aux vaisseaux spatiaux.\n\n𝗗𝗘𝗣𝗔𝗥𝗧𝗘𝗠𝗘𝗡𝗧𝗦\n\n𝘿𝙞𝙫𝙞𝙨𝙞𝙤𝙣 𝙙𝙪 𝙙𝙚𝙫𝙚𝙡𝙤𝙥𝙥𝙚𝙢𝙚𝙣𝙩 𝙢𝙞𝙡𝙞𝙩𝙖𝙞𝙧𝙚\n\nSon site de production est situé à MacArthur, dans le système Kilian.\n\n𝘿𝙞𝙫𝙞𝙨𝙞𝙤𝙣 𝙙𝙪 𝙙𝙚𝙫𝙚𝙡𝙤𝙥𝙥𝙚𝙢𝙚𝙣𝙩 𝙘𝙞𝙫𝙞𝙡\n\nLa division civile d'Anvil a été fondée afin de permettre aux entreprises privées de tirer parti des technologies militaires. Face à la récente recrudescence des attaques vanduuls et des raids pirates dans les mondes frontaliers, Anvil a cherché à mettre des moyens de dissuasion efficaces entre les mains des citoyens ordinaires. Son site de production est situé à Sherman, dans le système Castra.\n\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\n\n𝗜𝗻𝗱𝘂𝘀𝘁𝗿𝗶𝗲: Fabricant de véhicules spaciaux\n𝗙𝗼𝗻𝗱𝗮𝘁𝗲𝘂𝗿: J.Harris Arnold\n𝗖𝗼𝗱𝗲 𝗳𝗮𝗯𝗿𝗶𝗰𝗮𝗻𝘁: ANVL\n𝗦𝗶𝗲𝗴𝗲 𝘀𝗼𝗰𝗶𝗮𝗹: 332 Boulevard de Yedilin, Nova Kyiv, Terra , Système Terra\n𝗗𝗮𝘁𝗲 𝗱𝗲 𝗳𝗼𝗻𝗱𝗮𝘁𝗶𝗼𝗻: 2772\n",
+      "textResolved": ""
     },
     {
       "id": 16600801,
