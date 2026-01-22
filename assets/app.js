@@ -105,7 +105,7 @@
     const mm = String(p.month).padStart(2, "0");
     const dd = String(p.day).padStart(2, "0");
     const datePart = `${yyyy}-${mm}-${dd}`;
-    if (p.year < 0) return `${datePart} av. J.-C.`;
+    if (p.year < 0) return `${datePart} BCE`;
     return datePart;
   }
 
