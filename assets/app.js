@@ -1,7 +1,6 @@
-/* app.js — version finale corrigée
- - meilleure gestion local vs remote (horodatage)
- - indicateur "local modified"
- - bouton "Force upload" (affichage + activation corrigés)
+/* app.js — version adaptée (sans seed overrides file)
+ - supprime toute référence à data/timeline_overrides.json (seed)
+ - conserve localStorage + Supabase sync + Force upload
 */
 
 /* global supabase */
@@ -14,7 +13,6 @@
   const BASE_URL = "./data/timeline_base.json";
   const OVERRIDE_TABLE = "timeline_overrides";
   const EDITORS_TABLE = "timeline_editors";
-  const SEED_OVERRIDES_URL = "./data/timeline_overrides.json";
   const LS_KEY = `tikitoki_overrides_${TIMELINE_ID}_v3`;
   const LOCAL_MODIFIED_KEY = `${LS_KEY}_modified_at`;
 
@@ -166,8 +164,7 @@
       if (!isObj(o)) continue;
       if (o.__new){
         const existing = byId.get(String(id));
-        if (existing){
-        } else {
+        if (!existing){
           const ns = {
             id: parseInt(id, 10) || id,
             title: o.title || "(sans titre)",
@@ -253,8 +250,7 @@
     const p1 = document.createElement("div"); p1.className="pill"; p1.textContent = `${items.length} / ${total} événements affichés`;
     const p2 = document.createElement("div"); p2.className="pill"; p2.textContent = `Plage: ${minY} → ${maxY}`;
     $("stats").appendChild(p1); $("stats").appendChild(p2);
-    const tl = $("timeline");
-    tl.innerHTML = "";
+    const tl = $("timeline"); tl.innerHTML = "";
     const fragment = document.createDocumentFragment();
     for (const s of items){
       const c = catMap.get(String(s.category||""));
@@ -290,10 +286,7 @@
           thumbWrap.appendChild(img);
         } else { thumbWrap.classList.add("empty"); }
       } else { thumbWrap.classList.add("empty"); }
-      card.appendChild(main);
-      card.appendChild(thumbWrap);
-      wrap.appendChild(card);
-      fragment.appendChild(wrap);
+      card.appendChild(main); card.appendChild(thumbWrap); wrap.appendChild(card); fragment.appendChild(wrap);
     }
     tl.appendChild(fragment);
     if ($("modePill")) $("modePill").textContent = getMode() === "edit" ? "Mode: édition" : "Mode: lecture";
@@ -319,9 +312,7 @@
     if (ext){
       const safeExt = safeUrl(ext);
       if (safeExt){
-        const a=document.createElement("a");
-        a.href=safeExt; a.target="_blank"; a.rel="noopener"; a.textContent="Lien externe";
-        links.appendChild(a);
+        const a=document.createElement("a"); a.href=safeExt; a.target="_blank"; a.rel="noopener"; a.textContent="Lien externe"; links.appendChild(a);
       }
     }
     if (Array.isArray(story.__manualLinks)){
@@ -329,9 +320,7 @@
         if (!l?.url) continue;
         const safeLink = safeUrl(l.url);
         if (safeLink){
-          const a=document.createElement("a");
-          a.href=safeLink; a.target="_blank"; a.rel="noopener"; a.textContent=l.title||l.url;
-          links.appendChild(a);
+          const a=document.createElement("a"); a.href=safeLink; a.target="_blank"; a.rel="noopener"; a.textContent=l.title||l.url; links.appendChild(a);
         }
       }
     }
@@ -447,14 +436,11 @@
     const externalLink = $("e_link").value.trim();
     const img = $("e_img").value.trim();
     const text = $("e_text").value;
+
+    // load local overrides only (no seed file)
     OVERRIDES = loadOverridesLocal();
-    async function loadSeedOverrides(){
-      try{ const r = await fetch(SEED_OVERRIDES_URL, { cache: 'no-store' }); if (!r.ok) return {}; const j = await r.json(); if (!j || typeof j !== 'object' || Array.isArray(j)) return {}; if ('stories' in j || 'categories' in j || 'meta' in j) return {}; return j; } catch(_){ return {}; }
-    }
-    const seed = await loadSeedOverrides();
-    OVERRIDES = Object.assign({}, seed, OVERRIDES);
-    saveOverridesLocal(OVERRIDES);
     markLocalModified();
+
     const prev = isObj(OVERRIDES[id]) ? OVERRIDES[id] : {};
     const o = Object.assign({}, prev);
     const existsInBase = BASE_STORIES.some(s => String(s.id) === String(id));
@@ -471,10 +457,13 @@
     } else { o.media = []; }
     OVERRIDES[id] = o;
     saveOverridesLocal(OVERRIDES);
+
     rebuildStoriesFromBase();
     render();
+
     const s = getStoryById(id);
     if (s) openModal(s);
+
     debouncedRemoteSave();
   }
 
@@ -483,14 +472,10 @@
     const id = String(window.CURRENT_STORY_ID);
     if (!id) return;
     if (!confirm("Supprimer cet événement ?")) return;
+
     OVERRIDES = loadOverridesLocal();
-    async function loadSeedOverrides(){
-      try{ const r = await fetch(SEED_OVERRIDES_URL, { cache: 'no-store' }); if (!r.ok) return {}; const j = await r.json(); if (!j || typeof j !== 'object' || Array.isArray(j)) return {}; if ('stories' in j || 'categories' in j || 'meta' in j) return {}; return j; } catch(_){ return {}; }
-    }
-    const seed = await loadSeedOverrides();
-    OVERRIDES = Object.assign({}, seed, OVERRIDES);
-    saveOverridesLocal(OVERRIDES);
     markLocalModified();
+
     const existsInBase = BASE_STORIES.some(s => String(s.id) === String(id));
     if (existsInBase){
       OVERRIDES[id] = Object.assign({}, (OVERRIDES[id]||{}), { __deleted: true });
@@ -501,6 +486,7 @@
     rebuildStoriesFromBase();
     render();
     closeModal();
+
     debouncedRemoteSave();
   }
 
@@ -519,8 +505,7 @@
   function exportEdits(){
     const blob = new Blob([JSON.stringify(OVERRIDES, null, 2)], {type:"application/json"});
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a"); a.href = url; a.download = `tikitoki_edits_${TIMELINE_ID}.json`;
-    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    const a = document.createElement("a"); a.href = url; a.download = `tikitoki_edits_${TIMELINE_ID}.json`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
   }
 
   function importEdits(file){
@@ -578,19 +563,15 @@
     if (!email) return false;
     const res = await sb.from(EDITORS_TABLE).select("email").eq("email", email).limit(1);
     if (!res.error && Array.isArray(res.data) && res.data.length){
-      CAN_EDIT = true;
-      return true;
+      CAN_EDIT = true; return true;
     }
-    CAN_EDIT = false;
-    return false;
+    CAN_EDIT = false; return false;
   }
 
   function setAuthUi(){
-    const authBox = $("authBox");
-    if (!authBox) return;
+    const authBox = $("authBox"); if (!authBox) return;
     authBox.style.display = (getMode() === "edit") ? "block" : "none";
-    const status = $("authStatus");
-    const hint = $("editHint");
+    const status = $("authStatus"); const hint = $("editHint");
     if (!sb){
       status.textContent = "Supabase: non configuré";
       if (hint && getMode() === "edit") hint.style.display = "block";
@@ -598,17 +579,11 @@
     }
     if (!SESSION){
       status.textContent = "Mode: lecture (non connecté)";
-      $("logoutBtn").disabled = true;
-      $("loginBtn").disabled = false;
-      CAN_EDIT = false;
-      applyEditPermissions();
-      if (hint && getMode() === "edit") hint.style.display = "block";
-      return;
+      $("logoutBtn").disabled = true; $("loginBtn").disabled = false; CAN_EDIT = false; applyEditPermissions();
+      if (hint && getMode() === "edit") hint.style.display = "block"; return;
     }
     status.textContent = CAN_EDIT ? `Mode: édition ✅ (${SESSION.user.email})` : `Connecté (${SESSION.user.email}) — lecture seule`;
-    $("logoutBtn").disabled = false;
-    $("loginBtn").disabled = true;
-    applyEditPermissions();
+    $("logoutBtn").disabled = false; $("loginBtn").disabled = true; applyEditPermissions();
     if (hint && getMode() === "edit") hint.style.display = CAN_EDIT ? "none" : "block";
   }
 
@@ -621,14 +596,10 @@
       if ($("cancelBtn")) $("cancelBtn").style.display = "none";
       if ($("deleteBtn")) $("deleteBtn").style.display = "none";
     }
-    const newBtn = $("newBtn");
-    if (newBtn){ newBtn.style.display = isEdit ? "" : "none"; newBtn.disabled = false; }
-    const editBtn = $("editBtn");
-    if (editBtn){ editBtn.disabled = !can; editBtn.title = can ? "" : "Lecture seule : non autorisé"; }
-    const saveBtn = $("saveBtn");
-    if (saveBtn){ saveBtn.disabled = !can; saveBtn.title = can ? "" : "Lecture seule : non autorisé"; }
-    const deleteBtn = $("deleteBtn");
-    if (deleteBtn){ deleteBtn.disabled = !can; deleteBtn.title = can ? "" : "Lecture seule : non autorisé"; }
+    const newBtn = $("newBtn"); if (newBtn){ newBtn.style.display = isEdit ? "" : "none"; newBtn.disabled = false; }
+    const editBtn = $("editBtn"); if (editBtn){ editBtn.disabled = !can; editBtn.title = can ? "" : "Lecture seule : non autorisé"; }
+    const saveBtn = $("saveBtn"); if (saveBtn){ saveBtn.disabled = !can; saveBtn.title = can ? "" : "Lecture seule : non autorisé"; }
+    const deleteBtn = $("deleteBtn"); if (deleteBtn){ deleteBtn.disabled = !can; deleteBtn.title = can ? "" : "Lecture seule : non autorisé"; }
     updateForceBtnVisibility();
     const sbLine = $("sbEditModeLine") || $("sbStatus");
     if (sbLine && isEdit){
@@ -669,8 +640,7 @@
         });
         const text = await r.text();
         if (!r.ok){
-          let body = text;
-          try{ body = JSON.parse(text); }catch(e){}
+          let body = text; try{ body = JSON.parse(text); }catch(e){}
           const err = new Error("Supabase REST error: " + r.status + " " + r.statusText);
           err.status = r.status; err.responseBody = body; throw err;
         }
@@ -800,8 +770,7 @@
     const bUrl = URL.createObjectURL(baseBlob);
     const a1 = document.createElement("a"); a1.href = bUrl; a1.download = `base_${TIMELINE_ID}_${ymd}.json`; document.body.appendChild(a1); a1.click(); a1.remove(); URL.revokeObjectURL(bUrl);
     const ovBlob = new Blob([JSON.stringify(OVERRIDES, null, 2)], {type:"application/json"});
-    const oUrl = URL.createObjectURL(ovBlob);
-    const a2 = document.createElement("a"); a2.href = oUrl; a2.download = `overrides_${TIMELINE_ID}_${ymd}.json`; document.body.appendChild(a2); a2.click(); a2.remove(); URL.revokeObjectURL(oUrl);
+    const oUrl = URL.createObjectURL(ovBlob); const a2 = document.createElement("a"); a2.href = oUrl; a2.download = `overrides_${TIMELINE_ID}_${ymd}.json`; document.body.appendChild(a2); a2.click(); a2.remove(); URL.revokeObjectURL(oUrl);
   }
 
   async function boot(){
@@ -831,16 +800,10 @@
     DATA = normalized;
     cats = Array.isArray(normalized.categories) ? normalized.categories : [];
     BASE_STORIES = Array.isArray(normalized.stories) ? normalized.stories : [];
-    catMap.clear();
-    for (const c of cats) catMap.set(String(c.id), c);
+    catMap.clear(); for (const c of cats) catMap.set(String(c.id), c);
 
+    // load local overrides (no seed file)
     OVERRIDES = loadOverridesLocal();
-
-    async function loadSeedOverrides(){
-      try{ const r = await fetch(SEED_OVERRIDES_URL, { cache: 'no-store' }); if (!r.ok) return {}; const j = await r.json(); if (!j || typeof j !== 'object' || Array.isArray(j)) return {}; if ('stories' in j || 'categories' in j || 'meta' in j) return {}; return j; } catch(_){ return {}; }
-    }
-    const seed = await loadSeedOverrides();
-    OVERRIDES = Object.assign({}, seed, OVERRIDES);
     saveOverridesLocal(OVERRIDES);
     rebuildStoriesFromBase();
     buildCategorySelect();
@@ -876,32 +839,31 @@
   function updateForceBtnVisibility(){
     if (!_forceBtn) return;
     const visible = (getMode() === "edit");
-    // ensure visible when required by setting a real inline display value
     _forceBtn.style.display = visible ? "inline-flex" : "none";
     _forceBtn.disabled = !(visible && CAN_EDIT);
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    $("q").addEventListener("input", render);
-    $("cat").addEventListener("change", render);
-    $("y1").addEventListener("input", render);
-    $("y2").addEventListener("input", render);
-    $("resetBtn").addEventListener("click", resetFilters);
+    // wire UI
+    if ($("q")) $("q").addEventListener("input", render);
+    if ($("cat")) $("cat").addEventListener("change", render);
+    if ($("y1")) $("y1").addEventListener("input", render);
+    if ($("y2")) $("y2").addEventListener("input", render);
+    if ($("resetBtn")) $("resetBtn").addEventListener("click", resetFilters);
 
     const exportBtn = $("exportEditsBtn"); if (exportBtn) exportBtn.addEventListener("click", exportEdits);
     const importBtn = $("importEditsBtn"); const importFile = $("importFile");
     if (importBtn && importFile) { importBtn.addEventListener("click", ()=> importFile.click()); importFile.addEventListener("change", ()=> { if (importFile.files?.[0]) importEdits(importFile.files[0]); }); }
 
-    $("backdrop").addEventListener("click", closeModal);
-    $("closeBtn").addEventListener("click", closeModal);
+    if ($("backdrop")) $("backdrop").addEventListener("click", closeModal);
+    if ($("closeBtn")) $("closeBtn").addEventListener("click", closeModal);
     window.addEventListener("keydown", (e)=>{ if (e.key === "Escape") closeModal(); });
 
     if ($("editBtn")) $("editBtn").addEventListener("click", ()=> { const s = getStoryById(window.CURRENT_STORY_ID); if (s) openEditForStory(s); });
     if ($("saveBtn")) $("saveBtn").addEventListener("click", (e)=>{ e.preventDefault(); applySave().catch((err)=>{ console.error(err); setStatus("Erreur: "+(err&&err.message?err.message:String(err)), true); }); });
     if ($("cancelBtn")) $("cancelBtn").addEventListener("click", ()=> setEditMode(false));
     if ($("deleteBtn")) $("deleteBtn").addEventListener("click", ()=> applyDelete().catch((err)=>{ console.error(err); setStatus("Erreur: "+(err&&err.message?err.message:String(err)), true); }));
-    const newBtn = $("newBtn");
-    if (newBtn) newBtn.addEventListener("click", ()=> createNewStory().catch((err)=>{ console.error(err); setStatus("Erreur: "+(err&&err.message?err.message:String(err)), true); }));
+    const newBtn = $("newBtn"); if (newBtn) newBtn.addEventListener("click", ()=> createNewStory().catch((err)=>{ console.error(err); setStatus("Erreur: "+(err&&err.message?err.message:String(err)), true); }));
 
     if ($("loginBtn")){
       $("loginBtn").addEventListener("click", async ()=>{
