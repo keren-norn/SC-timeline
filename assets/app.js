@@ -65,12 +65,49 @@
   function stripHtml(s){ return (s||"").toString().replace(/<[^>]+>/g, ""); }
   function truncate(s,n){ s=stripHtml(s).trim(); return s.length<=n? s : s.slice(0,n-1)+"…"; }
 
+  // parseYear accepts signed years now (e.g. "-0444-01-01" -> -444)
   function parseYear(dateStr){
-    const m = /^(\d{4})(?:-\d{2}(?:-\d{2})?)?/.exec(dateStr||"");
+    if (!dateStr) return null;
+    const m = /^(-?\d+)(?:-\d{2}(?:-\d{2})?)?/.exec(String(dateStr||""));
     return m ? parseInt(m[1], 10) : null;
   }
 
-  function fmtDate(dateStr){ return (dateStr||"").split(" ")[0]; }
+  // parseDateParts -> { year: Number|null, month: Number, day: Number }
+  function parseDateParts(dateStr){
+    if (!dateStr) return { year: null, month: 1, day: 1 };
+    const m = /^(-?\d+)(?:-(\d{2})(?:-(\d{2}))?)?/.exec(String(dateStr));
+    if (!m) return { year: null, month: 1, day: 1 };
+    const year = parseInt(m[1], 10);
+    const month = parseInt(m[2] || "1", 10);
+    const day = parseInt(m[3] || "1", 10);
+    return { year, month, day };
+  }
+
+  // compare two date strings numerically (handles negative years)
+  function compareDateStrings(a, b){
+    const A = parseDateParts(a);
+    const B = parseDateParts(b);
+    if (A.year === null && B.year === null) return 0;
+    if (A.year === null) return 1;
+    if (B.year === null) return -1;
+    if (A.year !== B.year) return A.year - B.year;
+    if (A.month !== B.month) return A.month - B.month;
+    return A.day - B.day;
+  }
+
+  // fmtDate: format for display, handles negative years (shows "YYYY-MM-DD av. J.-C.")
+  function fmtDate(dateStr){
+    if (!dateStr) return "";
+    const p = parseDateParts(dateStr);
+    if (p.year === null) return String(dateStr).split(" ")[0];
+    const yearAbs = Math.abs(p.year);
+    const yyyy = String(yearAbs).padStart(4, "0");
+    const mm = String(p.month).padStart(2, "0");
+    const dd = String(p.day).padStart(2, "0");
+    const datePart = `${yyyy}-${mm}-${dd}`;
+    if (p.year < 0) return `${datePart} av. J.-C.`;
+    return datePart;
+  }
 
   function escapeHtml(s){
     return (s||"").replace(/[&<>"']/g, (ch)=>({
@@ -228,7 +265,7 @@
     return stories
       .filter(s => !s.__deleted)
       .slice()
-      .sort((a,b)=> (a.startDate||"").localeCompare(b.startDate||""))
+      .sort((a,b)=> compareDateStrings(a.startDate, b.startDate))
       .filter(s => {
         if (catId && String(s.category) !== String(catId)) return false;
         const y = parseYear(s.startDate);
