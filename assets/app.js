@@ -770,7 +770,7 @@
       setSbStatus("Envoi forcé en cours…");
       const written = await sbSaveOverrides(OVERRIDES);
       if (written && written.updated_at){ LAST_REMOTE_UPDATED_AT = written.updated_at; LAST_REMOTE_UPDATED_BY = written.updated_by || null; }
-      else { const meta = await sb_loadOverrides(); LAST_REMOTE_UPDATED_AT = meta.updated_at; LAST_REMOTE_UPDATED_BY = meta.updated_by; }
+      else { const meta = await sbLoadOverrides(); LAST_REMOTE_UPDATED_AT = meta.updated_at; LAST_REMOTE_UPDATED_BY = meta.updated_by; }
       clearLocalModified();
       setSbStatus("Envoyé manuellement ✅ — " + (LAST_REMOTE_UPDATED_AT ? new Date(LAST_REMOTE_UPDATED_AT).toLocaleTimeString() : ""));
       await pullRemoteAndApply();
