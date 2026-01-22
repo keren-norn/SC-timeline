@@ -5,8 +5,12 @@
 - `editor.html` : édition collaborative (login Supabase)
 
 ## Données
-- `data/tiki_toki_1771887.json` : base (lecture seule)
-- Supabase table `timeline_overrides` : overrides (modifs)
+- `data/timeline_base.json` : base (fusionnée — lecture)
+- Supabase table `timeline_overrides` : overrides (modifs en production / runtime)
+
+Notes :
+- Le fichier seed `data/timeline_overrides.json` a été retiré du dépôt : les overrides sont désormais gérés au runtime via Supabase et stockés localement en localStorage avant push.
+- Un workflow `.github/workflows/github_workflows_sync-supabase-to-git.yml` peut synchroniser régulièrement la table Supabase `timeline_overrides` vers `data/timeline_base.json` (cron ou manuel).
 
 ## Cache Busting (Automatic)
 
