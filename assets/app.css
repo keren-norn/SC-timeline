@@ -1,6 +1,7 @@
 /* app.css — version finale corrigée
- - correction affichage/visibilité du bouton "Force upload"
- - style ajusté pour lisibilité
+   + Corrections Safari/iOS compatibles tous navigateurs
+   - correction affichage/visibilité du bouton "Force upload"
+   - style ajusté pour lisibilité
 */
 
 /* ==============================
@@ -24,6 +25,31 @@
 
 /* Reset / base */
 *{ box-sizing:border-box; }
+
+/* ---------- PATCH SAFARI / MOBILE ---------- */
+html, body {
+  width: 100vw;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+.min-vh-100, .main-container, body, html {
+  min-height: 100dvh !important;
+}
+body {
+  -webkit-overflow-scrolling: touch;
+}
+/* Empêche le zoom sur input sur iPhone */
+input, textarea, select, button {
+  font-size: 16px;
+}
+/* Images responsives */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+/* ---------- FIN PATCH ---------- */
+
 html, body{ height:100%; width:100%; overflow-x:hidden; }
 body{ margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--text); background: none; }
 body::before{
@@ -162,4 +188,5 @@ body[data-mode="edit"] .mLeft{ height: 100%; max-height: none; }
 }
 #forceUploadBtn:hover{ box-shadow: 0 8px 26px rgba(0,0,0,.6), 0 0 18px rgba(111,228,255,.12); }
 #forceUploadBtn:disabled{ opacity:.5; cursor:not-allowed; }
-@media (max-width:640px){ #forceUploadBtn{ right: 12px; bottom: 12px; padding:9px 10px; font-size:13px; } }
+@media (max-width:640px){ #forceUploadBtn{ right: 12px; bottom: 12px; padding:9px 10px; font-size:13px; }
+}
