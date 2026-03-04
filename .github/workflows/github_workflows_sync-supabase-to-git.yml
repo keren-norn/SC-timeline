@@ -2,10 +2,10 @@
 # Déclenchement : manuel (workflow_dispatch) et cron daily (à adapter)
 name: Sync timeline from Supabase
 
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 3 * * *' # every day at 03:00 UTC (ajuste si besoin)
+#on:
+#  workflow_dispatch:
+#  schedule:
+#    - cron: '0 3 * * *' # every day at 03:00 UTC (ajuste si besoin)
 
 jobs:
   sync:
