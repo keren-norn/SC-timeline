@@ -1,16 +1,28 @@
-# SC-timeline (lecture + édition collaborative)
+# SC-timeline (lecture + édition locale)
 
 ## Pages
 - `index.html` : lecture publique
-- `editor.html` : édition collaborative (login Supabase)
+- `editor.html` : redirection vers `#edit` (édition locale)
 
 ## Données
-- `data/timeline_base.json` : base (fusionnée — lecture)
-- Supabase table `timeline_overrides` : overrides (modifs en production / runtime)
+- `data/timeline_base.json` : base canonique versionnée
+- `data/timeline_overrides.local.json` : fichier d’overrides recommandé pour export/import manuel (branche GitHub)
 
-Notes :
-- Le fichier seed `data/timeline_overrides.json` a été retiré du dépôt : les overrides sont désormais gérés au runtime via Supabase et stockés localement en localStorage avant push.
-- Un workflow `.github/workflows/github_workflows_sync-supabase-to-git.yml` peut synchroniser régulièrement la table Supabase `timeline_overrides` vers `data/timeline_base.json` (cron ou manuel).
+## Fonctionnement
+- En lecture (`#timeline`) : la timeline affiche `data/timeline_base.json`.
+- En édition (`#edit`) : création/modification/suppression locales dans le navigateur.
+- Les overrides d’édition sont stockés en `localStorage` (clé `tikitoki_overrides_<timeline_id>_v3`).
+- Le bouton **Exporter overrides JSON** télécharge `timeline_overrides.local.json`.
+- Le bouton **Importer overrides JSON** recharge un fichier d’overrides dans l’état local.
+
+## Workflow GitHub recommandé (variante A)
+1. Travailler localement en `#edit`.
+2. Exporter le fichier d’overrides JSON.
+3. Placer/renommer le fichier en `data/timeline_overrides.local.json`.
+4. Commit ce fichier manuellement dans une branche GitHub dédiée.
+5. Ouvrir une PR pour revue et application ultérieure des modifications.
+
+La base (`timeline_base.json`) et les overrides (`timeline_overrides.local.json`) restent séparés conceptuellement pour faciliter la revue et les merges manuels.
 
 ## Cache Busting (Automatic)
 
