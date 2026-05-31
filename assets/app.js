@@ -4,7 +4,7 @@
   const TIMELINE_ID = Number(document.body.dataset.timelineId || "1771887");
 
   const BASE_URL = "./data/timeline_base.json";
-  const OVERRIDES_FILENAME = "timeline_overrides.local.json";
+  const RECOMMENDED_OVERRIDES_FILENAME = "timeline_overrides.local.json";
   const LS_KEY = `tikitoki_overrides_${TIMELINE_ID}_v3`;
 
   let DATA = null;
@@ -586,12 +586,12 @@
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = OVERRIDES_FILENAME;
+    a.download = RECOMMENDED_OVERRIDES_FILENAME;
     document.body.appendChild(a);
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
-    setLocalStatus(`Export JSON prêt (${OVERRIDES_FILENAME}).`);
+    setLocalStatus(`Export JSON prêt (${RECOMMENDED_OVERRIDES_FILENAME}).`);
   }
 
   function importEdits(file){
