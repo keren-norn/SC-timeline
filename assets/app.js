@@ -617,8 +617,11 @@
     OVERRIDES = loadOverridesLocal();
     const prev = isObj(OVERRIDES[id]) ? OVERRIDES[id] : {};
     const o = Object.assign({}, prev);
-    const existsInBase = BASE_STORIES.some(s => String(s.id) === String(id));
-    if (!existsInBase) o.__new = true;
+    // Check existence against the full effective state (base + file overrides + localStorage),
+    // not just BASE_STORIES, so events added via timeline_overrides.local.json are not
+    // mistakenly re-tagged as __new on subsequent local edits.
+    const existsInEffective = stories.some(s => String(s.id) === String(id));
+    if (!existsInEffective) o.__new = true;
     o.title = title || "(sans titre)";
     o.startDate = startDate || "";
     o.endDate = endDate || "";
@@ -654,7 +657,11 @@
 
     OVERRIDES = loadOverridesLocal();
     const existsInBase = BASE_STORIES.some(s => String(s.id) === String(id));
-    if (existsInBase){
+    // An event added only via timeline_overrides.local.json (not in BASE_STORIES) must also
+    // be suppressed via __deleted in OVERRIDES; simply removing the OVERRIDES entry would
+    // leave FILE_OVERRIDES free to re-add it on the next rebuild.
+    const existsInFileAsNew = isObj(FILE_OVERRIDES[id]) && !!FILE_OVERRIDES[id].__new;
+    if (existsInBase || existsInFileAsNew){
       OVERRIDES[id] = Object.assign({}, (OVERRIDES[id]||{}), { __deleted: true });
     } else {
       delete OVERRIDES[id];
@@ -712,9 +719,10 @@
     if (!confirm("Effacer toutes les modifications locales de ce navigateur ?")) return;
     OVERRIDES = {};
     clearOverridesLocal();
-    saveOverridesLocal(OVERRIDES);
+    // Rebuild from base + versioned file only (FILE_OVERRIDES is unaffected).
     rebuildStoriesFromBase();
     render();
+    updateLocalOverridesIndicator();
     setLocalStatus("Modifications locales effacées.");
   }
 
