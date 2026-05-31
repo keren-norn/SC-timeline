@@ -584,7 +584,13 @@
   function exportEdits(){
     const blob = new Blob([JSON.stringify(OVERRIDES, null, 2)], {type:"application/json"});
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a"); a.href = url; a.download = OVERRIDES_FILENAME; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = OVERRIDES_FILENAME;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
     setLocalStatus(`Export JSON prêt (${OVERRIDES_FILENAME}).`);
   }
 
@@ -694,8 +700,8 @@
     if ($("y2")) $("y2").addEventListener("input", render);
     if ($("resetBtn")) $("resetBtn").addEventListener("click", resetFilters);
 
-    const exportBtn = $("exportEditsBtn"); if (exportBtn) exportBtn.addEventListener("click", exportEdits);
-    const importBtn = $("importEditsBtn"); const importFile = $("importFile");
+    const exportBtn = $("exportOverridesBtn"); if (exportBtn) exportBtn.addEventListener("click", exportEdits);
+    const importBtn = $("importOverridesBtn"); const importFile = $("importFile");
     if (importBtn && importFile) { importBtn.addEventListener("click", ()=> importFile.click()); importFile.addEventListener("change", ()=> { if (importFile.files?.[0]) importEdits(importFile.files[0]); }); }
 
     if ($("backdrop")) $("backdrop").addEventListener("click", closeModal);
