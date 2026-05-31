@@ -1,32 +1,17 @@
-/* app.js — version adaptée (sans seed overrides file)
- - supprime toute référence à data/timeline_overrides.json (seed)
- - conserve localStorage + Supabase sync + Force upload
-*/
-
-/* global supabase */
+/* app.js — édition locale avec overrides JSON */
 (() => {
   function getMode(){ return document.body.dataset.mode || "view"; }
-  const SUPABASE_URL = document.body.dataset.supabaseUrl || "";
-  const SUPABASE_ANON_KEY = document.body.dataset.supabaseAnonKey || "";
   const TIMELINE_ID = Number(document.body.dataset.timelineId || "1771887");
 
   const BASE_URL = "./data/timeline_base.json";
-  const OVERRIDE_TABLE = "timeline_overrides";
-  const EDITORS_TABLE = "timeline_editors";
+  const OVERRIDES_FILENAME = "timeline_overrides.local.json";
   const LS_KEY = `tikitoki_overrides_${TIMELINE_ID}_v3`;
-  const LOCAL_MODIFIED_KEY = `${LS_KEY}_modified_at`;
-
-  let sb = null;
-  let CAN_EDIT = false;
-  let SESSION = null;
 
   let DATA = null;
   let cats = [];
   let stories = [];
   let BASE_STORIES = [];
   let OVERRIDES = {};
-  let LAST_REMOTE_UPDATED_AT = null;
-  let LAST_REMOTE_UPDATED_BY = null;
   const catMap = new Map();
 
   function $(id){ return document.getElementById(id); }
@@ -165,16 +150,6 @@
       if (url.protocol === "http:" || url.protocol === "https:") return url.href;
       return null;
     } catch { return null; }
-  }
-
-  function markLocalModified(){
-    try{ localStorage.setItem(LOCAL_MODIFIED_KEY, String(Date.now())); }catch(e){}
-  }
-  function clearLocalModified(){
-    try{ localStorage.removeItem(LOCAL_MODIFIED_KEY); }catch(e){}
-  }
-  function getLocalModifiedTs(){
-    try{ return Number(localStorage.getItem(LOCAL_MODIFIED_KEY)) || 0; }catch(e){ return 0; }
   }
 
   function loadOverridesLocal(){
@@ -515,8 +490,7 @@
   }
 
   function ensureCanEditOrWarn(){
-    if (getMode() !== "edit"){ alert("Lecture seule : ouvre editor.html pour modifier."); return false; }
-    if (!CAN_EDIT){ alert("Lecture seule : connecte-toi (et sois dans la liste des éditeurs)."); return false; }
+    if (getMode() !== "edit"){ alert("Lecture seule : passe en mode #edit pour modifier."); return false; }
     return true;
   }
 
@@ -546,8 +520,6 @@
 
     // load local overrides only (no seed file)
     OVERRIDES = loadOverridesLocal();
-    markLocalModified();
-
     const prev = isObj(OVERRIDES[id]) ? OVERRIDES[id] : {};
     const o = Object.assign({}, prev);
     const existsInBase = BASE_STORIES.some(s => String(s.id) === String(id));
@@ -576,7 +548,7 @@
     const s = getStoryById(id);
     if (s) openModal(s);
 
-    debouncedRemoteSave();
+    setLocalStatus("Modifications enregistrées localement ✅");
   }
 
   async function applyDelete(){
@@ -586,8 +558,6 @@
     if (!confirm("Supprimer cet événement ?")) return;
 
     OVERRIDES = loadOverridesLocal();
-    markLocalModified();
-
     const existsInBase = BASE_STORIES.some(s => String(s.id) === String(id));
     if (existsInBase){
       OVERRIDES[id] = Object.assign({}, (OVERRIDES[id]||{}), { __deleted: true });
@@ -599,7 +569,7 @@
     render();
     closeModal();
 
-    debouncedRemoteSave();
+    setLocalStatus("Suppression enregistrée localement ✅");
   }
 
   async function createNewStory(){
@@ -608,16 +578,20 @@
     openModal(draft);
     openEditForStory(draft);
     if ($('deleteBtn')) $('deleteBtn').style.display = 'none';
-    if (!CAN_EDIT){
-      const st = $('status');
-      if (st) st.textContent = "Lecture seule: connecte-toi pour enregistrer.";
-    }
+    setLocalStatus("Nouvel événement prêt (non enregistré tant que tu ne cliques pas sur Enregistrer).");
   }
 
   function exportEdits(){
     const blob = new Blob([JSON.stringify(OVERRIDES, null, 2)], {type:"application/json"});
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a"); a.href = url; a.download = `tikitoki_edits_${TIMELINE_ID}.json`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = OVERRIDES_FILENAME;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    setLocalStatus(`Export JSON prêt (${OVERRIDES_FILENAME}).`);
   }
 
   function importEdits(file){
@@ -628,11 +602,10 @@
         if (!isObj(obj)) throw new Error("JSON invalide");
         OVERRIDES = obj;
         saveOverridesLocal(OVERRIDES);
-        markLocalModified();
         rebuildStoriesFromBase();
         render();
         alert("Modifications importées ✅");
-        debouncedRemoteSave();
+        setLocalStatus("Overrides importés localement ✅");
       }catch(e){
         alert("Import impossible: " + (e.message||String(e)));
       }
@@ -649,240 +622,34 @@
     render();
   }
 
-  async function sbInit(){
-    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
-    if (typeof supabase === "undefined") { console.warn("Supabase library not loaded - skipping Supabase init"); return; }
-    sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    const { data } = await sb.auth.getSession();
-    SESSION = data.session || null;
-    sb.auth.onAuthStateChange(async () => {
-      const { data } = await sb.auth.getSession();
-      SESSION = data.session || null;
-      await checkEditor();
-      setAuthUi();
-    });
-    await checkEditor();
-    setAuthUi();
-  }
-
-  async function checkEditor(){
-    CAN_EDIT = false;
-    if (!sb) return false;
-    const { data } = await sb.auth.getSession();
-    SESSION = data.session || null;
-    if (!SESSION) return false;
-    const email = SESSION.user.email;
-    if (!email) return false;
-    const res = await sb.from(EDITORS_TABLE).select("email").eq("email", email).limit(1);
-    if (!res.error && Array.isArray(res.data) && res.data.length){
-      CAN_EDIT = true; return true;
-    }
-    CAN_EDIT = false; return false;
-  }
-
-  function setAuthUi(){
-    const authBox = $("authBox"); if (!authBox) return;
-    authBox.style.display = (getMode() === "edit") ? "block" : "none";
-    const status = $("authStatus"); const hint = $("editHint");
-    if (!sb){
-      status.textContent = "Supabase: non configuré";
-      if (hint && getMode() === "edit") hint.style.display = "block";
-      return;
-    }
-    if (!SESSION){
-      status.textContent = "Mode: lecture (non connecté)";
-      $("logoutBtn").disabled = true; $("loginBtn").disabled = false; CAN_EDIT = false; applyEditPermissions();
-      if (hint && getMode() === "edit") hint.style.display = "block"; return;
-    }
-    status.textContent = CAN_EDIT ? `Mode: édition ✅ (${SESSION.user.email})` : `Connecté (${SESSION.user.email}) — lecture seule`;
-    $("logoutBtn").disabled = false; $("loginBtn").disabled = true; applyEditPermissions();
-    if (hint && getMode() === "edit") hint.style.display = CAN_EDIT ? "none" : "block";
-  }
-
   function applyEditPermissions(){
     const isEdit = getMode() === "edit";
-    const can = isEdit && CAN_EDIT;
     if (!isEdit){
       if ($("editBtn")) $("editBtn").style.display = "none";
       if ($("saveBtn")) $("saveBtn").style.display = "none";
       if ($("cancelBtn")) $("cancelBtn").style.display = "none";
       if ($("deleteBtn")) $("deleteBtn").style.display = "none";
     }
-    const newBtn = $("newBtn"); if (newBtn){ newBtn.style.display = isEdit ? "" : "none"; newBtn.disabled = false; }
-    const editBtn = $("editBtn"); if (editBtn){ editBtn.disabled = !can; editBtn.title = can ? "" : "Lecture seule : non autorisé"; }
-    const saveBtn = $("saveBtn"); if (saveBtn){ saveBtn.disabled = !can; saveBtn.title = can ? "" : "Lecture seule : non autorisé"; }
-    const deleteBtn = $("deleteBtn"); if (deleteBtn){ deleteBtn.disabled = !can; deleteBtn.title = can ? "" : "Lecture seule : non autorisé"; }
-    updateForceBtnVisibility();
-    const sbLine = $("sbEditModeLine") || $("sbStatus");
-    if (sbLine && isEdit){
-      if (!SESSION) sbLine.textContent = "🔒 Lecture seule : non connecté (connecte-toi pour enregistrer).";
-      else if (!CAN_EDIT) sbLine.textContent = "🔒 Lecture seule : connecté mais non autorisé (timeline_editors).";
-      else sbLine.textContent = "✅ Édition autorisée.";
+    const newBtn = $("newBtn");
+    if (newBtn){ newBtn.style.display = isEdit ? "" : "none"; newBtn.disabled = false; }
+    const editBtn = $("editBtn");
+    if (editBtn){ editBtn.disabled = !isEdit; editBtn.title = isEdit ? "" : "Lecture seule"; }
+    const saveBtn = $("saveBtn");
+    if (saveBtn){ saveBtn.disabled = !isEdit; saveBtn.title = isEdit ? "" : "Lecture seule"; }
+    const deleteBtn = $("deleteBtn");
+    if (deleteBtn){ deleteBtn.disabled = !isEdit; deleteBtn.title = isEdit ? "" : "Lecture seule"; }
+    if (isEdit){
+      setStatus("Mode édition locale : overrides enregistrés dans ce navigateur.");
+    } else {
+      setStatus("Mode lecture.");
     }
   }
 
-  async function sbLoadOverrides(){
-    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return { data: null, updated_at: null, updated_by: null };
-    const url = `${SUPABASE_URL}/rest/v1/${OVERRIDE_TABLE}?timeline_id=eq.${TIMELINE_ID}&select=data,updated_at,updated_by`;
-    const r = await fetch(url, { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` } });
-    if (!r.ok) throw new Error(await r.text());
-    const rows = await r.json();
-    const row = rows?.[0] || null;
-    return { data: row?.data ?? null, updated_at: row?.updated_at ?? null, updated_by: row?.updated_by ?? null };
-  }
-
-  async function sbSaveOverrides(obj){
-    if (!sb) throw new Error("Supabase non initialisé.");
-    const { data } = await sb.auth.getSession();
-    const token = data.session?.access_token || null;
-    if (!token) throw new Error("Non connecté.");
-    const payload = { timeline_id: TIMELINE_ID, data: obj, updated_at: new Date().toISOString() };
-    async function trySave(attempt = 1){
-      try{
-        if (sb && typeof sb.from === "function"){
-          const res = await sb.from(OVERRIDE_TABLE).upsert(payload, { onConflict: "timeline_id" }).select();
-          if (res.error) throw res.error;
-          return res.data?.[0] ?? null;
-        }
-        const url = `${SUPABASE_URL}/rest/v1/${OVERRIDE_TABLE}?on_conflict=timeline_id`;
-        const r = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${token}`, Prefer: "resolution=merge-duplicates,return=representation" },
-          body: JSON.stringify(payload)
-        });
-        const text = await r.text();
-        if (!r.ok){
-          let body = text; try{ body = JSON.parse(text); }catch(e){}
-          const err = new Error("Supabase REST error: " + r.status + " " + r.statusText);
-          err.status = r.status; err.responseBody = body; throw err;
-        }
-        try{ const parsed = JSON.parse(text); return parsed?.[0] ?? null; } catch(e){ return null; }
-      }catch(err){
-        const shouldRetry = attempt < 3 && (!err.status || (err.status >= 500 && err.status < 600));
-        if (shouldRetry){
-          const wait = 200 * Math.pow(2, attempt-1);
-          await new Promise(res => setTimeout(res, wait));
-          return trySave(attempt + 1);
-        }
-        throw err;
-      }
-    }
-    return trySave(1);
-  }
-
-  let _saveTimer = null;
-  let _saveInFlight = false;
-  function debouncedRemoteSave(){
-    clearTimeout(_saveTimer);
-    _saveTimer = setTimeout(async ()=>{
-      if (_saveInFlight) { setTimeout(debouncedRemoteSave, 300); return; }
-      _saveInFlight = true;
-      try{
-        if (getMode() !== "edit") throw new Error("Pas en mode édition (#edit).");
-        if (!sb) throw new Error("Supabase non initialisé.");
-        const { data } = await sb.auth.getSession();
-        if (!data.session) throw new Error("Session absente (reconnecte-toi).");
-        const written = await sbSaveOverrides(OVERRIDES);
-        if (written && written.updated_at){ LAST_REMOTE_UPDATED_AT = written.updated_at; }
-        else { const meta = await sbLoadOverrides(); LAST_REMOTE_UPDATED_AT = meta.updated_at; LAST_REMOTE_UPDATED_BY = meta.updated_by; }
-        clearLocalModified();
-        const timestamp = LAST_REMOTE_UPDATED_AT ? new Date(LAST_REMOTE_UPDATED_AT).toLocaleTimeString() : "";
-        setSbStatus(timestamp ? "Sauvegardé ✅ — " + timestamp : "Sauvegardé ✅");
-      }catch(e){
-        console.warn("Erreur de sauvegarde Supabase:", e);
-        let msg = e && e.message ? e.message : String(e);
-        if (e && e.responseBody){ try { msg += " • " + (typeof e.responseBody === "string" ? e.responseBody : JSON.stringify(e.responseBody)); } catch(_){} }
-        setSbStatus("Erreur save Supabase: " + msg);
-      }finally{ _saveInFlight = false; }
-    }, 600);
-  }
-
-  async function forceUpload(){
-    if (!ensureCanEditOrWarn()) return;
-    if (!sb) return alert("Supabase non initialisé.");
-    if (_saveInFlight) return alert("Sauvegarde déjà en cours, attends un instant...");
-    if (!confirm("Forcer l'envoi des modifications locales vers Supabase maintenant ?")) return;
-    try{
-      _saveInFlight = true;
-      setSbStatus("Envoi forcé en cours…");
-      const written = await sbSaveOverrides(OVERRIDES);
-      if (written && written.updated_at){ LAST_REMOTE_UPDATED_AT = written.updated_at; LAST_REMOTE_UPDATED_BY = written.updated_by || null; }
-      else { const meta = await sbLoadOverrides(); LAST_REMOTE_UPDATED_AT = meta.updated_at; LAST_REMOTE_UPDATED_BY = meta.updated_by; }
-      clearLocalModified();
-      setSbStatus("Envoyé manuellement ✅ — " + (LAST_REMOTE_UPDATED_AT ? new Date(LAST_REMOTE_UPDATED_AT).toLocaleTimeString() : ""));
-      await pullRemoteAndApply();
-    }catch(e){
-      console.error("Force upload failed:", e);
-      alert("Envoi forcé échoué: " + (e && e.message ? e.message : String(e)));
-      setSbStatus("Erreur envoi forcé: " + (e && e.message ? e.message : String(e)));
-    }finally{ _saveInFlight = false; }
-  }
-
-  function setSbStatus(msg){
-    const el = $("sbStatus");
-    if (el) el.textContent = "";
+  function setLocalStatus(msg){
     if (getMode() === "edit") {
       const kind = (msg || "").toLowerCase().includes("erreur") ? "err" : "ok";
       if (msg) showTopStatus(msg, kind);
     }
-  }
-
-  function diffOverrideKeys(a,b){
-    const A = isObj(a) ? a : {};
-    const B = isObj(b) ? b : {};
-    const keys = new Set([...Object.keys(A), ...Object.keys(B)]);
-    const changed = [];
-    for (const k of keys){
-      if (JSON.stringify(A[k]) !== JSON.stringify(B[k])) changed.push(k);
-    }
-    return changed;
-  }
-
-  async function pullRemoteAndApply(){
-    try{
-      const meta = await sbLoadOverrides();
-      const remoteObj = (meta.data && isObj(meta.data)) ? meta.data : {};
-      const localObj = isObj(OVERRIDES) ? OVERRIDES : {};
-      const remoteIsEmpty = Object.keys(remoteObj).length === 0;
-      const localIsEmpty = Object.keys(localObj).length === 0;
-      const localModifiedTs = getLocalModifiedTs();
-      const remoteUpdatedAtTs = meta.updated_at ? Date.parse(meta.updated_at) : 0;
-      let nextObj; let chose = "remote";
-      if (!remoteIsEmpty && !localIsEmpty){
-        if (localModifiedTs && remoteUpdatedAtTs && localModifiedTs > remoteUpdatedAtTs){
-          nextObj = localObj; chose = "local_newer";
-        } else { nextObj = remoteObj; chose = "remote"; }
-      } else if (remoteIsEmpty && !localIsEmpty){
-        nextObj = localObj; chose = "local_remote_empty";
-      } else { nextObj = remoteObj; chose = "remote"; }
-      const changed = diffOverrideKeys(localObj, nextObj);
-      OVERRIDES = nextObj;
-      saveOverridesLocal(OVERRIDES);
-      rebuildStoriesFromBase();
-      render();
-      LAST_REMOTE_UPDATED_AT = meta.updated_at;
-      LAST_REMOTE_UPDATED_BY = meta.updated_by;
-      const ts = meta.updated_at ? new Date(meta.updated_at).toLocaleString() : "—";
-      const who = meta.updated_by ? `uid ${meta.updated_by}` : "—";
-      const changedTxt = changed.length ? `Modifs détectées (${changed.length}) : ${changed.slice(0,12).join(", ")}${changed.length>12?"…":""}` : "Aucune modif détectée.";
-      if (chose === "local_newer" || chose === "local_remote_empty"){
-        setSbStatus(`Supabase: utilisé ${chose === "local_remote_empty" ? "local (remote vide)" : "local (plus récent)"} • ${changedTxt}`);
-      } else {
-        setSbStatus(`Supabase: dernière modif ${ts} • ${who} • ${changedTxt}`);
-      }
-    }catch(e){
-      console.warn("Reload Supabase failed:", e);
-      setSbStatus("Reload Supabase impossible: " + (e.message||String(e)));
-    }
-  }
-
-  function exportSnapshotGithub(){
-    const ymd = new Date().toISOString().slice(0,10);
-    const baseBlob = new Blob([JSON.stringify(DATA, null, 2)], {type:"application/json"});
-    const bUrl = URL.createObjectURL(baseBlob);
-    const a1 = document.createElement("a"); a1.href = bUrl; a1.download = `base_${TIMELINE_ID}_${ymd}.json`; document.body.appendChild(a1); a1.click(); a1.remove(); URL.revokeObjectURL(bUrl);
-    const ovBlob = new Blob([JSON.stringify(OVERRIDES, null, 2)], {type:"application/json"});
-    const oUrl = URL.createObjectURL(ovBlob); const a2 = document.createElement("a"); a2.href = oUrl; a2.download = `overrides_${TIMELINE_ID}_${ymd}.json`; document.body.appendChild(a2); a2.click(); a2.remove(); URL.revokeObjectURL(oUrl);
   }
 
   async function boot(){
@@ -921,38 +688,8 @@
     buildCategorySelect();
     resetFilters();
 
-    await sbInit();
-    await pullRemoteAndApply();
-
-    setInterval(async ()=>{
-      try{
-        const meta = await sbLoadOverrides();
-        if (meta.updated_at && meta.updated_at !== LAST_REMOTE_UPDATED_AT){
-          await pullRemoteAndApply();
-        }
-      }catch{}
-    }, 5000);
-
     applyEditPermissions();
-  }
-
-  let _forceBtn = null;
-  function createForceBtn(){
-    if (_forceBtn) return;
-    _forceBtn = document.createElement("button");
-    _forceBtn.id = "forceUploadBtn";
-    _forceBtn.type = "button";
-    _forceBtn.textContent = "Force upload";
-    _forceBtn.title = "Forcer l'envoi des modifications locales vers Supabase";
-    _forceBtn.addEventListener("click", ()=> forceUpload());
-    document.body.appendChild(_forceBtn);
-    updateForceBtnVisibility();
-  }
-  function updateForceBtnVisibility(){
-    if (!_forceBtn) return;
-    const visible = (getMode() === "edit");
-    _forceBtn.style.display = visible ? "inline-flex" : "none";
-    _forceBtn.disabled = !(visible && CAN_EDIT);
+    if (getMode() !== "edit") hideTopStatus();
   }
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -963,8 +700,8 @@
     if ($("y2")) $("y2").addEventListener("input", render);
     if ($("resetBtn")) $("resetBtn").addEventListener("click", resetFilters);
 
-    const exportBtn = $("exportEditsBtn"); if (exportBtn) exportBtn.addEventListener("click", exportEdits);
-    const importBtn = $("importEditsBtn"); const importFile = $("importFile");
+    const exportBtn = $("exportOverridesBtn"); if (exportBtn) exportBtn.addEventListener("click", exportEdits);
+    const importBtn = $("importOverridesBtn"); const importFile = $("importFile");
     if (importBtn && importFile) { importBtn.addEventListener("click", ()=> importFile.click()); importFile.addEventListener("change", ()=> { if (importFile.files?.[0]) importEdits(importFile.files[0]); }); }
 
     if ($("backdrop")) $("backdrop").addEventListener("click", closeModal);
@@ -977,34 +714,10 @@
     if ($("deleteBtn")) $("deleteBtn").addEventListener("click", ()=> applyDelete().catch((err)=>{ console.error(err); setStatus("Erreur: "+(err&&err.message?err.message:String(err)), true); }));
     const newBtn = $("newBtn"); if (newBtn) newBtn.addEventListener("click", ()=> createNewStory().catch((err)=>{ console.error(err); setStatus("Erreur: "+(err&&err.message?err.message:String(err)), true); }));
 
-    if ($("loginBtn")){
-      $("loginBtn").addEventListener("click", async ()=>{
-        try{
-          if (!sb) return alert("Supabase non initialisé.");
-          const email = $("authEmail").value.trim();
-          if (!email) return alert("Entre un email.");
-          const redirectTo = `${window.location.origin}${window.location.pathname}`;
-          const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: redirectTo } });
-          if (error) throw error;
-          alert("Email envoyé ✅ (lien magique).");
-        }catch(e){ console.warn(e); alert("Login impossible: " + (e.message||String(e))); }
-      });
-    }
-    if ($("logoutBtn")){
-      $("logoutBtn").addEventListener("click", async ()=>{
-        try{ if (!sb) return; await sb.auth.signOut(); CAN_EDIT = false; setAuthUi(); alert("Déconnecté."); }catch(e){ alert("Logout impossible: " + (e.message||String(e))); }
-      });
-    }
-    if ($("reloadSupabaseBtn")) $("reloadSupabaseBtn").addEventListener("click", pullRemoteAndApply);
-    if ($("exportSnapshotBtn")) $("exportSnapshotBtn").addEventListener("click", exportSnapshotGithub);
-
-    createForceBtn();
-
     // ajout listener pour le bouton Ajouter image
     if ($("e_add_image")) $("e_add_image").addEventListener("click", ()=> addMediaRow());
 
     window.addEventListener("sc:modechange", () => {
-      setAuthUi();
       applyEditPermissions();
       if (DATA && Array.isArray(stories) && stories.length) render();
       if (getMode() !== "edit") hideTopStatus();

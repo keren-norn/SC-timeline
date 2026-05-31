@@ -169,24 +169,3 @@ body[data-mode="edit"] .mLeft{ height: 100%; max-height: none; }
   .sidebar{ position: sticky; top: 90px; align-self: start; max-height: calc(100vh - 90px); overflow-y: auto; overflow-x: hidden; display: grid; gap: 12px; }
 }
 .sidebar #topStatus{ margin: 0; width: 100%; }
-
-/* Force upload button (floating) */
-#forceUploadBtn{
-  position: fixed;
-  right: 18px;
-  bottom: 18px;
-  z-index: 300;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: linear-gradient(180deg, rgba(111,228,255,.16), rgba(111,228,255,.08));
-  color: var(--panel); /* dark text on teal-ish bg */
-  border: 1px solid rgba(111,228,255,.45);
-  box-shadow: 0 6px 20px rgba(0,0,0,.5), 0 0 10px rgba(111,228,255,.06);
-  font-weight:700;
-  cursor: pointer;
-  display: none; /* default hidden; JS toggles inline display */
-}
-#forceUploadBtn:hover{ box-shadow: 0 8px 26px rgba(0,0,0,.6), 0 0 18px rgba(111,228,255,.12); }
-#forceUploadBtn:disabled{ opacity:.5; cursor:not-allowed; }
-@media (max-width:640px){ #forceUploadBtn{ right: 12px; bottom: 12px; padding:9px 10px; font-size:13px; }
-}

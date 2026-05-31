@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SC Timeline</title>
   <link rel="stylesheet" href="./assets/app.css?v=e51c253" />
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <!-- App principale -->
   <script src="./assets/router.js?v=e51c253" defer></script>
   <script src="./assets/app.js?v=e51c253" defer></script>
@@ -17,9 +14,7 @@
 </head>
 
 <body data-mode="view"
-      data-timeline-id="1771887"
-      data-supabase-url="https://zruhrbabzwuwzzbfastd.supabase.co"
-      data-supabase-anon-key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpydWhyYmFiend1d3p6YmZhc3RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg5NDYwNjYsImV4cCI6MjA4NDUyMjA2Nn0.o-j1cNpQHQtnMKEX6CXjRj3UFWeESIUAPn10B2LN2w4">
+      data-timeline-id="1771887">
 
 <header>
   <div class="headerWrap">
@@ -70,11 +65,6 @@
 
         <div class="sep"></div>
 
-        <div class="row" style="margin-top:10px; display:none">
-          <button id="exportSnapshotBtn" type="button">Export snapshot (GitHub)</button>
-          <button id="reloadSupabaseBtn" type="button">Recharger (Supabase)</button>
-        </div>
-
         <!-- ====== BLOC ÉDITION (visible seulement en #edit) ====== -->
         <div id="editPanel" style="display:none">
           <div class="sep"></div>
@@ -89,26 +79,22 @@
 
           <div class="sep"></div>
 
-          <div id="authBox" style="margin-top:14px">
-            <div class="muted" style="font-size:12px;margin-bottom:8px">Connexion (Email OTP / Magic link)</div>
-            <input id="authEmail" type="email" placeholder="email" />
-            <div style="height:8px"></div>
+          <div style="margin-top:14px">
+            <div class="muted" style="font-size:12px;margin-bottom:8px">Overrides locaux (stockés dans ce navigateur)</div>
             <div class="row">
-              <button id="loginBtn" type="button" class="primary">Se connecter</button>
-              <button id="logoutBtn" type="button" disabled>Se déconnecter</button>
+              <button id="exportOverridesBtn" type="button">Exporter overrides JSON</button>
+              <button id="importOverridesBtn" type="button">Importer overrides JSON</button>
+              <input id="importFile" type="file" accept="application/json,.json" style="display:none" />
             </div>
-            <div id="authStatus" class="muted" style="margin-top:8px;font-size:12px">Mode: lecture</div>
-            <div class="muted" id="editHint" style="margin-top:6px;font-size:12px">
-              ⚠️ Pour éditer, ton email doit être dans <span class="kbd">timeline_editors</span> (Supabase).
+            <div class="muted" style="margin-top:8px;font-size:12px">
+              Fichier recommandé : <span class="kbd">data/timeline_overrides.local.json</span>
             </div>
           </div>
         </div>
         <!-- ====== /BLOC ÉDITION ====== -->
 
         <div id="stats"></div>
-        <div id="sbStatus" class="muted" style="margin-top:10px;font-size:12px"></div>
         <div id="status" class="muted" style="margin-top:4px;font-size:12px"></div>
-        <div id="sbEditModeLine" class="muted" style="margin-top:4px;font-size:12px;display:none"></div>
 
         <div class="muted" style="margin-top:10px;font-size:12px">
           Astuce : <a href="./#timeline">#timeline</a> (lecture) / <a href="./#edit">#edit</a> (édition).
@@ -120,7 +106,7 @@
     <div id="topStatus" aria-live="polite">
       <div class="row">
         <div class="msg" id="topStatusMsg">—</div>
-        <div class="tag" id="topStatusTag">supabase</div>
+        <div class="tag" id="topStatusTag">local</div>
       </div>
     </div>
   </div>
