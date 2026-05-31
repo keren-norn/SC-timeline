@@ -6,23 +6,36 @@
 
 ## Données
 - `data/timeline_base.json` : base canonique versionnée
-- `data/timeline_overrides.local.json` : fichier d’overrides recommandé pour export/import manuel (branche GitHub)
+- `data/timeline_overrides.local.json` : couche d’overrides versionnée (optionnelle, commitée en branche)
+- `localStorage` navigateur (`tikitoki_overrides_<timeline_id>_v3`) : overrides locaux de l’utilisateur courant
 
 ## Fonctionnement
-- En lecture (`#timeline`) : la timeline affiche `data/timeline_base.json`.
+- En lecture (`#timeline`) : la timeline est rendue à partir de la base canonique.
 - En édition (`#edit`) : création/modification/suppression locales dans le navigateur.
-- Les overrides d’édition sont stockés en `localStorage` (clé `tikitoki_overrides_<timeline_id>_v3`).
-- Le bouton **Exporter overrides JSON** télécharge `timeline_overrides.local.json`.
-- Le bouton **Importer overrides JSON** recharge un fichier d’overrides dans l’état local.
+- Ordre de composition au démarrage :
+  1. `data/timeline_base.json`
+  2. `data/timeline_overrides.local.json` (si présent et valide)
+  3. overrides `localStorage` (prioritaires sur le fichier versionné)
+- Si `data/timeline_overrides.local.json` est absent, le chargement continue sans erreur bloquante.
+- Les boutons d’édition locale permettent :
+  - **Exporter les modifications (JSON)** : export des overrides du navigateur en `timeline_overrides.local.json`
+  - **Importer des modifications (JSON)** : import dans le `localStorage` local (validation stricte du JSON)
+  - **Effacer les modifications locales** : suppression du `localStorage` uniquement (sans toucher à la base ni au fichier versionné)
+- Un indicateur affiche le nombre de modifications locales actives dans le navigateur.
 
 ## Workflow GitHub recommandé (variante A)
 1. Travailler localement en `#edit`.
-2. Exporter le fichier d’overrides JSON.
+2. Exporter les modifications locales en JSON.
 3. Placer/renommer le fichier en `data/timeline_overrides.local.json`.
 4. Commit ce fichier manuellement dans une branche GitHub dédiée.
 5. Ouvrir une PR pour revue et application ultérieure des modifications.
 
-La base (`timeline_base.json`) et les overrides (`timeline_overrides.local.json`) restent séparés conceptuellement pour faciliter la revue et les merges manuels.
+Différence entre les 3 couches :
+- **Base canonique** : historique de référence partagé (`timeline_base.json`).
+- **Overrides versionnés** : modifications partagées/revues via Git (`timeline_overrides.local.json`).
+- **Modifications locales navigateur** : travail local temporaire, non synchronisé automatiquement.
+
+La séparation base + overrides facilite la revue GitHub manuelle en branche, sans backend.
 
 ## Cache Busting (Automatic)
 

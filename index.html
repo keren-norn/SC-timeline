@@ -80,14 +80,19 @@
           <div class="sep"></div>
 
           <div style="margin-top:14px">
-            <div class="muted" style="font-size:12px;margin-bottom:8px">Overrides locaux (stockés dans ce navigateur)</div>
+            <div class="muted" style="font-size:12px;margin-bottom:8px">Modifications locales (stockées dans ce navigateur)</div>
             <div class="row">
-              <button id="exportOverridesBtn" type="button">Exporter overrides JSON</button>
-              <button id="importOverridesBtn" type="button">Importer overrides JSON</button>
+              <button id="exportOverridesBtn" type="button">Exporter les modifications (JSON)</button>
+              <button id="importOverridesBtn" type="button">Importer des modifications (JSON)</button>
+              <button id="clearLocalOverridesBtn" type="button">Effacer les modifications locales</button>
               <input id="importFile" type="file" accept="application/json,.json" style="display:none" />
             </div>
+            <div id="localOverrideCount" class="muted" style="margin-top:8px;font-size:12px">Aucune modification locale</div>
             <div class="muted" style="margin-top:8px;font-size:12px">
               Fichier recommandé : <span class="kbd">data/timeline_overrides.local.json</span>
+            </div>
+            <div class="muted" style="margin-top:6px;font-size:12px">
+              Ces modifications ne sont pas synchronisées automatiquement.
             </div>
           </div>
         </div>

@@ -4,6 +4,7 @@
   const TIMELINE_ID = Number(document.body.dataset.timelineId || "1771887");
 
   const BASE_URL = "./data/timeline_base.json";
+  const VERSIONED_OVERRIDES_URL = "./data/timeline_overrides.local.json";
   const OVERRIDES_FILENAME = "timeline_overrides.local.json";
   const LS_KEY = `tikitoki_overrides_${TIMELINE_ID}_v3`;
 
@@ -11,6 +12,7 @@
   let cats = [];
   let stories = [];
   let BASE_STORIES = [];
+  let FILE_OVERRIDES = {};
   let OVERRIDES = {};
   const catMap = new Map();
 
@@ -152,11 +154,99 @@
     } catch { return null; }
   }
 
+  const STRING_OVERRIDE_FIELDS = new Set([
+    "title", "startDate", "endDate", "externalLink",
+    "fullTextResolved", "textResolved", "tags", "credit"
+  ]);
+  const ARRAY_OVERRIDE_FIELDS = new Set(["media", "manualLinks"]);
+  const BOOLEAN_OVERRIDE_FIELDS = new Set(["__deleted", "__new"]);
+
+  function validateAndNormalizeOverrides(input, sourceName){
+    if (!isObj(input)) {
+      throw new Error(`${sourceName}: la racine doit être un objet JSON.`);
+    }
+    const normalized = {};
+    for (const [rawId, entry] of Object.entries(input)){
+      const id = String(rawId || "").trim();
+      if (!id) throw new Error(`${sourceName}: identifiant d'entrée vide.`);
+      if (!isObj(entry)) throw new Error(`${sourceName}: l'entrée "${id}" doit être un objet.`);
+      const next = {};
+      for (const [key, value] of Object.entries(entry)){
+        if (STRING_OVERRIDE_FIELDS.has(key)){
+          if (typeof value !== "string") {
+            throw new Error(`${sourceName}: "${id}.${key}" doit être une chaîne.`);
+          }
+          next[key] = key === "fullTextResolved" || key === "textResolved" ? value : value.trim();
+          continue;
+        }
+        if (ARRAY_OVERRIDE_FIELDS.has(key)){
+          if (!Array.isArray(value)) {
+            throw new Error(`${sourceName}: "${id}.${key}" doit être un tableau.`);
+          }
+          next[key] = value;
+          continue;
+        }
+        if (BOOLEAN_OVERRIDE_FIELDS.has(key)){
+          if (typeof value !== "boolean") {
+            throw new Error(`${sourceName}: "${id}.${key}" doit être un booléen.`);
+          }
+          next[key] = value;
+          continue;
+        }
+        if (key === "id"){
+          if (typeof value !== "string" && typeof value !== "number") {
+            throw new Error(`${sourceName}: "${id}.id" doit être une chaîne ou un nombre.`);
+          }
+          next[key] = String(value).trim();
+          continue;
+        }
+        next[key] = value;
+      }
+      normalized[id] = next;
+    }
+    return normalized;
+  }
+
+  function updateLocalOverridesIndicator(){
+    const el = $("localOverrideCount");
+    if (!el) return;
+    const count = Object.keys(OVERRIDES || {}).length;
+    if (count <= 0) {
+      el.textContent = "Aucune modification locale";
+      return;
+    }
+    el.textContent = count === 1 ? "1 modification locale active" : `${count} modifications locales actives`;
+  }
+
   function loadOverridesLocal(){
-    try{ const raw = localStorage.getItem(LS_KEY); return raw? JSON.parse(raw): {}; } catch{ return {}; }
+    try{
+      const raw = localStorage.getItem(LS_KEY);
+      if (!raw) return {};
+      const parsed = JSON.parse(raw);
+      return validateAndNormalizeOverrides(parsed, "Modifications locales");
+    } catch{
+      return {};
+    }
   }
   function saveOverridesLocal(obj){
-    try{ localStorage.setItem(LS_KEY, JSON.stringify(obj)); }catch(e){}
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(obj || {})); }catch(e){}
+    updateLocalOverridesIndicator();
+  }
+  function clearOverridesLocal(){
+    try{ localStorage.removeItem(LS_KEY); }catch(e){}
+  }
+
+  async function loadVersionedOverridesFile(){
+    try{
+      const r = await fetch(VERSIONED_OVERRIDES_URL, { cache: "no-store" });
+      if (r.status === 404) return {};
+      if (!r.ok) return {};
+      const data = await r.json();
+      return validateAndNormalizeOverrides(data, "Fichier data/timeline_overrides.local.json");
+    } catch (e) {
+      console.warn("Impossible de charger le fichier d'overrides versionné:", e);
+      return {};
+    }
   }
 
   function getThumbUrl(story){
@@ -172,7 +262,8 @@
   function rebuildStoriesFromBase(){
     stories = JSON.parse(JSON.stringify(BASE_STORIES));
     const byId = new Map(stories.map(s => [String(s.id), s]));
-    for (const [id, o] of Object.entries(OVERRIDES)){
+    function applyOverrideLayer(overrides){
+      for (const [id, o] of Object.entries(overrides || {})){
       if (!isObj(o)) continue;
       if (o.__new){
         const existing = byId.get(String(id));
@@ -213,6 +304,9 @@
       // New: propagate credit if present in overrides
       if (typeof o.credit === "string") s.credit = o.credit;
     }
+    }
+    applyOverrideLayer(FILE_OVERRIDES);
+    applyOverrideLayer(OVERRIDES);
   }
 
   function buildCategorySelect(){
@@ -484,8 +578,9 @@
 
   function nextStoryId(){
     const ids = BASE_STORIES.map(s=>parseInt(s.id,10)).filter(Number.isFinite);
+    const fids = Object.keys(FILE_OVERRIDES||{}).map(k=>parseInt(k,10)).filter(Number.isFinite);
     const oids = Object.keys(OVERRIDES||{}).map(k=>parseInt(k,10)).filter(Number.isFinite);
-    const maxId = Math.max(0, ...ids, ...oids);
+    const maxId = Math.max(0, ...ids, ...fids, ...oids);
     return maxId + 1;
   }
 
@@ -591,26 +686,36 @@
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
-    setLocalStatus(`Export JSON prêt (${OVERRIDES_FILENAME}).`);
+    setLocalStatus(`Modifications exportées (${OVERRIDES_FILENAME}).`);
   }
 
   function importEdits(file){
     const reader = new FileReader();
     reader.onload = () => {
       try{
-        const obj = JSON.parse(reader.result);
-        if (!isObj(obj)) throw new Error("JSON invalide");
+        const parsed = JSON.parse(reader.result);
+        const obj = validateAndNormalizeOverrides(parsed, "Fichier importé");
         OVERRIDES = obj;
         saveOverridesLocal(OVERRIDES);
         rebuildStoriesFromBase();
         render();
         alert("Modifications importées ✅");
-        setLocalStatus("Overrides importés localement ✅");
+        setLocalStatus("Modifications locales importées ✅");
       }catch(e){
-        alert("Import impossible: " + (e.message||String(e)));
+        alert("Import impossible : " + (e.message||String(e)));
       }
     };
     reader.readAsText(file, "utf-8");
+  }
+
+  function clearLocalEdits(){
+    if (!confirm("Effacer toutes les modifications locales de ce navigateur ?")) return;
+    OVERRIDES = {};
+    clearOverridesLocal();
+    saveOverridesLocal(OVERRIDES);
+    rebuildStoriesFromBase();
+    render();
+    setLocalStatus("Modifications locales effacées.");
   }
 
   function resetFilters(){
@@ -619,6 +724,7 @@
     const years = stories.map(s=>parseYear(s.startDate)).filter(y=>y!==null);
     $("y1").value = years.length ? Math.min(...years) : 0;
     $("y2").value = years.length ? Math.max(...years) : 0;
+    updateLocalOverridesIndicator();
     render();
   }
 
@@ -639,7 +745,7 @@
     const deleteBtn = $("deleteBtn");
     if (deleteBtn){ deleteBtn.disabled = !isEdit; deleteBtn.title = isEdit ? "" : "Lecture seule"; }
     if (isEdit){
-      setStatus("Mode édition locale : overrides enregistrés dans ce navigateur.");
+      setStatus("Mode édition locale : modifications enregistrées dans ce navigateur.");
     } else {
       setStatus("Mode lecture.");
     }
@@ -681,7 +787,7 @@
     BASE_STORIES = Array.isArray(normalized.stories) ? normalized.stories : [];
     catMap.clear(); for (const c of cats) catMap.set(String(c.id), c);
 
-    // load local overrides (no seed file)
+    FILE_OVERRIDES = await loadVersionedOverridesFile();
     OVERRIDES = loadOverridesLocal();
     saveOverridesLocal(OVERRIDES);
     rebuildStoriesFromBase();
@@ -702,7 +808,9 @@
 
     const exportBtn = $("exportOverridesBtn"); if (exportBtn) exportBtn.addEventListener("click", exportEdits);
     const importBtn = $("importOverridesBtn"); const importFile = $("importFile");
-    if (importBtn && importFile) { importBtn.addEventListener("click", ()=> importFile.click()); importFile.addEventListener("change", ()=> { if (importFile.files?.[0]) importEdits(importFile.files[0]); }); }
+    if (importBtn && importFile) { importBtn.addEventListener("click", ()=> importFile.click()); importFile.addEventListener("change", ()=> { if (importFile.files?.[0]) importEdits(importFile.files[0]); importFile.value = ""; }); }
+    const clearBtn = $("clearLocalOverridesBtn");
+    if (clearBtn) clearBtn.addEventListener("click", clearLocalEdits);
 
     if ($("backdrop")) $("backdrop").addEventListener("click", closeModal);
     if ($("closeBtn")) $("closeBtn").addEventListener("click", closeModal);
